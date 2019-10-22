@@ -1,0 +1,172 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1569405266444-1
+      author: D-SHB-25009070
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: username
+                  type: VARCHAR(50)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: authority
+                  type: VARCHAR(50)
+            tableName: authorities
+  - changeSet:
+      id: 1569405266444-2
+      author: D-SHB-25009070
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                  name: name
+                  type: VARCHAR(50)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+            tableName: role
+  - changeSet:
+      id: 1569405266444-3
+      author: D-SHB-25009070
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                  name: username
+                  type: VARCHAR(50)
+              - column:
+                  name: email
+                  type: VARCHAR(100)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: enabled
+                  type: BIT(1)
+              - column:
+                  name: full_name
+                  type: VARCHAR(100)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: password
+                  type: VARCHAR(100)
+            tableName: user
+  - changeSet:
+      id: 1569405266444-4
+      author: D-SHB-25009070
+      changes:
+        - loadData:
+            columns:
+              - column:
+                  header: username
+                  name: username
+              - column:
+                  header: authority
+                  name: authority
+            commentLineStartsWith: '#'
+            encoding: UTF-8
+            file: db/changelog/csv/authorities.csv
+            quotchar: '"'
+            separator: ','
+            tableName: authorities
+  - changeSet:
+      id: 1569405266444-5
+      author: D-SHB-25009070
+      changes:
+        - loadData:
+            columns:
+              - column:
+                  header: name
+                  name: name
+              - column:
+                  header: description
+                  name: description
+            commentLineStartsWith: '#'
+            encoding: UTF-8
+            file: db/changelog/csv/role.csv
+            quotchar: '"'
+            separator: ','
+            tableName: role
+  - changeSet:
+      id: 1569405266444-6
+      author: D-SHB-25009070
+      changes:
+        - loadData:
+            columns:
+              - column:
+                  header: username
+                  name: username
+              - column:
+                  header: email
+                  name: email
+              - column:
+                  header: enabled
+                  name: enabled
+              - column:
+                  header: full_name
+                  name: full_name
+              - column:
+                  header: password
+                  name: password
+            commentLineStartsWith: '#'
+            encoding: UTF-8
+            file: db/changelog/csv/user.csv
+            quotchar: '"'
+            separator: ','
+            tableName: user
+  - changeSet:
+      id: 1569405266444-7
+      author: D-SHB-25009070
+      changes:
+        - addUniqueConstraint:
+            columnNames: username, authority
+            constraintName: UK2uf74smucdwf9qal2n67m2343
+            tableName: authorities
+  - changeSet:
+      id: 1569405266444-8
+      author: D-SHB-25009070
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: authority
+            indexName: FKm9ox3l68awwv4fn9nqnaxujgi
+            tableName: authorities
+  - changeSet:
+      id: 1569405266444-9
+      author: D-SHB-25009070
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: username
+            baseTableName: authorities
+            constraintName: FKhcqd6xr5j0otd5q58nnalyseb
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: username
+            referencedTableName: user
+            validate: true
+  - changeSet:
+      id: 1569405266444-10
+      author: D-SHB-25009070
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: authority
+            baseTableName: authorities
+            constraintName: FKm9ox3l68awwv4fn9nqnaxujgi
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: name
+            referencedTableName: role
+            validate: true

@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - preConditions:
+      - runningAs:
+          dbms: h2base
+          username: sa
+
+  - include:
+      file: db/changelog/db.changelog-till2.0.0.yaml

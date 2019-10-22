@@ -1,0 +1,3 @@
+"username","authority"
+charlie,ROLE_ROOT
+warren,ROLE_USER

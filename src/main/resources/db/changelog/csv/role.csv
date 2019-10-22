@@ -1,0 +1,7 @@
+"name","description"
+"ROLE_ROOT","Root"
+"ROLE_ADMIN","Admin"
+"ROLE_VIP","Vip User"
+"ROLE_USER","User"
+"ROLE_APPLICANT","Applicant"
+"ROLE_ANONYMOUS","Guest"
