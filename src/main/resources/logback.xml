@@ -7,11 +7,12 @@
 
     <appender name="CONSOLE-LOG" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%d{yyyy-MM-dd' 'HH:mm:ss.sss} %-5level [%logger{25}] [%t] %m%n</pattern>
+            <pattern>%d{yyyy-MM-dd' 'HH:mm:ss.sss} %-5level [%logger{25}:%L] %m%n</pattern>
             <!-- use below pattern in debug env, %C %L consume system resource -->
-            <!--<pattern>%d{yyyy-MM-dd' 'HH:mm:ss.sss} %-5level [%C] [%t] [%L] %m%n</pattern>-->
+            <!--<pattern>%d{yyyy-MM-dd' 'HH:mm:ss.sss} %-5level [%C:%L] [%t] %m%n</pattern>-->
         </layout>
     </appender>
+
     <!--log till WARN level-->
     <appender name="BELOW-WARN-LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -22,7 +23,7 @@
         <encoder>
             <pattern>%d{yyyy-MM-dd' 'HH:mm:ss.sss} %-5level [%logger{25}] [%t] %m%n</pattern>
             <!-- use below pattern in debug env, %C %L consume system resource -->
-            <!--<pattern>%d{yyyy-MM-dd' 'HH:mm:ss.sss} %-5level [%C] [%t] [%L] %m%n</pattern>-->
+            <!--<pattern>%d{yyyy-MM-dd' 'HH:mm:ss.sss} %-5level [%C:%L] [%t] %m%n</pattern>-->
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -35,9 +36,9 @@
             <level>ERROR</level>
         </filter>
         <encoder>
-            <pattern>%d{yyyy-MM-dd' 'HH:mm:ss.sss} %-5level [%logger{25}] [%t] %m%n</pattern>
+            <pattern>%d{yyyy-MM-dd' 'HH:mm:ss.sss} %-5level [%logger{25}:%L] [%t] %m%n</pattern>
             <!-- use below pattern in debug env, %C %L consume system resource -->
-            <!--<pattern>%d{yyyy-MM-dd' 'HH:mm:ss.sss} %-5level [%C] [%t] [%L] %m%n</pattern>-->
+            <!--<pattern>%d{yyyy-MM-dd' 'HH:mm:ss.sss} %-5level [%C:%L] [%t] %m%n</pattern>-->
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_ERROR_HOME}//%d.log</fileNamePattern>

@@ -1,5 +1,6 @@
 "username","authority"
 charlie,ROLE_ROOT
+angela,ROLE_ADMIN
 warren,ROLE_USER
 mockuser01,ROLE_APPLICANT
 mockuser02,ROLE_APPLICANT

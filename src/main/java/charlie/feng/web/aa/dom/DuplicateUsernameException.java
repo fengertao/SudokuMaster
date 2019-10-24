@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 //Todo add user name into error msg
 //Todo remove stack trace from /error page
-@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "User name was occupied.")
+@ResponseStatus(value = HttpStatus.CONFLICT, reason = "User name is occupied.")
 public class DuplicateUsernameException extends RuntimeException {
+
+    public DuplicateUsernameException(String msg) {
+        super(msg);
+    }
+
 }
