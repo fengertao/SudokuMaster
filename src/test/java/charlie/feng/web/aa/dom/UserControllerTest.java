@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -91,7 +92,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[0].fullName").value("Charlie Feng"))
                 .andExpect(jsonPath("$[0].email").value("fengertao@outlook.com"))
                 .andExpect(jsonPath("$[0].roles.length()").value(1))
-                .andExpect(jsonPath("$[0].roles[0].description").value("Root")) //Todo not inside json
+                .andExpect(jsonPath("$[0].roles[0].description").value("Root"))
                 .andExpect(jsonPath("$[1].username").value("angela"))
                 .andExpect(jsonPath("$[1].roles.length()").value(1))
                 .andExpect(jsonPath("$[1].roles[0].description").value("Admin"))
