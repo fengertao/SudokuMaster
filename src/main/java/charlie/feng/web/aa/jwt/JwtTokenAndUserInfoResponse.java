@@ -12,17 +12,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class JwtTokenAndUserInfoResponse implements Serializable {
+class JwtTokenAndUserInfoResponse extends JwtTokenResponse implements Serializable {
 
     private static final long serialVersionUID = 8317676219297719109L;
 
-    private final String token;
     private final String username;
     private final String fullname;
     private final List<String> roles;
 
     JwtTokenAndUserInfoResponse(String token, String username, String fullname, Collection<? extends GrantedAuthority> roles) {
-        this.token = token;
+        super(token);
         this.username = username;
         this.fullname = fullname;
         this.roles = roles.stream().map((GrantedAuthority role) -> role.getAuthority()).collect(Collectors.toList());
