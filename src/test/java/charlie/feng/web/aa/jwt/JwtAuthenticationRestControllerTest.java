@@ -1,6 +1,6 @@
 package charlie.feng.web.aa.jwt;
 
-import charlie.feng.charlie.feng.web.GlobalControllerExceptionHandler;
+import charlie.feng.web.GlobalControllerExceptionHandler;
 import charlie.feng.game.sudokumasterserv.SudokumasterservApplication;
 import charlie.feng.web.aa.dom.LiquibaseTestConfig;
 import liquibase.exception.LiquibaseException;

@@ -4,7 +4,7 @@
 
 package charlie.feng.web.aa.dom;
 
-import charlie.feng.charlie.feng.web.GlobalControllerExceptionHandler;
+import charlie.feng.web.GlobalControllerExceptionHandler;
 import charlie.feng.game.sudokumasterserv.SudokumasterservApplication;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;

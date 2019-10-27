@@ -6,6 +6,9 @@ package charlie.feng.web.aa.dom;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +48,7 @@ public class UserController {
         user.setEnabled(userForm.isEnabled());
         user.addRoles(userForm.getRoles());
         userRepository.save(user);
-        return new ResponseEntity<String>("User " + user.getUsername() + " added.",HttpStatus.OK);
+        return new ResponseEntity<String>("User " + user.getUsername() + " added.", HttpStatus.OK);
     }
 
     //Todo remove password
@@ -89,7 +92,8 @@ public class UserController {
         String username = form.getUsername();
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            return new ResponseEntity("NOT_FOUND", HttpStatus.NOT_FOUND);        }
+            return new ResponseEntity("NOT_FOUND", HttpStatus.NOT_FOUND);
+        }
         Collection<? extends GrantedAuthority> grantedAuthorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         //Only Root user can enable/disable Root and Admin user.
         if ((user.getRoles().contains(Role.ROLE_ROOT) || user.getRoles().contains(Role.ROLE_ADMIN)) && (!grantedAuthorities.contains(new SimpleGrantedAuthority(Role.ROLE_ROOT.getName())))) {
@@ -135,18 +139,28 @@ public class UserController {
     @GetMapping(path = "/all")
     @ResponseBody
     public ResponseEntity<Iterable<User>> getAllUsers() {
-        //Todo the return should not contains password
-        //Todo Pagination
         return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(path = "/page")
+    @ResponseBody
+    public ResponseEntity<Iterable<User>> getPageUsers(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                       @RequestParam(value = "size", defaultValue = "5") Integer size) {
+        //Todo support dynamic sort
+        //Todo support filter
+        Sort sort = Sort.by("username");
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return new ResponseEntity<>(userRepository.findAll(pageable), HttpStatus.OK);
+    }
+
     @PreAuthorize(PRE_AUTHORIZE_USER_CAN_QUERY_SELF_ADMIN_CAN_QUERY_ALL)
-    @PostAuthorize(POST_AUTHORIZE_ADMIN_CANNOT_SEE_ROOT )
+    @PostAuthorize(POST_AUTHORIZE_ADMIN_CANNOT_SEE_ROOT)
     @GetMapping(path = "/username/{username}")
     @ResponseBody
     public ResponseEntity<User> findByUsername(@PathVariable String username) {
         User user = userRepository.findByUsername(username);
-        return new ResponseEntity<>(user, user== null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        return new ResponseEntity<>(user, user == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
 
     }
 
@@ -163,36 +177,47 @@ class UserCreateForm {
     public List<String> getRoles() {
         return roles;
     }
+
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
+
     public boolean isEnabled() {
         return enabled;
     }
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
     public String getUsername() {
         return username;
     }
+
     public void setUsername(String username) {
         this.username = username;
     }
+
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
+
     public String getFullname() {
         return fullname;
     }
+
     public void setFullname(String fullname) {
         this.fullname = fullname;
     }
+
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -204,6 +229,7 @@ class EnableDisableForm {
     public String getUsername() {
         return username;
     }
+
     public void setUsername(String username) {
         this.username = username;
     }

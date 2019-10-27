@@ -1,4 +1,4 @@
-package charlie.feng.charlie.feng.web;
+package charlie.feng.web;
 
 public class ErrorInfo {
     public final String errorToken;

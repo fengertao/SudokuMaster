@@ -1,4 +1,4 @@
-package charlie.feng.charlie.feng.web;
+package charlie.feng.web;
 
 import charlie.feng.web.aa.dom.DuplicateUsernameException;
 import org.slf4j.Logger;
