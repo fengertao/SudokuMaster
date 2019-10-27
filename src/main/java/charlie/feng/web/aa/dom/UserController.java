@@ -56,17 +56,18 @@ public class UserController {
     public ResponseEntity<User> enable(@RequestBody EnableDisableForm form) {
         String username = form.getUsername();
         User user = userRepository.findByUsername(username);
+        if (user == null) {
+            return new ResponseEntity("NOT_FOUND", HttpStatus.NOT_FOUND);
+        }
 
         Collection<? extends GrantedAuthority> grantedAuthorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         //Only Root user can enable/disable Root and Admin user.
         if ((user.getRoles().contains(Role.ROLE_ROOT) || user.getRoles().contains(Role.ROLE_ADMIN)) && (!grantedAuthorities.contains(new SimpleGrantedAuthority(Role.ROLE_ROOT.getName())))) {
-            return new ResponseEntity("Need Root entitlement", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
-        if (user == null) {
-            return new ResponseEntity("None existing user " + username, HttpStatus.NOT_FOUND);
-        }
+
         if (user.isEnabled()) {
-            return new ResponseEntity("No need enable again on " + username, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("NO_NEED_ENABLE_AGAIN", HttpStatus.BAD_REQUEST);
         }
         user.setEnabled(true);
         if (user.getRoles().contains(Role.ROLE_APPLICANT)) {
@@ -87,17 +88,16 @@ public class UserController {
     public ResponseEntity<User> disable(@RequestBody EnableDisableForm form) {
         String username = form.getUsername();
         User user = userRepository.findByUsername(username);
-
+        if (user == null) {
+            return new ResponseEntity("NOT_FOUND", HttpStatus.NOT_FOUND);        }
         Collection<? extends GrantedAuthority> grantedAuthorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         //Only Root user can enable/disable Root and Admin user.
         if ((user.getRoles().contains(Role.ROLE_ROOT) || user.getRoles().contains(Role.ROLE_ADMIN)) && (!grantedAuthorities.contains(new SimpleGrantedAuthority(Role.ROLE_ROOT.getName())))) {
-            return new ResponseEntity("Need Root entitlement", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
         }
-        if (user == null) {
-            return new ResponseEntity("None existing user " + username, HttpStatus.NOT_FOUND);
-        }
+
         if (!user.isEnabled()) {
-            return new ResponseEntity("No need disable again", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("NO_NEED_ENABLE_AGAIN", HttpStatus.BAD_REQUEST);
         }
         user.setEnabled(false);
         userRepository.save(user);

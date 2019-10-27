@@ -16,14 +16,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.util.NestedServletException;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -77,9 +75,74 @@ public class UserControllerTest {
         mvc.perform(MockMvcRequestBuilders.post("/user/signup")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(signupContent))
-                .andExpect(status().isConflict())
-        ;
+                .andExpect(status().isConflict());
     }
+
+    @Test
+    @WithMockUser(username = "angela", roles = {"ADMIN"})
+    public void enableDisable() throws Exception {
+        JSONObject json = new JSONObject();
+        json.put("username", "mockuser02");
+        String content = json.toString();
+        mvc.perform(MockMvcRequestBuilders.post("/user/enable")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(content))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.length()").value(6))
+                .andExpect(jsonPath("$.username").value("mockuser02"))
+                .andExpect(jsonPath("$.password").doesNotExist())
+                .andExpect(jsonPath("$.fullName").value("mock"))
+                .andExpect(jsonPath("$.email").value("mock@outlook.com"))
+                .andExpect(jsonPath("$.enabled").value(true))
+                .andExpect(jsonPath("$.roles.length()").value(1))
+                .andExpect(jsonPath("$.roles[0].description").value("User"));
+        mvc.perform(MockMvcRequestBuilders.post("/user/disable")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(content))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.length()").value(6))
+                .andExpect(jsonPath("$.username").value("mockuser02"))
+                .andExpect(jsonPath("$.password").doesNotExist())
+                .andExpect(jsonPath("$.fullName").value("mock"))
+                .andExpect(jsonPath("$.email").value("mock@outlook.com"))
+                .andExpect(jsonPath("$.enabled").value(false))
+                .andExpect(jsonPath("$.roles.length()").value(1))
+                .andExpect(jsonPath("$.roles[0].description").value("User"));
+
+        json.put("username", "NonExistingUser");
+        content = json.toString();
+        mvc.perform(MockMvcRequestBuilders.post("/user/enable")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(content))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().string("NOT_FOUND"));
+        mvc.perform(MockMvcRequestBuilders.post("/user/disable")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(content))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().string("NOT_FOUND"));
+
+        json.put("username", "angela");
+        content = json.toString();
+
+        mvc.perform(MockMvcRequestBuilders.post("/user/disable")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(content))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().string("UNAUTHORIZED"));
+        mvc.perform(MockMvcRequestBuilders.post("/user/enable")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(content))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().string("UNAUTHORIZED"));
+    }
+
 
     @Test
     public void getAllUsers() throws Exception {
