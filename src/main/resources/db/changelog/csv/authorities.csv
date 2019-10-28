@@ -22,3 +22,5 @@ mockuser17,ROLE_APPLICANT
 mockuser18,ROLE_APPLICANT
 mockuser19,ROLE_APPLICANT
 mockuser20,ROLE_APPLICANT
+tworole,ROLE_USER
+tworole,ROLE_VIP

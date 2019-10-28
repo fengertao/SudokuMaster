@@ -142,7 +142,6 @@ public class UserController {
         return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
     }
 
-    //Todo ACL
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/page")
     @ResponseBody
