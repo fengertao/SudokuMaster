@@ -142,15 +142,14 @@ public class UserController {
         return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
     }
 
+    //Todo ACL
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/page")
     @ResponseBody
-    public ResponseEntity<Iterable<User>> getPageUsers(@RequestParam(value = "page", defaultValue = "0") Integer page,
-                                                       @RequestParam(value = "size", defaultValue = "5") Integer size) {
+    public ResponseEntity<Iterable<User>> getPageUsers(@RequestParam(value = "page", defaultValue = "0") Integer page) {
         //Todo support dynamic sort
         //Todo support filter
-        Sort sort = Sort.by("username");
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("username"));
         return new ResponseEntity<>(userRepository.findAll(pageable), HttpStatus.OK);
     }
 
