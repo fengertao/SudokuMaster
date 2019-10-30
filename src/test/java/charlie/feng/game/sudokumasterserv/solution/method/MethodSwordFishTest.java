@@ -5,8 +5,8 @@
 package charlie.feng.game.sudokumasterserv.solution.method;
 
 import charlie.feng.game.sudokumasterserv.solution.Grid;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class MethodSwordFishTest {
 
@@ -28,9 +28,9 @@ public class MethodSwordFishTest {
         new MethodSwordFish().apply(grid);
 
         for (int row = 3; row < 9; row++) {
-            Assert.assertFalse("Star Cell candidates should removed digit 4", grid.cells[row][0].isSupportCandidate(4));
-            Assert.assertFalse("Star Cell candidates should removed digit 4", grid.cells[row][1].isSupportCandidate(4));
-            Assert.assertFalse("Star Cell candidates should removed digit 4", grid.cells[row][2].isSupportCandidate(4));
+            Assertions.assertFalse(grid.cells[row][0].isSupportCandidate(4), "Star Cell candidates should removed digit 4");
+            Assertions.assertFalse(grid.cells[row][1].isSupportCandidate(4), "Star Cell candidates should removed digit 4");
+            Assertions.assertFalse(grid.cells[row][2].isSupportCandidate(4), "Star Cell candidates should removed digit 4");
         }
     }
 
@@ -55,12 +55,12 @@ public class MethodSwordFishTest {
         new MethodSwordFish().apply(grid);
 
         for (int col = 3; col < 9; col++) {
-            Assert.assertFalse("Star Cell candidates should removed digit 5", grid.cells[0][col].isSupportCandidate(5));
-            Assert.assertFalse("Star Cell candidates should removed digit 6", grid.cells[0][col].isSupportCandidate(6));
-            Assert.assertFalse("Star Cell candidates should removed digit 5", grid.cells[1][col].isSupportCandidate(5));
-            Assert.assertFalse("Star Cell candidates should removed digit 6", grid.cells[1][col].isSupportCandidate(6));
-            Assert.assertFalse("Star Cell candidates should removed digit 5", grid.cells[2][col].isSupportCandidate(5));
-            Assert.assertFalse("Star Cell candidates should removed digit 6", grid.cells[2][col].isSupportCandidate(6));
+            Assertions.assertFalse(grid.cells[0][col].isSupportCandidate(5), "Star Cell candidates should removed digit 5");
+            Assertions.assertFalse(grid.cells[0][col].isSupportCandidate(6), "Star Cell candidates should removed digit 6");
+            Assertions.assertFalse(grid.cells[1][col].isSupportCandidate(5), "Star Cell candidates should removed digit 5");
+            Assertions.assertFalse(grid.cells[1][col].isSupportCandidate(6), "Star Cell candidates should removed digit 6");
+            Assertions.assertFalse(grid.cells[2][col].isSupportCandidate(5), "Star Cell candidates should removed digit 5");
+            Assertions.assertFalse(grid.cells[2][col].isSupportCandidate(6), "Star Cell candidates should removed digit 6");
         }
 
     }

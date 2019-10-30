@@ -3,19 +3,20 @@
   ~ Copyright (c) 2018-2019,  Charlie Feng. All Rights Reserved.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.0.RELEASE</version>
-        <relativePath />
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>charlie.feng.game</groupId>
     <artifactId>sudokumasterserv</artifactId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
     <name>sudokumasterserv</name>
-    <description>Rest Service for Sudoku Master</description>
+    <description>Sudoku Master Service</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -33,11 +34,11 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <artifactId>spring-boot-starter-data-ldap</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -49,6 +50,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
@@ -56,26 +61,18 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-data</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-rest-hal-browser</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-core</artifactId>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-data</artifactId>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -89,25 +86,9 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.restdocs</groupId>
-            <artifactId>spring-restdocs-mockmvc</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>com.vaadin.external.google</groupId>
             <artifactId>android-json</artifactId>
@@ -128,6 +109,24 @@
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -138,6 +137,16 @@
             </resource>
         </resources>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <goals>install</goals>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
@@ -193,41 +202,6 @@
 <!--                        </goals>-->
 <!--                    </execution>-->
 <!--                </executions>-->
-            </plugin>
-            <plugin>
-                <groupId>org.asciidoctor</groupId>
-                <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>1.5.8</version>
-                <executions>
-                    <execution>
-                        <id>generate-docs</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>process-asciidoc</goal>
-                        </goals>
-                        <configuration>
-                            <backend>html</backend>
-                            <doctype>book</doctype>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.springframework.restdocs</groupId>
-                        <artifactId>spring-restdocs-asciidoctor</artifactId>
-                        <version>${spring-restdocs.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <goals>install</goals>
-                </configuration>
             </plugin>
         </plugins>
     </build>

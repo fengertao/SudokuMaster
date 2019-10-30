@@ -5,8 +5,9 @@
 package charlie.feng.game.sudokumasterserv.solution.method;
 
 import charlie.feng.game.sudokumasterserv.solution.Grid;
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class MethodXWingTest {
 
@@ -23,8 +24,8 @@ public class MethodXWingTest {
         new MethodXWing().apply(grid);
 
         for (int row = 2; row < 9; row++) {
-            Assert.assertFalse("Star Cell candidates should removed digit 4", grid.cells[row][0].isSupportCandidate(4));
-            Assert.assertFalse("Star Cell candidates should removed digit 4", grid.cells[row][1].isSupportCandidate(4));
+            Assertions.assertFalse(grid.cells[row][0].isSupportCandidate(4), "Star Cell candidates should removed digit 4");
+            Assertions.assertFalse(grid.cells[row][1].isSupportCandidate(4), "Star Cell candidates should removed digit 4");
         }
     }
 
@@ -41,8 +42,8 @@ public class MethodXWingTest {
         new MethodXWing().apply(grid);
 
         for (int col = 2; col < 9; col++) {
-            Assert.assertFalse("Star Cell candidates should removed digit 6", grid.cells[0][col].isSupportCandidate(6));
-            Assert.assertFalse("Star Cell candidates should removed digit 6", grid.cells[1][col].isSupportCandidate(6));
+            Assertions.assertFalse(grid.cells[0][col].isSupportCandidate(6), "Star Cell candidates should removed digit 6");
+            Assertions.assertFalse(grid.cells[1][col].isSupportCandidate(6), "Star Cell candidates should removed digit 6");
         }
     }
 

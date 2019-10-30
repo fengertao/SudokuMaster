@@ -6,8 +6,8 @@ package charlie.feng.game.sudokumasterserv.solution.method;
 
 import charlie.feng.game.sudokumasterserv.solution.Cell;
 import charlie.feng.game.sudokumasterserv.solution.Grid;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,15 +50,15 @@ public class MethodXYWingTest {
 
         Cell cellStar = grid.cells[4][4];
 
-        Assert.assertFalse("Star Cell candidates should removed digit 3", cellStar.isSupportCandidate(3));
-        Assert.assertTrue("Star Cell candidates should keep 1", cellStar.isSupportCandidate(1));
-        Assert.assertTrue("Star Cell candidates should keep 2", cellStar.isSupportCandidate(2));
-        Assert.assertTrue("Star Cell candidates should keep 4", cellStar.isSupportCandidate(4));
-        Assert.assertTrue("Star Cell candidates should keep 5", cellStar.isSupportCandidate(5));
-        Assert.assertTrue("Star Cell candidates should keep 6", cellStar.isSupportCandidate(6));
-        Assert.assertTrue("Star Cell candidates should keep 7", cellStar.isSupportCandidate(7));
-        Assert.assertTrue("Star Cell candidates should keep 8", cellStar.isSupportCandidate(8));
-        Assert.assertTrue("Star Cell candidates should keep 9", cellStar.isSupportCandidate(9));
+        Assertions.assertFalse(cellStar.isSupportCandidate(3), "Star Cell candidates should removed digit 3");
+        Assertions.assertTrue(cellStar.isSupportCandidate(1), "Star Cell candidates should keep 1");
+        Assertions.assertTrue(cellStar.isSupportCandidate(2), "Star Cell candidates should keep 2");
+        Assertions.assertTrue(cellStar.isSupportCandidate(4), "Star Cell candidates should keep 4");
+        Assertions.assertTrue(cellStar.isSupportCandidate(5), "Star Cell candidates should keep 5");
+        Assertions.assertTrue(cellStar.isSupportCandidate(6), "Star Cell candidates should keep 6");
+        Assertions.assertTrue(cellStar.isSupportCandidate(7), "Star Cell candidates should keep 7");
+        Assertions.assertTrue(cellStar.isSupportCandidate(8), "Star Cell candidates should keep 8");
+        Assertions.assertTrue(cellStar.isSupportCandidate(9), "Star Cell candidates should keep 9");
     }
 
     @Test
@@ -103,15 +103,15 @@ public class MethodXYWingTest {
         cellStars.add(grid.cells[2][5]);
 
         for (Cell cellStar : cellStars) {
-            Assert.assertFalse("Star Cell candidates should removed digit 6", cellStar.isSupportCandidate(6));
-            Assert.assertTrue("Star Cell candidates should keep 1", cellStar.isSupportCandidate(1));
-            Assert.assertTrue("Star Cell candidates should keep 2", cellStar.isSupportCandidate(2));
-            Assert.assertTrue("Star Cell candidates should keep 3", cellStar.isSupportCandidate(3));
-            Assert.assertTrue("Star Cell candidates should keep 4", cellStar.isSupportCandidate(4));
-            Assert.assertTrue("Star Cell candidates should keep 5", cellStar.isSupportCandidate(5));
-            Assert.assertTrue("Star Cell candidates should keep 7", cellStar.isSupportCandidate(7));
-            Assert.assertTrue("Star Cell candidates should keep 8", cellStar.isSupportCandidate(8));
-            Assert.assertTrue("Star Cell candidates should keep 9", cellStar.isSupportCandidate(9));
+            Assertions.assertFalse(cellStar.isSupportCandidate(6), "Star Cell candidates should removed digit 6");
+            Assertions.assertTrue(cellStar.isSupportCandidate(1), "Star Cell candidates should keep 1");
+            Assertions.assertTrue(cellStar.isSupportCandidate(2), "Star Cell candidates should keep 2");
+            Assertions.assertTrue(cellStar.isSupportCandidate(3), "Star Cell candidates should keep 3");
+            Assertions.assertTrue(cellStar.isSupportCandidate(4), "Star Cell candidates should keep 4");
+            Assertions.assertTrue(cellStar.isSupportCandidate(5), "Star Cell candidates should keep 5");
+            Assertions.assertTrue(cellStar.isSupportCandidate(7), "Star Cell candidates should keep 7");
+            Assertions.assertTrue(cellStar.isSupportCandidate(8), "Star Cell candidates should keep 8");
+            Assertions.assertTrue(cellStar.isSupportCandidate(9), "Star Cell candidates should keep 9");
         }
 
     }
@@ -158,16 +158,15 @@ public class MethodXYWingTest {
         cellStars.add(grid.cells[5][0]);
 
         for (Cell cellStar : cellStars) {
-            Assert.assertFalse("Star Cell candidates should removed digit 9", cellStar.isSupportCandidate(9));
-            Assert.assertTrue("Star Cell candidates should keep 1", cellStar.isSupportCandidate(1));
-            Assert.assertTrue("Star Cell candidates should keep 2", cellStar.isSupportCandidate(2));
-            Assert.assertTrue("Star Cell candidates should keep 3", cellStar.isSupportCandidate(3));
-            Assert.assertTrue("Star Cell candidates should keep 4", cellStar.isSupportCandidate(4));
-            Assert.assertTrue("Star Cell candidates should keep 5", cellStar.isSupportCandidate(5));
-            Assert.assertTrue("Star Cell candidates should keep 6", cellStar.isSupportCandidate(6));
-            Assert.assertTrue("Star Cell candidates should keep 7", cellStar.isSupportCandidate(7));
-            Assert.assertTrue("Star Cell candidates should keep 8", cellStar.isSupportCandidate(8));
-
+            Assertions.assertFalse(cellStar.isSupportCandidate(9), "Star Cell candidates should removed digit 9");
+            Assertions.assertTrue(cellStar.isSupportCandidate(1), "Star Cell candidates should keep 1");
+            Assertions.assertTrue(cellStar.isSupportCandidate(2), "Star Cell candidates should keep 2");
+            Assertions.assertTrue(cellStar.isSupportCandidate(3), "Star Cell candidates should keep 3");
+            Assertions.assertTrue(cellStar.isSupportCandidate(4), "Star Cell candidates should keep 4");
+            Assertions.assertTrue(cellStar.isSupportCandidate(5), "Star Cell candidates should keep 5");
+            Assertions.assertTrue(cellStar.isSupportCandidate(6), "Star Cell candidates should keep 6");
+            Assertions.assertTrue(cellStar.isSupportCandidate(7), "Star Cell candidates should keep 7");
+            Assertions.assertTrue(cellStar.isSupportCandidate(8), "Star Cell candidates should keep 8");
         }
 
     }

@@ -1,27 +1,27 @@
 package charlie.feng.web.aa.jwt;
 
-import charlie.feng.web.GlobalControllerExceptionHandler;
 import charlie.feng.game.sudokumasterserv.SudokumasterservApplication;
+import charlie.feng.web.GlobalControllerExceptionHandler;
 import charlie.feng.web.aa.dom.LiquibaseTestConfig;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {LiquibaseTestConfig.class, SudokumasterservApplication.class})
 @ActiveProfiles("dev")
 @WithAnonymousUser
@@ -35,7 +35,7 @@ public class JwtAuthenticationRestControllerTest {
     @Autowired
     private JwtAuthenticationRestController controller;
 
-    @Before
+    @BeforeEach
     public void setUp() throws LiquibaseException {
         //Standalone MVC builder do not load properties files.
         mvc = MockMvcBuilders.standaloneSetup(controller)

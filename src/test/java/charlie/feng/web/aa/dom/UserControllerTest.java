@@ -10,22 +10,22 @@ import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {LiquibaseTestConfig.class, SudokumasterservApplication.class})
 @ActiveProfiles("dev")
 @WithMockUser(username = "charlie", roles = {"ROOT"})
@@ -40,7 +40,7 @@ public class UserControllerTest {
     @Autowired
     private UserController userController;
 
-    @Before
+    @BeforeEach
     public void setUp() throws LiquibaseException {
         mvc = MockMvcBuilders.standaloneSetup(userController).setControllerAdvice(new GlobalControllerExceptionHandler()).build();
         springLiquibase.afterPropertiesSet();
@@ -149,7 +149,7 @@ public class UserControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/user/all"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.length()").value(23))
+                .andExpect(jsonPath("$.length()").value(24))
                 .andExpect(jsonPath("$[0].username").value("charlie"))
                 .andExpect(jsonPath("$[0].password").doesNotExist())
                 .andExpect(jsonPath("$[0].fullName").value("Charlie Feng"))
