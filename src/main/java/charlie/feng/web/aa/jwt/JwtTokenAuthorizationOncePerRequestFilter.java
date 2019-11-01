@@ -5,6 +5,7 @@
 package charlie.feng.web.aa.jwt;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import liquibase.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,10 +60,12 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
                 logger.warn("JWT_TOKEN_EXPIRED", e);
             }
         } else {
-            logger.warn("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
+            logger.debug("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
         }
 
-        logger.debug("JWT_TOKEN_USERNAME_VALUE '{}'", username);
+        if (!StringUtils.isEmpty(username)) {
+            logger.debug("JWT_TOKEN_USERNAME_VALUE '{}'", username);
+        }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = this.jwtJPAUserDetailsService.loadUserByUsername(username);

@@ -1,6 +1,9 @@
-# Compiled class file
+# Compiled class files
 *.class
 target
+
+# UI project copied files
+src/main/resources/static
 
 # Intellij Setting
 sudokumasterserv.iml

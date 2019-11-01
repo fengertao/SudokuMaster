@@ -26,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.StringUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -46,6 +47,12 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${server.error.path}")
     private String errorPath;
+
+    @Value("${spring.h2.console.enabled}")
+    private boolean h2ConsoleEnabled;
+
+    @Value("${spring.h2.console.path}")
+    private String h2ConsolePath;
 
     @Autowired
     public JWTWebSecurityConfig(JwtTokenAuthorizationOncePerRequestFilter jwtAuthenticationTokenFilter, UserDetailsService jwtJPAUserDetailsService, JwtUnAuthorizedResponseAuthenticationEntryPoint jwtUnAuthorizedResponseAuthenticationEntryPoint) {
@@ -108,7 +115,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity webSecurity) {
-        webSecurity
+        WebSecurity.IgnoredRequestConfigurer ignoredRequestConfigurer = webSecurity
                 .ignoring()
                 .antMatchers(
                         HttpMethod.POST,
@@ -117,14 +124,12 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                         signupPath
                 )
                 .antMatchers(HttpMethod.OPTIONS, "/**")
-                .and()
-                .ignoring()
-                .antMatchers(
-                        HttpMethod.GET,
-                        "/" //Other Stuff You want to Ignore
-                )
-                .and()
-                .ignoring()
-                .antMatchers("/h2-console/**/**");//Should not be in Production!
+                .antMatchers(HttpMethod.GET, "/")
+                .antMatchers("/index.html")
+                //Todo Below url are used by ReactJs 16.10
+                .antMatchers("/images/**", "/static/**", "/*.json", "/*.js", "/logo.*", "/theme.less", "/robot.txt", "/favicon.ico", "/app/**");
+        if (h2ConsoleEnabled && !StringUtils.isEmpty(h2ConsolePath)) { //Not for production!
+            ignoredRequestConfigurer.antMatchers("/h2-console/**");
+        }
     }
 }

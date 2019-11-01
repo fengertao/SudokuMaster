@@ -132,7 +132,17 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <includes>
+                    <include>*.properties</include>
+                </includes>
                 <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>*.properties</exclude>
+                </excludes>
+                <filtering>false</filtering>
             </resource>
         </resources>
         <plugins>
@@ -182,25 +192,25 @@
                         <version>${project.parent.version}</version>
                     </dependency>
                 </dependencies>
-<!--                <configuration>-->
-<!--                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>-->
-<!--                    <changeLogFile>target/classes/db/changelog/db.changelog-master.yaml</changeLogFile>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    &lt;!&ndash; mark db up-to-date in the  DATABASECHANGELOG table after generating-->
-<!--                    schema with hbm2ddl so that no migration is executed.-->
-<!--                    we are telling Liquibase not to try any database migrations.-->
-<!--                    This is our normal workflow of updating model with JPA annotations and running tests.-->
-<!--                    Hibernate plugin takes care of dropping and re-creating the database.-->
-<!--                    &ndash;&gt;-->
-<!--                    <execution>-->
-<!--                        <id>mark-db-up-to-date</id>-->
-<!--                        <phase>compile</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>changelogSync</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
+                <!--                <configuration>-->
+                <!--                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>-->
+                <!--                    <changeLogFile>target/classes/db/changelog/db.changelog-master.yaml</changeLogFile>-->
+                <!--                </configuration>-->
+                <!--                <executions>-->
+                <!--                    &lt;!&ndash; mark db up-to-date in the  DATABASECHANGELOG table after generating-->
+                <!--                    schema with hbm2ddl so that no migration is executed.-->
+                <!--                    we are telling Liquibase not to try any database migrations.-->
+                <!--                    This is our normal workflow of updating model with JPA annotations and running tests.-->
+                <!--                    Hibernate plugin takes care of dropping and re-creating the database.-->
+                <!--                    &ndash;&gt;-->
+                <!--                    <execution>-->
+                <!--                        <id>mark-db-up-to-date</id>-->
+                <!--                        <phase>compile</phase>-->
+                <!--                        <goals>-->
+                <!--                            <goal>changelogSync</goal>-->
+                <!--                        </goals>-->
+                <!--                    </execution>-->
+                <!--                </executions>-->
             </plugin>
         </plugins>
     </build>
