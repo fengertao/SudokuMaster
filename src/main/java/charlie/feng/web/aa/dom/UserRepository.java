@@ -15,7 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface UserRepository extends PagingAndSortingRepository<User, Integer> {
 
-    static final String POST_FILTER_ADMIN_CANNOT_SEE_ROOT = "hasRole('ROOT') || ((hasRole('ADMIN') && !(filterObject.roles.contains(T(charlie.feng.web.aa.dom.Role).ROLE_ROOT)))) ";
+    String POST_FILTER_ADMIN_CANNOT_SEE_ROOT = "hasRole('ROOT') || ((hasRole('ADMIN') && !(filterObject.roles.contains(T(charlie.feng.web.aa.dom.Role).ROLE_ROOT)))) ";
 
     @PostFilter(POST_FILTER_ADMIN_CANNOT_SEE_ROOT)
     Iterable<User> findAll();

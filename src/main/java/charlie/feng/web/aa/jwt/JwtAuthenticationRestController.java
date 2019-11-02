@@ -47,7 +47,7 @@ public class JwtAuthenticationRestController {
         final UserDetails userDetails = jwtJPAUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         String fullname = userDetails.getUsername();
         if (userDetails instanceof JwtUserDetails) {
-            fullname = ((JwtUserDetails)userDetails).getFullname();
+            fullname = ((JwtUserDetails) userDetails).getFullname();
         }
 
         final String token = jwtTokenUtil.generateToken(userDetails);

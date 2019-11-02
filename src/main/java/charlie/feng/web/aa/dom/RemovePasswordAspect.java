@@ -14,11 +14,12 @@ public class RemovePasswordAspect {
     private void publicUserController() {
     }
 
+    @SuppressWarnings("unchecked")
     @AfterReturning(value = "publicUserController()", returning = "retVal")
-    public void removePassword(Object retVal) throws Throwable {
+    public void removePassword(Object retVal) {
         Object returnBody = retVal;
         if (returnBody instanceof ResponseEntity) {
-          returnBody = ((ResponseEntity) returnBody).getBody();
+            returnBody = ((ResponseEntity) returnBody).getBody();
         }
 
         if (returnBody instanceof User) {

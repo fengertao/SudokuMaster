@@ -24,7 +24,7 @@ public class GlobalControllerExceptionHandler {
     private String logExceptionDetail(HttpServletRequest req, Exception ex) {
         Principal principal = req.getUserPrincipal();
         String errorToken = ((principal == null) ? "NOTLOGIN" : principal.getName()) + "_" + System.currentTimeMillis();
-        logger.error("Error Token : " + errorToken );
+        logger.error("Error Token : " + errorToken);
         logger.error("Request URL : " + req.getRequestURL());
         logger.error("Request Method : " + req.getMethod());
         /* Log post body is risky, may contains confidential info!!
@@ -37,10 +37,11 @@ public class GlobalControllerExceptionHandler {
         return errorToken;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     private String logExceptionSummary(HttpServletRequest req, Exception ex) {
         Principal principal = req.getUserPrincipal();
         String errorToken = ((principal == null) ? "NOTLOGIN" : principal.getName()) + "_" + System.currentTimeMillis();
-        logger.info("Error Token : " + errorToken );
+        logger.info("Error Token : " + errorToken);
         logger.info("Request URL : " + req.getRequestURL());
         logger.info("Request Method : " + req.getMethod());
         return errorToken;
@@ -63,7 +64,7 @@ public class GlobalControllerExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     ResponseEntity<ErrorInfo>
-    defaultErrorHandler(HttpServletRequest req, Exception ex) throws Exception {
+    defaultErrorHandler(HttpServletRequest req, Exception ex) {
         String errorToken = logExceptionDetail(req, ex);
 
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;

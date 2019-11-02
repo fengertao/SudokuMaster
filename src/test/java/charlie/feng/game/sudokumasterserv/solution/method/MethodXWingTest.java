@@ -5,7 +5,6 @@
 package charlie.feng.game.sudokumasterserv.solution.method;
 
 import charlie.feng.game.sudokumasterserv.solution.Grid;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

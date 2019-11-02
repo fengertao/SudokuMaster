@@ -2,6 +2,7 @@
 charlie,ROLE_ROOT
 angela,ROLE_ADMIN
 warren,ROLE_USER
+demo,ROLE_USER
 mockuser01,ROLE_APPLICANT
 mockuser02,ROLE_APPLICANT
 mockuser03,ROLE_APPLICANT
@@ -21,6 +22,5 @@ mockuser16,ROLE_APPLICANT
 mockuser17,ROLE_APPLICANT
 mockuser18,ROLE_APPLICANT
 mockuser19,ROLE_APPLICANT
-mockuser20,ROLE_APPLICANT
 tworole,ROLE_USER
 tworole,ROLE_VIP

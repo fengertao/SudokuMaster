@@ -5,7 +5,6 @@
 package charlie.feng.web.aa.jwt;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.Serializable;
 import java.util.Collection;

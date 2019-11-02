@@ -18,6 +18,7 @@ import java.util.Optional;
 @Service
 public class JwtJPAUserDetailsService implements UserDetailsService {
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static List<JwtUserDetails> inMemoryUserList = new ArrayList<>();
 
     static {

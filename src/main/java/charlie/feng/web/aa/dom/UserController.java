@@ -20,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -48,65 +49,49 @@ public class UserController {
         user.setEnabled(userForm.isEnabled());
         user.addRoles(userForm.getRoles());
         userRepository.save(user);
-        return new ResponseEntity<String>("User " + user.getUsername() + " added.", HttpStatus.OK);
+        return new ResponseEntity<>("User " + user.getUsername() + " added.", HttpStatus.OK);
     }
 
     //Todo remove password
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "/enable",
+    @PostMapping(value = {"/enable", "/disable"},
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<User> enable(@RequestBody EnableDisableForm form) {
+    public ResponseEntity<User> enableDisable(@RequestBody EnableDisableForm form, HttpServletRequest request) {
         String username = form.getUsername();
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            return new ResponseEntity("NOT_FOUND", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
 
         Collection<? extends GrantedAuthority> grantedAuthorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         //Only Root user can enable/disable Root and Admin user.
         if ((user.getRoles().contains(Role.ROLE_ROOT) || user.getRoles().contains(Role.ROLE_ADMIN)) && (!grantedAuthorities.contains(new SimpleGrantedAuthority(Role.ROLE_ROOT.getName())))) {
-            return new ResponseEntity("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
-        if (user.isEnabled()) {
-            return new ResponseEntity("NO_NEED_ENABLE_AGAIN", HttpStatus.BAD_REQUEST);
-        }
-        user.setEnabled(true);
-        if (user.getRoles().contains(Role.ROLE_APPLICANT)) {
-            List<Role> newRoles = new ArrayList<>();
-            newRoles.add(Role.ROLE_USER);
-            user.setRoles(newRoles);
+        boolean isEnable = request.getRequestURI().endsWith("enable");
+        if (isEnable) {
+            if (user.isEnabled()) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+            user.setEnabled(true);
+            if (user.getRoles().contains(Role.ROLE_APPLICANT)) {
+                List<Role> newRoles = new ArrayList<>();
+                newRoles.add(Role.ROLE_USER);
+                user.setRoles(newRoles);
+            }
+            userRepository.save(user);
+        } else {
+            if (!user.isEnabled()) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+            user.setEnabled(false);
+
         }
         userRepository.save(user);
 
-        return new ResponseEntity(user, HttpStatus.OK);
-    }
-
-    //Todo remove password
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "/disable",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ResponseEntity<User> disable(@RequestBody EnableDisableForm form) {
-        String username = form.getUsername();
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            return new ResponseEntity("NOT_FOUND", HttpStatus.NOT_FOUND);
-        }
-        Collection<? extends GrantedAuthority> grantedAuthorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        //Only Root user can enable/disable Root and Admin user.
-        if ((user.getRoles().contains(Role.ROLE_ROOT) || user.getRoles().contains(Role.ROLE_ADMIN)) && (!grantedAuthorities.contains(new SimpleGrantedAuthority(Role.ROLE_ROOT.getName())))) {
-            return new ResponseEntity("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
-        }
-
-        if (!user.isEnabled()) {
-            return new ResponseEntity("NO_NEED_ENABLE_AGAIN", HttpStatus.BAD_REQUEST);
-        }
-        user.setEnabled(false);
-        userRepository.save(user);
-
-        return new ResponseEntity(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping(value = "/signup",

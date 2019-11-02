@@ -32,7 +32,7 @@ class JwtUserDetails implements UserDetails {
         this.enabled = enabled;
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        roles.stream().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
 
         this.authorities = authorities;
         this.fullname = fullname;

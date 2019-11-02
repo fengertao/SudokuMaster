@@ -4,8 +4,8 @@
 
 package charlie.feng.web.aa.dom;
 
-import charlie.feng.web.GlobalControllerExceptionHandler;
 import charlie.feng.game.sudokumasterserv.SudokumasterservApplication;
+import charlie.feng.web.GlobalControllerExceptionHandler;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import org.json.JSONArray;
@@ -117,14 +117,12 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(content))
                 .andExpect(status().isNotFound())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(content().string("NOT_FOUND"));
+                .andExpect(content().string(""));
         mvc.perform(MockMvcRequestBuilders.post("/user/disable")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(content))
                 .andExpect(status().isNotFound())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(content().string("NOT_FOUND"));
+                .andExpect(content().string(""));
 
         json.put("username", "angela");
         content = json.toString();
@@ -133,14 +131,12 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(content))
                 .andExpect(status().isUnauthorized())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(content().string("UNAUTHORIZED"));
+                .andExpect(content().string(""));
         mvc.perform(MockMvcRequestBuilders.post("/user/enable")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(content))
                 .andExpect(status().isUnauthorized())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(content().string("UNAUTHORIZED"));
+                .andExpect(content().string(""));
     }
 
 
@@ -229,7 +225,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "warren", roles = {"USER"})
+    @WithMockUser(username = "warren")
     public void findByUserNameViaUser() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/user/username/warren"))
                 .andExpect(status().isOk())
@@ -252,7 +248,7 @@ public class UserControllerTest {
 
     @Test
 //    @Test(expected = NestedServletException.class)
-    @WithMockUser(username = "warren", roles = {"USER"})
+    @WithMockUser(username = "warren")
     public void getAllUsersWithoutPermission() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/user/all"))
                 .andExpect(status().isUnauthorized());

@@ -2,6 +2,7 @@
 "charlie","fengertao@outlook.com","true","Charlie Feng","$2a$10$R1AqQ0jWE.uWwwzl5fwgOOdmWq0.yXCEqc65p4600KHJli.VK.Pke"
 "angela","xiyanyangeco@outlook.com","true","Angela Yang","$2a$10$R1AqQ0jWE.uWwwzl5fwgOOdmWq0.yXCEqc65p4600KHJli.VK.Pke"
 "warren","fengwarren@outlook.com","true","Warren Feng","$2a$10$otvUB1zSkhVbOy93c6rQreAxpElmaYelFmoViu4LD2R.WDcT7SrQG"
+"demo","demouser@outlook.com","true","Demo User","$2a$10$nX1wghEdVT73iKy6bMcMguSDOCtsTwwOUnuSx73Qkk6hzOuTNReNK"
 "mockuser01","mock@outlook.com","false","mock","$2a$10$R1AqQ0jWE.uWwwzl5fwgOOdmWq0.yXCEqc65p4600KHJli.VK.Pke"
 "mockuser02","mock@outlook.com","false","mock","NoLogin"
 "mockuser03","mock@outlook.com","false","mock","NoLogin"
@@ -21,5 +22,4 @@
 "mockuser17","mock@outlook.com","false","mock","NoLogin"
 "mockuser18","mock@outlook.com","false","mock","NoLogin"
 "mockuser19","mock@outlook.com","false","mock","NoLogin"
-"mockuser20","mock@outlook.com","false","mock","NoLogin"
 "tworole","tworole@outlook.com","true","Two Role User","$2a$10$R1AqQ0jWE.uWwwzl5fwgOOdmWq0.yXCEqc65p4600KHJli.VK.Pke"
