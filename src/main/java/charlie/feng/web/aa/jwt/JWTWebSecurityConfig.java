@@ -48,10 +48,10 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${server.error.path}")
     private String errorPath;
 
-    @Value("${spring.h2.console.enabled}")
+    @Value("${spring.h2.console.enabled:false}")
     private boolean h2ConsoleEnabled;
 
-    @Value("${spring.h2.console.path}")
+    @Value("${spring.h2.console.path:}")
     private String h2ConsolePath;
 
     @Autowired
