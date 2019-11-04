@@ -6,6 +6,7 @@ package charlie.feng.web.aa.dom;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,6 +34,9 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private static final String PRE_AUTHORIZE_USER_CAN_QUERY_SELF_ADMIN_CAN_QUERY_ALL = "(hasRole('USER') && #username == authentication.name) || hasRole('ADMIN')";
     private static final String POST_AUTHORIZE_ADMIN_CANNOT_SEE_ROOT = "hasRole('ROOT') ||  ((hasRole('ADMIN') && (returnObject.body== null || !(returnObject.body.roles.contains(T(charlie.feng.web.aa.dom.Role).ROLE_ROOT))))) || returnObject.body.username.equals(authentication.name)";
+
+    @Value("${charlie.feng.aa.autoEnable}")
+    private boolean autoEnable;
 
     private final UserRepository userRepository;
 
@@ -99,7 +103,7 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<String> signup(@RequestBody UserCreateForm userForm) {
         User user = fillInUserForm(userForm);
-        user.setEnabled(false);
+        user.setEnabled(autoEnable);
         user.addRole(Role.ROLE_APPLICANT);
         userRepository.save(user);
         return new ResponseEntity<>("User " + user.getUsername() + " signed up", HttpStatus.OK);
