@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 class JwtTokenAndUserInfoResponse extends JwtTokenResponse implements Serializable {
@@ -23,7 +24,7 @@ class JwtTokenAndUserInfoResponse extends JwtTokenResponse implements Serializab
         super(token);
         this.username = username;
         this.fullname = fullname;
-        this.roles = roles.stream().map((GrantedAuthority role) -> role.getAuthority()).collect(Collectors.toList());
+        this.roles = roles.stream().map((Function<GrantedAuthority, String>) GrantedAuthority::getAuthority).collect(Collectors.toList());
     }
 
     public String getUsername() {

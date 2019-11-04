@@ -4,12 +4,11 @@
 
 package charlie.feng.game.sudokumasterserv.rest;
 
-import charlie.feng.game.sudokumasterserv.solution.Grid;
-import charlie.feng.game.sudokumasterserv.solution.SudokuMaster;
+import charlie.feng.game.sudokumasterserv.master.Grid;
+import charlie.feng.game.sudokumasterserv.master.SudokuMaster;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +18,11 @@ import org.springframework.web.bind.annotation.*;
 public class GridController {
     private static Logger logger = LoggerFactory.getLogger(GridController.class);
 
-    @Autowired
-    private SudokuMaster sudokuMaster;
+    private final SudokuMaster sudokuMaster;
+
+    public GridController(SudokuMaster sudokuMaster) {
+        this.sudokuMaster = sudokuMaster;
+    }
 
     @ResponseBody
     @RequestMapping(value = "/grid/{id}",
@@ -30,21 +32,13 @@ public class GridController {
             logger.info("Resolving grid : " + id);
             Grid grid = new Grid(id);
             sudokuMaster.play(grid);
-            JSONObject result = new JSONObject();
-            if (grid.isResolved()) {
-                result.put("resolved", true);
-                result.put("result", grid.getSolution());
-            } else {
-                result.put("resolved", false);
-                result.put("result", grid.getIncompleteSolutionString());
-            }
-            return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+            return new ResponseEntity<>(grid.getJsonResult().toString(2), HttpStatus.OK);
         } else {
             logger.info("Wrong grid : " + id);
             JSONObject result = new JSONObject();
             result.put("resolved", false);
             result.put("msg", "Wrong grid");
-            return new ResponseEntity<>(result.toString(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(result.toString(2), HttpStatus.BAD_REQUEST);
         }
 
     }

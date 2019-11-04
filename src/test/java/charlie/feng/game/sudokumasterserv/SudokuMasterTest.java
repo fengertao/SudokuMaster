@@ -4,8 +4,8 @@
 
 package charlie.feng.game.sudokumasterserv;
 
-import charlie.feng.game.sudokumasterserv.solution.Grid;
-import charlie.feng.game.sudokumasterserv.solution.SudokuMaster;
+import charlie.feng.game.sudokumasterserv.master.Grid;
+import charlie.feng.game.sudokumasterserv.master.SudokuMaster;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,13 +58,13 @@ public class SudokuMasterTest {
     public void testPlay(String gridId, String expectedSolution, int expectedResolved) {
         Grid grid = new Grid(gridId);
         if (expectedSolution.length() != 0) {
-            grid.expectedSolution = new Grid(expectedSolution);
+            grid.expectedAnswer = new Grid(expectedSolution);
             new SudokuMaster().play(grid);
             Assertions.assertTrue(grid.isResolved(), "Grid " + gridId + " should be resolved");
-            Assertions.assertEquals(expectedSolution, grid.getSolution(), "Grid " + gridId + " solution should be correct");
+            Assertions.assertEquals(expectedSolution, grid.getAnswer(), "Grid " + gridId + " solution should be correct");
         } else {
             new SudokuMaster().play(grid);
-            Assertions.assertFalse(grid.isResolved(), "Grid " + gridId + " should be not been resolved yet. get result:" + grid.getSolution());
+            Assertions.assertFalse(grid.isResolved(), "Grid " + gridId + " should be not been resolved yet. get result:" + grid.getAnswer());
             Assertions.assertEquals(expectedResolved, grid.getNumberOfResolvedCells(), "Resolved cell number should as expected");
 
         }

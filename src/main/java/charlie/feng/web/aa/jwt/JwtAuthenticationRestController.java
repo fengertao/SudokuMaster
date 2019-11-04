@@ -4,6 +4,8 @@
 
 package charlie.feng.web.aa.jwt;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -22,8 +24,10 @@ import java.util.Objects;
 //Todo remove hard coded origin
 @SuppressWarnings("MVCPathVariableInspection")
 @RestController
-@CrossOrigin(origins = {"${jwt.url.ui1}", "${jwt.url.ui2}", "${jwt.url.ui3}", "${jwt.url.ui4}", "http://127.0.0.1:8080", "http://localhost:8080"})
+@CrossOrigin(origins = {"${jwt.url.ui1}", "${jwt.url.ui2}", "${jwt.url.ui3}", "${jwt.url.ui4}"})
 public class JwtAuthenticationRestController {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationRestController.class);
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
@@ -51,6 +55,8 @@ public class JwtAuthenticationRestController {
         }
 
         final String token = jwtTokenUtil.generateToken(userDetails);
+
+        logger.info(String.format("%s login successful.", userDetails.getUsername()));
 
         return ResponseEntity.ok(new JwtTokenAndUserInfoResponse(token, userDetails.getUsername(), fullname, userDetails.getAuthorities()));
     }
@@ -83,8 +89,10 @@ public class JwtAuthenticationRestController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
+            logger.info(String.format("%s login failed because of disable.", username));
             throw new AuthenticationException("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
+            logger.info(String.format("%s login failed with bad password.", username));
             throw new AuthenticationException("INVALID_CREDENTIALS", e);
         }
     }
