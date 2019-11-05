@@ -25,4 +25,8 @@ public class Column extends Region {
         }
     }
 
+    @Override
+    protected MsgKey getMsgKeyForValueExistType() {
+        return MsgKey.VALUE_IN_SAME_COLUMN;
+    }
 }

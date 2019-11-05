@@ -19,6 +19,8 @@ public abstract class Region {
     public int id;
     Grid grid;
 
+    protected abstract MsgKey getMsgKeyForValueExistType();
+
     public boolean isDigitGained(int value) {
         for (Cell cell : cells) {
             if ((cell.getValue() != null) && (cell.getValue() == value)) {
@@ -34,8 +36,8 @@ public abstract class Region {
             Cell neighbor = cells[i];
             if (!neighbor.equals(cell)) {
                 if (neighbor.getValue() == null) {
-                    //Todo row/col/block
-                    neighbor.removeDigitFromCandidate(value, "同行列块的单元格已经有该值", Lists.newArrayList(cell));
+
+                    neighbor.removeDigitFromCandidate(value, getMsgKeyForValueExistType().name(), Lists.newArrayList(cell));
                     if (neighbor.getNumberOfCandidates() == 1) {
                         neighbor.resolvedByNakedSingle(Lists.newArrayList(cell));
                     }

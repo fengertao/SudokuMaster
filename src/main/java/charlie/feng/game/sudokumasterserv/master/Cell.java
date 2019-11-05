@@ -87,11 +87,12 @@ public class Cell {
         if (!candidates[digit - 1]) {
             return;
         }
+        String preChangeCandidates = getCandidateString();
         grid.isChangedInCycle = true;
         candidates[digit - 1] = false;
-        grid.resolution.logStep(this, refCells, grid.getPosition(), methodName, MsgKey.REMOVE_CANDIDATE, "" + digit, getCandidateString());
+        grid.resolution.logStep(this, preChangeCandidates, refCells, grid.getPosition(), methodName, MsgKey.REMOVE_CANDIDATE, "" + digit, getCandidateString());
         if (getNumberOfCandidates() == 1) {
-            gainValue(getCandidateList().get(0), methodName, refCells);
+            gainValue(getCandidateList().get(0), methodName, refCells, preChangeCandidates);
         }
     }
 
@@ -113,13 +114,13 @@ public class Cell {
         }
     }
 
-    //Todo method name
-    public void gainValue(int digit, String methodName, List<Cell> refCells) {
+    //If gain value via removeDigitFromCandidate(), removeDigitFromCandidate() should provide preChangeCandidate, because cell have been changed.
+    private void gainValue(int digit, String methodName, List<Cell> refCells, String preChangeCandidates) {
         validateGainValue(digit);
         if (value != null)
             return;
         grid.isChangedInCycle = true;
-        grid.resolution.logStep(this, refCells, grid.getPosition(), methodName, MsgKey.GET_VALUE, "" + digit);
+        grid.resolution.logStep(this, preChangeCandidates, refCells, grid.getPosition(), methodName, MsgKey.GET_VALUE, "" + digit);
         value = digit;
         for (int k2 = 0; k2 < 9; k2++) {
             if (k2 != digit - 1) {
@@ -129,6 +130,11 @@ public class Cell {
 
         logger.trace("Cell resolved. row:" + rowId + " col:" + columnId + " value:" + value + " " + methodName);
         noticeNeighboorsAboutValueGained();
+    }
+
+    //Todo method name
+    public void gainValue(int digit, String methodName, List<Cell> refCells) {
+        gainValue(digit, methodName, refCells, getCandidateString());
     }
 
     private void validateRemoveDigitFromCandidate(Integer digit) {

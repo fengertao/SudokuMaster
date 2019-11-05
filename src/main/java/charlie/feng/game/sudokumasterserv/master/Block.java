@@ -45,6 +45,11 @@ public class Block extends Region {
         }
     }
 
+    @Override
+    protected MsgKey getMsgKeyForValueExistType() {
+        return MsgKey.VALUE_IN_SAME_BLOCK;
+    }
+
     public Set<Integer> getPossibleSubRegion(int k, boolean isRow, Set<Integer> resultSet) {
         resultSet.clear();
         for (int i = 0; i < 3; i++) {

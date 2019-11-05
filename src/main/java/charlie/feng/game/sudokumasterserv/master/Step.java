@@ -13,36 +13,35 @@ public class Step {
     private static Logger logger = LoggerFactory.getLogger(Step.class);
 
     private int index;
-    private int level; //detail level. 0: start, end resolving. 1: generate value. 2: remove candidate value.
     private String cell;
     private JSONArray refCells;
+    private String preChangeCandidates;
     private String position;
     private String techKey; //Todo i18n
     private MsgKey msgKey;
     private String[] msgParams;
+    private int level; //detail level. 0: start, end resolving. 1: generate value. 2: remove candidate value.
 
-    public Step(int index, Cell cell, List<Cell> refCells, String position, String techKey, MsgKey msgKey, String[] msgParams) {
+    public Step(int index, Cell cell, String preChangeCandidates, List<Cell> refCells, String position, String techKey, MsgKey msgKey, String[] msgParams) {
         this.index = index;
         JSONArray refCellArray = new JSONArray();
         if (refCells != null) {
             refCells.forEach(refCell -> refCellArray.put(refCell.locationString()));
         }
         this.refCells = refCellArray;
-        this.level = msgKey.getLevel();
         this.cell = (cell == null ? "" : cell.locationString());
+        this.preChangeCandidates = preChangeCandidates;
         this.position = position;
-        this.techKey = techKey;
         this.msgKey = msgKey;
         this.msgParams = msgParams;
-
-    }
-
-    public String getMsg(String lang) {
-        if (lang.startsWith("ZH")) {
-            return String.format(msgKey.getCnKey(), msgParams);
-        } else {
-            return String.format(msgKey.getEnKey(), msgParams);
+        this.techKey = techKey;
+        try {
+            MsgKey techMsgKey = MsgKey.valueOf(techKey);
+            this.level = techMsgKey.getLevel();
+        } catch (IllegalArgumentException e) {
+            this.level = msgKey.getLevel();
         }
+
     }
 
     public JSONObject getJSONObject(String lang) {
@@ -51,9 +50,17 @@ public class Step {
             json.put("index", index);
             json.put("level", level);
             json.put("cell", cell);
+            json.put("preChangeCandidates", preChangeCandidates);
             json.put("position", position);
-            json.put("message", getMsg(lang));
-            json.put("techniques", techKey);
+            json.put("message", msgKey.getMsg(lang, msgParams));
+            Object techJson;
+            try {
+                MsgKey techMsgKey = MsgKey.valueOf(techKey);
+                techJson = techMsgKey.getMsg(lang);
+            } catch (IllegalArgumentException e) {
+                techJson = techKey;
+            }
+            json.put("techniques", techJson);
             json.put("refCells", refCells);
             return json;
         } catch (JSONException e) {

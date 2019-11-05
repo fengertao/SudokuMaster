@@ -28,12 +28,12 @@ public class GridControllerTest {
     private MockMvc mvc;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         mvc = MockMvcBuilders.standaloneSetup(gridController).build();
     }
 
     @Test
-    public void testResolve() throws Exception {
+    void testResolve() throws Exception {
 
         Matcher<String> numberRangeMatcher = new BaseMatcher<String>() {
             public boolean matches(Object value) {
@@ -54,25 +54,35 @@ public class GridControllerTest {
                 .andExpect(jsonPath("resolution").exists())
                 .andExpect(jsonPath("resolution").isArray())
                 .andExpect(jsonPath("resolution.length()").value(numberRangeMatcher))
-                .andExpect(jsonPath("resolution[0].length()").value(7))
+                .andExpect(jsonPath("resolution[0].length()").value(8))
                 .andExpect(jsonPath("resolution[0].level").value(0))
                 .andExpect(jsonPath("resolution[0].techniques").value(""))
                 .andExpect(jsonPath("resolution[0].refCells").isArray())
                 .andExpect(jsonPath("resolution[0].refCells.length()").value(0))
+                .andExpect(jsonPath("resolution[0].preChangeCandidates").value(""))
                 .andExpect(jsonPath("resolution[0].index").value(1))
                 .andExpect(jsonPath("resolution[0].cell").isEmpty())
                 .andExpect(jsonPath("resolution[0].message").value("开始解决数独"))
                 .andExpect(jsonPath("resolution[0].position").value("123456789|123456789|123456789|123456789|123456789|123456789|123456789|1|8|9|4|8|123456789|123456789|7|123456789|5|123456789|123456789|123456789|123456789|123456789|123456789|8|123456789|2|123456789|123456789|5|3|7|123456789|2|123456789|123456789|123456789|123456789|123456789|9|123456789|123456789|123456789|123456789|123456789|123456789|123456789|123456789|123456789|9|123456789|1|4|3|123456789|123456789|9|123456789|6|123456789|123456789|123456789|123456789|123456789|123456789|3|123456789|5|123456789|123456789|8|7|6|123456789|6|123456789|123456789|123456789|123456789|123456789|123456789|123456789"))
-                .andExpect(jsonPath("resolution[1].length()").value(7))
-                .andExpect(jsonPath("resolution[1].level").value(2))
-                .andExpect(jsonPath("resolution[1].techniques").value("同行列块的单元格已经有该值"))
+                .andExpect(jsonPath("resolution[1].length()").value(8))
+                .andExpect(jsonPath("resolution[1].level").value(3))
+                .andExpect(jsonPath("resolution[1].techniques").value("同行单元格已有该值"))
                 .andExpect(jsonPath("resolution[1].refCells").isArray())
                 .andExpect(jsonPath("resolution[1].refCells.length()").value(1))
+                .andExpect(jsonPath("resolution[1].preChangeCandidates").value("123456789"))
                 .andExpect(jsonPath("resolution[1].refCells[0]]").value("(1,8)"))
                 .andExpect(jsonPath("resolution[1].index").value(2))
                 .andExpect(jsonPath("resolution[1].cell").value("(1,1)"))
                 .andExpect(jsonPath("resolution[1].message").value("消除 [1] 剩余 [23456789]."))
                 .andExpect(jsonPath("resolution[1].position").value("23456789|123456789|123456789|123456789|123456789|123456789|123456789|1|8|9|4|8|123456789|123456789|7|123456789|5|123456789|123456789|123456789|123456789|123456789|123456789|8|123456789|2|123456789|123456789|5|3|7|123456789|2|123456789|123456789|123456789|123456789|123456789|9|123456789|123456789|123456789|123456789|123456789|123456789|123456789|123456789|123456789|9|123456789|1|4|3|123456789|123456789|9|123456789|6|123456789|123456789|123456789|123456789|123456789|123456789|3|123456789|5|123456789|123456789|8|7|6|123456789|6|123456789|123456789|123456789|123456789|123456789|123456789|123456789"))
+                .andExpect(jsonPath("resolution[-1].length()").value(8))
+                .andExpect(jsonPath("resolution[-1].level").value(0))
+                .andExpect(jsonPath("resolution[-1].techniques").value(""))
+                .andExpect(jsonPath("resolution[-1].refCells").isArray())
+                .andExpect(jsonPath("resolution[-1].refCells.length()").value(0))
+                .andExpect(jsonPath("resolution[-1].preChangeCandidates").value(""))
+                .andExpect(jsonPath("resolution[-1].index").value(numberRangeMatcher))
+                .andExpect(jsonPath("resolution[-1].cell").isEmpty())
                 .andExpect(jsonPath("resolution[-1].message").value("成功解决数独"))
                 .andExpect(jsonPath("resolution[-1].position").value("3|2|5|4|9|6|7|1|8|9|4|8|1|2|7|6|5|3|1|7|6|3|5|8|9|2|4|6|5|3|7|4|2|1|8|9|4|1|9|8|3|5|2|6|7|7|8|2|9|6|1|4|3|5|8|9|1|6|7|3|5|4|2|2|3|4|5|1|9|8|7|6|5|6|7|2|8|4|3|9|1"));
 

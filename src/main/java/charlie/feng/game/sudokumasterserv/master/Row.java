@@ -25,4 +25,9 @@ public class Row extends Region {
         }
     }
 
+    @Override
+    protected MsgKey getMsgKeyForValueExistType() {
+        return MsgKey.VALUE_IN_SAME_ROW;
+    }
+
 }
