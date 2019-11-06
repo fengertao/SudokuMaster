@@ -70,7 +70,8 @@ public class Cell {
                 builder.append(k + 1);
             }
         }
-        return builder.toString();
+        String candidates =  builder.toString();
+        return candidates.equals("123456789") ? "" : candidates;
     }
 
     public String locationString() {
@@ -120,8 +121,8 @@ public class Cell {
         if (value != null)
             return;
         grid.isChangedInCycle = true;
-        grid.resolution.logStep(this, preChangeCandidates, refCells, grid.getPosition(), methodName, MsgKey.GET_VALUE, "" + digit);
         value = digit;
+        grid.resolution.logStep(this, preChangeCandidates, refCells, grid.getPosition(), methodName, MsgKey.GET_VALUE, "" + digit);
         for (int k2 = 0; k2 < 9; k2++) {
             if (k2 != digit - 1) {
                 candidates[k2] = false;

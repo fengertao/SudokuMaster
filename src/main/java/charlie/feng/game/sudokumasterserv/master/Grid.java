@@ -139,7 +139,7 @@ public class Grid {
     public JSONObject getJsonResult() throws JSONException {
         JSONObject result = new JSONObject();
         result.put("resolved", isResolved());
-        result.put("answer", isResolved() ? getAnswer() : getIncompleteAnswer());
+        result.put("answer", isResolved() ? getAnswer() : getPosition());
         JSONArray array = new JSONArray();
         result.put("resolution", resolution.getJson("ZH"));
         return result;
