@@ -53,7 +53,6 @@ public class SudokuMaster {
         } else {
             grid.resolution.logStep(null, null, grid.getPosition(), "", MsgKey.ABORT_RESOLVE);
             logger.info("Incompleted Grid: " + grid.id);
-            logger.info("Imcompl Solution: " + grid.getIncompleteAnswer());
             logger.info("Resolved Cells:   " + grid.getNumberOfResolvedCells());
             logger.info("Executed " + cycle + " Cycles in " + (endTime.getTime() - startTime.getTime()) + "ms");
         }

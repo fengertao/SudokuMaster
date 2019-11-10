@@ -34,11 +34,9 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private static final String PRE_AUTHORIZE_USER_CAN_QUERY_SELF_ADMIN_CAN_QUERY_ALL = "(hasRole('USER') && #username == authentication.name) || hasRole('ADMIN')";
     private static final String POST_AUTHORIZE_ADMIN_CANNOT_SEE_ROOT = "hasRole('ROOT') ||  ((hasRole('ADMIN') && (returnObject.body== null || !(returnObject.body.roles.contains(T(charlie.feng.web.aa.dom.Role).ROLE_ROOT))))) || returnObject.body.username.equals(authentication.name)";
-
+    private final UserRepository userRepository;
     @Value("${charlie.feng.aa.autoEnable}")
     private boolean autoEnable;
-
-    private final UserRepository userRepository;
 
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;

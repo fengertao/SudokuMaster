@@ -6,6 +6,7 @@ package charlie.feng.game.sudokumasterserv.master;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,26 @@ public class Cell {
             this.value = null;
             for (int k = 0; k < 9; k++) {
                 candidates[k] = true;
+            }
+        } else {
+            this.value = Integer.valueOf(value);
+            for (int k = 0; k < 9; k++) {
+                candidates[k] = k + 1 == this.value;
+            }
+        }
+    }
+
+    public Cell(Grid grid, int r, int c, int b, String value, String positionValue) {
+        this.grid = grid;
+        this.rowId = r;
+        this.columnId = c;
+        this.blockId = b;
+        candidates = new boolean[9];
+        if ((value == null) || (value.equals("0"))) {
+            this.value = null;
+            String positionFullValue = StringUtils.isEmpty(positionValue) ? "123456789" : positionValue;
+            for (int k = 0; k < 9; k++) {
+                candidates[k] = positionFullValue.contains(String.valueOf(k + 1));
             }
         } else {
             this.value = Integer.valueOf(value);
@@ -70,7 +91,7 @@ public class Cell {
                 builder.append(k + 1);
             }
         }
-        String candidates =  builder.toString();
+        String candidates = builder.toString();
         return candidates.equals("123456789") ? "" : candidates;
     }
 
@@ -108,8 +129,9 @@ public class Cell {
         }
 
         if (candidatesInCell != 1) {
-            grid.dump();
-            throw new RuntimeException("Wrong resolvedByNakedSingle, row:" + rowId + " column:" + columnId);
+            logger.error("Grid id:" + grid.id);
+            logger.error("Grid Position:" + grid.getPosition());
+            throw new RuntimeException(String.format("Wrong resolvedByNakedSingle, %s:", locationString()));
         } else {
             gainValue(digit, "MethodSoleNumber", refCells);
         }
@@ -165,10 +187,6 @@ public class Cell {
     }
 
     public void noticeNeighboorsAboutValueGained() {
-        if (value == null) {
-            grid.dump();
-            throw new RuntimeException("Wrong noticeNeighboorsAboutValueGained, row:" + rowId + " column:" + columnId);
-        }
         if (!noticedNeighbor) {
             noticedNeighbor = true;
             grid.rows[rowId].onCellResolved(this);

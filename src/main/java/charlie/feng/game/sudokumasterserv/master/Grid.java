@@ -24,6 +24,72 @@ public class Grid {
         load(id);
     }
 
+    public Grid(String id, String position) {
+        this.id = id;
+        load(id, position);
+    }
+
+    private void load(String id) {
+        if ((id == null) || id.length() != 81) {
+            throw new IllegalArgumentException("Wrong grid id:" + id);
+        }
+
+        cells = new Cell[9][9];
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                String valueStr = id.substring(r * 9 + c, r * 9 + c + 1);
+                cells[r][c] = new Cell(this, r, c, r / 3 * 3 + c / 3, valueStr);
+            }
+        }
+
+        initialRegion();
+    }
+
+    private void load(String id, String position) {
+        if ((id == null) || id.length() != 81) {
+            throw new IllegalArgumentException("Wrong grid id: " + id);
+        }
+
+        String[] cellPositionValues = position.split("[|]", 81);
+        if (cellPositionValues.length != 81) {
+            throw new IllegalArgumentException("Wrong position: " + position);
+        }
+
+        cells = new Cell[9][9];
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                if (cellPositionValues[r * 9 + c].length() == 0) {
+                    cells[r][c] = new Cell(this, r, c, r / 3 * 3 + c / 3, "0");
+                } else if (cellPositionValues[r * 9 + c].length() == 1) {
+                    cells[r][c] = new Cell(this, r, c, r / 3 * 3 + c / 3, cellPositionValues[r * 9 + c]);
+                } else if (cellPositionValues[r * 9 + c].length() <= 8) {
+                    cells[r][c] = new Cell(this, r, c, r / 3 * 3 + c / 3, "0", cellPositionValues[r * 9 + c]);
+                } else {
+                    throw new IllegalArgumentException(String.format("position %s have more than 8 candidates in cell (%d,%d): %s", position, r + 1, c + 1, cellPositionValues[r * 9 + c]));
+                }
+            }
+        }
+
+        initialRegion();
+    }
+
+    private void initialRegion() {
+        rows = new Row[9];
+        for (int r = 0; r < 9; r++) {
+            rows[r] = new Row(this, r);
+        }
+
+        columns = new Column[9];
+        for (int c = 0; c < 9; c++) {
+            columns[c] = new Column(this, c);
+        }
+
+        blocks = new Block[9];
+        for (int i = 0; i < 9; i++) {
+            blocks[i] = new Block(this, i);
+        }
+    }
+
     public Resolution getResolution() {
         return resolution;
     }
@@ -44,50 +110,11 @@ public class Grid {
         return (getNumberOfResolvedCells() == 81);
     }
 
-    private void load(String id) {
-        if ((id == null) || id.length() != 81) {
-            throw new IllegalArgumentException("Wrong grid id:" + id);
-        }
-
-        cells = new Cell[9][9];
-        for (int r = 0; r < 9; r++) {
-            for (int c = 0; c < 9; c++) {
-                String valueStr = id.substring(r * 9 + c, r * 9 + c + 1);
-                cells[r][c] = new Cell(this, r, c, r / 3 * 3 + c / 3, valueStr);
-            }
-        }
-
-        rows = new Row[9];
-        for (int r = 0; r < 9; r++) {
-            rows[r] = new Row(this, r);
-        }
-
-        columns = new Column[9];
-        for (int c = 0; c < 9; c++) {
-            columns[c] = new Column(this, c);
-        }
-
-        blocks = new Block[9];
-        for (int i = 0; i < 9; i++) {
-            blocks[i] = new Block(this, i);
-        }
-    }
-
     public void validate() {
         for (int i = 0; i < 9; i++) {
             rows[i].validate();
             columns[i].validate();
             blocks[i].validate();
-        }
-    }
-
-    public void dump() {
-        for (int r = 0; r < 9; r++) {
-            for (int c = 0; c < 9; c++) {
-                Integer value = cells[r][c].getValue();
-                System.out.print((value == null ? " " : value.toString()));
-            }
-            System.out.println();
         }
     }
 
@@ -97,22 +124,6 @@ public class Grid {
             for (int c = 0; c < 9; c++) {
                 Integer value = cells[r][c].getValue();
                 builder.append(value);
-            }
-        }
-        return builder.toString();
-    }
-
-    public String getIncompleteAnswer() {
-        StringBuilder builder = new StringBuilder();
-        for (int r = 0; r < 9; r++) {
-            for (int c = 0; c < 9; c++) {
-                Integer value = cells[r][c].getValue();
-                if (value != null) {
-                    builder.append(value);
-                } else {
-                    builder.append((char) (cells[r][c].getNumberOfCandidates() + 0x60));
-                }
-
             }
         }
         return builder.toString();
@@ -136,11 +147,46 @@ public class Grid {
         return builder.toString();
     }
 
+    public static JSONArray validateGridId(String id) {
+        //Todo validate there is no duplicated digital in row, column, block
+        JSONArray errorList = new JSONArray();
+        if ((id.length() != 81) || !(id.matches("[0-9]{81}"))) {
+            errorList.put("数独盘面由81位数字组成。空格请输入0。");
+        }
+        return errorList;
+    }
+
+    public JSONArray validatePosition(String position, boolean skipValidateNonResolvedGrid) {
+        JSONArray errorList = new JSONArray();
+        if (!isResolved() && skipValidateNonResolvedGrid) {
+            return errorList;
+        }
+        String[] positionCells = position.split("[|]", 81);
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                String positionValue = positionCells[r * 9 + c].length() == 0 ? "123456789" : positionCells[r * 9 + c];
+                if (cells[r][c].getValue() != null) {
+                    String correctValue = String.valueOf(cells[r][c].getValue());
+                    if (!positionValue.contains(correctValue)) {
+                        errorList.put(String.format("单元格 (%d,%d) 内输入为 %s, 但其正确解应该为 %s。", r + 1, c + 1, positionValue, correctValue));
+                    }
+                } else {
+                    for (Integer candidate : cells[r][c].getCandidateList() ) {
+                        if (!positionValue.contains(String.valueOf(candidate))) {
+                            errorList.put(String.format("单元格 (%d,%d) 内输入为 %s, 但其正确范围应该为 %s。", r + 1, c + 1, positionValue, cells[r][c].getCandidateString()));
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return errorList;
+    }
+
     public JSONObject getJsonResult() throws JSONException {
         JSONObject result = new JSONObject();
         result.put("resolved", isResolved());
         result.put("answer", isResolved() ? getAnswer() : getPosition());
-        JSONArray array = new JSONArray();
         result.put("resolution", resolution.getJson("ZH"));
         return result;
     }
