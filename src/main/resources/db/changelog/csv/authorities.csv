@@ -2,7 +2,7 @@
 charlie,ROLE_ROOT
 angela,ROLE_ADMIN
 warren,ROLE_USER
-demo,ROLE_USER
+guest,ROLE_ANONYMOUS
 mockuser01,ROLE_APPLICANT
 mockuser02,ROLE_APPLICANT
 mockuser03,ROLE_APPLICANT
