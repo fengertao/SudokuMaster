@@ -5,6 +5,8 @@
 package charlie.feng.game.sudokumasterserv.rest;
 
 import charlie.feng.game.sudokumasterserv.dom.GridRepository;
+import charlie.feng.game.sudokumasterserv.dom.Position;
+import charlie.feng.game.sudokumasterserv.dom.PositionRepository;
 import charlie.feng.game.sudokumasterserv.master.Grid;
 import charlie.feng.game.sudokumasterserv.master.SudokuMaster;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,11 +34,13 @@ public class GridController {
 
     private final SudokuMaster sudokuMaster;
     private final GridRepository gridRepo;
+    private final PositionRepository positionRepo;
     private final ObjectMapper mapper;
 
-    public GridController(SudokuMaster sudokuMaster, GridRepository gridRepo, ObjectMapper mapper) {
+    public GridController(SudokuMaster sudokuMaster, GridRepository gridRepo, PositionRepository positionRepo, ObjectMapper mapper) {
         this.sudokuMaster = sudokuMaster;
         this.gridRepo = gridRepo;
+        this.positionRepo = positionRepo;
         this.mapper = mapper;
     }
 
@@ -63,13 +67,16 @@ public class GridController {
             return new ResponseEntity<>(result.toString(2), HttpStatus.BAD_REQUEST);
         }
 
-        Grid grid = new Grid(id);
         Optional<charlie.feng.game.sudokumasterserv.dom.Grid> optionalGrid = gridRepo.findById(id);
-        System.out.println("optionalGrid isPresent: " + optionalGrid.isPresent());
+        if (optionalGrid.isPresent()) {
+            return new ResponseEntity<>("Grid Existing.", HttpStatus.OK);
+        }
+
+        Grid grid = new Grid(id);
         sudokuMaster.play(grid);
         charlie.feng.game.sudokumasterserv.dom.Grid domGrid = new charlie.feng.game.sudokumasterserv.dom.Grid(id, null, grid.isResolved(), grid.isResolved() ? grid.getAnswer() : null, -1, request.getUserPrincipal().getName(), new java.sql.Timestamp(System.currentTimeMillis()), "");
         gridRepo.save(domGrid);
-        return new ResponseEntity<>("Grid Saved", HttpStatus.OK);
+        return new ResponseEntity<>("Grid Saved.", HttpStatus.OK);
     }
 
     @ResponseBody
@@ -92,25 +99,65 @@ public class GridController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/position/{gridId}/{position}/resolve",
+    @GetMapping(value = "/positions",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> resolvePosition(@PathVariable String gridId, @PathVariable String position) throws Exception {
-        ResponseEntity<String> validateResponse = validatePosition(gridId, position, false);
+    public ResponseEntity<String> findAllPositions(HttpServletRequest request) throws Exception {
+        List<Position> positionList = positionRepo.findAll();
+        Map<String, List<Position>> resultMap = new HashMap<>();
+        resultMap.put("positions", positionList);
+        String jsonResult = mapper.writeValueAsString(resultMap);
+        return new ResponseEntity<>(jsonResult, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @PutMapping(value = "/position/{gridId}/{positionCode}",
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<String> savePosition(@PathVariable String gridId, @PathVariable String positionCode, HttpServletRequest request) throws Exception {
+        ResponseEntity<String> validateResponse = validatePosition(gridId, positionCode, true);
+        if (validateResponse != null) return validateResponse;
+
+        Optional<charlie.feng.game.sudokumasterserv.dom.Grid> optionalGrid = gridRepo.findById(gridId);
+        charlie.feng.game.sudokumasterserv.dom.Grid domGrid;
+        Position position;
+        if (optionalGrid.isPresent()) {
+            domGrid = optionalGrid.get();
+
+            Optional<Position> optionalPosition = positionRepo.findByGridAndCode(domGrid, positionCode);
+            if (optionalPosition.isPresent()) {
+                return new ResponseEntity<>("Position existing.", HttpStatus.OK);
+            }
+        } else {
+            Grid grid = new Grid(gridId);
+            sudokuMaster.play(grid);
+            domGrid = new charlie.feng.game.sudokumasterserv.dom.Grid(gridId, null, grid.isResolved(), grid.isResolved() ? grid.getAnswer() : null, -1, request.getUserPrincipal().getName(), new java.sql.Timestamp(System.currentTimeMillis()), "");
+        }
+
+        position = new Position(domGrid, positionCode, request.getUserPrincipal().getName(), new java.sql.Timestamp(System.currentTimeMillis()), "");
+        positionRepo.save(position);
+        return new ResponseEntity<>("Position Saved", HttpStatus.OK);
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/position/{gridId}/{positionCode}/resolve",
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<String> resolvePosition(@PathVariable String gridId, @PathVariable String positionCode) throws Exception {
+        ResponseEntity<String> validateResponse = validatePosition(gridId, positionCode, false);
         if (validateResponse != null) return validateResponse;
 
         //Todo validate position is derived from grid
 
-        Grid grid = new Grid(gridId, position);
+        Grid grid = new Grid(gridId, positionCode);
         sudokuMaster.play(grid);
         return new ResponseEntity<>(grid.getJsonResult().put("isValid", true).toString(2), HttpStatus.OK);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/position/{gridId}/{position}/validate",
+    @RequestMapping(value = "/position/{gridId}/{positionCode}/validate",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> validatePosition(@PathVariable String gridId, @PathVariable String position) throws Exception {
+    public ResponseEntity<String> validatePosition(@PathVariable String gridId, @PathVariable String positionCode) throws Exception {
 
-        ResponseEntity<String> validateResponse = validatePosition(gridId, position, true);
+        ResponseEntity<String> validateResponse = validatePosition(gridId, positionCode, true);
         if (validateResponse != null) return validateResponse;
 
         JSONObject result = new JSONObject();
@@ -120,22 +167,22 @@ public class GridController {
 
     }
 
-    private ResponseEntity<String> validatePosition(String gridId, String position, boolean skipValidateNonResolvedGrid) throws JSONException {
+    private ResponseEntity<String> validatePosition(String gridId, String positionCode, boolean skipValidateNonResolvedGrid) throws JSONException {
         JSONArray errorList = Grid.validateGridId(gridId);
         if (errorList.length() > 0) {
             JSONObject result = new JSONObject();
             result.put("isValid", false);
             result.put("msg", errorList);
-            return new ResponseEntity<String>(result.toString(2), HttpStatus.OK);
+            return new ResponseEntity<>(result.toString(2), HttpStatus.OK);
         }
         Grid grid = new Grid(gridId);
         sudokuMaster.play(grid);
-        errorList = grid.validatePosition(position, skipValidateNonResolvedGrid);
+        errorList = grid.validatePosition(positionCode, skipValidateNonResolvedGrid);
         if (errorList.length() > 0) {
             JSONObject result = new JSONObject();
             result.put("isValid", false);
             result.put("msg", errorList);
-            return new ResponseEntity<String>(result.toString(2), HttpStatus.OK);
+            return new ResponseEntity<>(result.toString(2), HttpStatus.OK);
         }
         return null;
     }
