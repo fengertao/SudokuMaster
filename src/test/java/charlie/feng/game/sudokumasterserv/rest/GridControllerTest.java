@@ -108,8 +108,8 @@ public class GridControllerTest {
 
     @Test
     void testResolvePosition() throws Exception {
-        String baseUrl = "/grid/000000018948007050000008020053702000009000000000901430090600000030500876060000000/resolve/";
-        mvc.perform(MockMvcRequestBuilders.get(baseUrl + "|1234|3579|||6|7|1|8|9|4|8|1|2|7|6|5|3|1|7|6|3|5|8|9|2|4|6|5|3|7|4|2|1|8|9|4|1|9|8|3|5|2|6|7|7|8|2|9|6|1|4|3|5|8|9|1|6|7|3|5|4|2|2|3|4|5|1|9|8|7|6|5|6|7|2|8|4|3|9|1"))
+        String baseUrl = "/position/000000018948007050000008020053702000009000000000901430090600000030500876060000000/";
+        mvc.perform(MockMvcRequestBuilders.get(baseUrl + "|1234|3579|||6|7|1|8|9|4|8|1|2|7|6|5|3|1|7|6|3|5|8|9|2|4|6|5|3|7|4|2|1|8|9|4|1|9|8|3|5|2|6|7|7|8|2|9|6|1|4|3|5|8|9|1|6|7|3|5|4|2|2|3|4|5|1|9|8|7|6|5|6|7|2|8|4|3|9|1" + "/resolve"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.length()").value(4))
@@ -150,7 +150,7 @@ public class GridControllerTest {
                 .andExpect(jsonPath("resolution[-1].message").value("成功解决数独"))
                 .andExpect(jsonPath("resolution[-1].position").value("3|2|5|4|9|6|7|1|8|9|4|8|1|2|7|6|5|3|1|7|6|3|5|8|9|2|4|6|5|3|7|4|2|1|8|9|4|1|9|8|3|5|2|6|7|7|8|2|9|6|1|4|3|5|8|9|1|6|7|3|5|4|2|2|3|4|5|1|9|8|7|6|5|6|7|2|8|4|3|9|1"));
 
-        mvc.perform(MockMvcRequestBuilders.get(baseUrl + "|1234|3579|||12345|7|1|8|9|4|8|1|2|7|6|5|3|1|7|6|3|5|8|9|2|4|6|5|3|7|4|2|1|8|9|4|1|9|8|3|5|2|6|7|7|8|2|9|6|1|4|3|5|8|9|1|6|7|3|5|4|2|2|3|4|5|1|9|8|7|6|5|6|7|2|8|4|3|9|1"))
+        mvc.perform(MockMvcRequestBuilders.get(baseUrl + "|1234|3579|||12345|7|1|8|9|4|8|1|2|7|6|5|3|1|7|6|3|5|8|9|2|4|6|5|3|7|4|2|1|8|9|4|1|9|8|3|5|2|6|7|7|8|2|9|6|1|4|3|5|8|9|1|6|7|3|5|4|2|2|3|4|5|1|9|8|7|6|5|6|7|2|8|4|3|9|1"+ "/resolve"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.length()").value(2))
@@ -160,16 +160,16 @@ public class GridControllerTest {
     }
 
     @Test
-    void testValidate() throws Exception {
-        String baseUrl = "/grid/000000018948007050000008020053702000009000000000901430090600000030500876060000000/validate/";
-        mvc.perform(MockMvcRequestBuilders.get(baseUrl + "|1234|3579|||6|7|1|8|9|4|8|1|2|7|6|5|3|1|7|6|3|5|8|9|2|4|6|5|3|7|4|2|1|8|9|4|1|9|8|3|5|2|6|7|7|8|2|9|6|1|4|3|5|8|9|1|6|7|3|5|4|2|2|3|4|5|1|9|8|7|6|5|6|7|2|8|4|3|9|1"))
+    void testValidatePosition() throws Exception {
+        String baseUrl = "/position/000000018948007050000008020053702000009000000000901430090600000030500876060000000/";
+        mvc.perform(MockMvcRequestBuilders.get(baseUrl + "|1234|3579|||6|7|1|8|9|4|8|1|2|7|6|5|3|1|7|6|3|5|8|9|2|4|6|5|3|7|4|2|1|8|9|4|1|9|8|3|5|2|6|7|7|8|2|9|6|1|4|3|5|8|9|1|6|7|3|5|4|2|2|3|4|5|1|9|8|7|6|5|6|7|2|8|4|3|9|1" + "/validate"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("isValid").value(true))
                 .andExpect(jsonPath("msg").isEmpty());
 
-        mvc.perform(MockMvcRequestBuilders.get(baseUrl + "|1234|3579|||12345|7|1|8|9|4|8|1|2|7|6|5|3|1|7|6|3|5|8|9|2|4|6|5|3|7|4|2|1|8|9|4|1|9|8|3|5|2|6|7|7|8|2|9|6|1|4|3|5|8|9|1|6|7|3|5|4|2|2|3|4|5|1|9|8|7|6|5|6|7|2|8|4|3|9|1"))
+        mvc.perform(MockMvcRequestBuilders.get(baseUrl + "|1234|3579|||12345|7|1|8|9|4|8|1|2|7|6|5|3|1|7|6|3|5|8|9|2|4|6|5|3|7|4|2|1|8|9|4|1|9|8|3|5|2|6|7|7|8|2|9|6|1|4|3|5|8|9|1|6|7|3|5|4|2|2|3|4|5|1|9|8|7|6|5|6|7|2|8|4|3|9|1" + "/validate"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.length()").value(2))

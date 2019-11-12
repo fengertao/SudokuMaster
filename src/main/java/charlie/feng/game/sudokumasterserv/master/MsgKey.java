@@ -36,9 +36,9 @@ public enum MsgKey {
 
     public String getMsg(String lang, String... msgParams) {
         if (lang.startsWith("ZH")) {
-            return String.format(getCnKey(), msgParams);
+            return String.format(getCnKey(), (Object[]) msgParams);
         } else {
-            return String.format(getEnKey(), msgParams);
+            return String.format(getEnKey(), (Object[]) msgParams);
         }
     }
 }
