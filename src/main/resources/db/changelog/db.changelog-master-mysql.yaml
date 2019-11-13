@@ -1,8 +1,7 @@
 databaseChangeLog:
   - preConditions:
-      - runningAs:
-          dbms: mysql
-          username: dev
+      - dbms:
+          type: mysql
 
   - include:
       file: db/changelog/db.changelog-till2.0.0.yaml
