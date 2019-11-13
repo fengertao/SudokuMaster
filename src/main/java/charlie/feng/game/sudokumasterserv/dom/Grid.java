@@ -23,10 +23,10 @@ public class Grid {
     @Size(min = 81, max = 81)
     String id;
 
-    public Grid(@Size(min = 81, max = 81) String id, List<Position> positionList, boolean isResolvedByAi, @Size(min = 81, max = 81) String answer, int difficulty, String createdBy, Timestamp createdAt, String comment) {
+    public Grid(@Size(min = 81, max = 81) String id, List<Position> positionList, boolean resolvedByAi, @Size(min = 81, max = 81) String answer, int difficulty, String createdBy, Timestamp createdAt, String comment) {
         this.id = id;
         this.positionList = positionList;
-        this.isResolvedByAi = isResolvedByAi;
+        this.resolvedByAi = resolvedByAi;
         this.answer = answer;
         this.difficulty = difficulty;
         this.createdBy = createdBy;
@@ -35,7 +35,7 @@ public class Grid {
     }
 
     @Column(nullable = false)
-    boolean isResolvedByAi;
+    boolean resolvedByAi;
 
     @Column(length = 81)
     @Size(min = 81, max = 81)
@@ -68,11 +68,11 @@ public class Grid {
     }
 
     public boolean isResolvedByAi() {
-        return isResolvedByAi;
+        return resolvedByAi;
     }
 
     public void setResolvedByAi(boolean resolvedByAi) {
-        isResolvedByAi = resolvedByAi;
+        this.resolvedByAi = resolvedByAi;
     }
 
     public String getAnswer() {
