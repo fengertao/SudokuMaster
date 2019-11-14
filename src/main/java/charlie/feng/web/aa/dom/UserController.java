@@ -54,7 +54,6 @@ public class UserController {
         return new ResponseEntity<>("User " + user.getUsername() + " added.", HttpStatus.OK);
     }
 
-    //Todo remove password
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = {"/enable", "/disable"},
             produces = MediaType.APPLICATION_JSON_VALUE)

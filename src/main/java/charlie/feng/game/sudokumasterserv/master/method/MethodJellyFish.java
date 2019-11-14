@@ -72,7 +72,6 @@ public class MethodJellyFish implements IMethod {
                         //JellyFish detected, start clear
                         Integer[] offsetArray = possibleOffsetSet4.toArray(new Integer[4]);
 
-                        //Todo Test row and col, and used in other method
                         List<Cell> refCells = new ArrayList<>();
                         for (Integer offset : possibleOffsetSet3) {
                             if (isRow) {

@@ -52,7 +52,6 @@ public class MethodXWing implements IMethod {
                     continue;
                 //X-Wing detected, start clear
                 Integer[] offsetArray = possibleOffsetSet1.toArray(new Integer[2]);
-                //Todo Test row and col, and used in other method
                 List<Cell> refCells = new ArrayList<>();
                 for (Integer offset : offsetArray) {
                     if (isRow) {

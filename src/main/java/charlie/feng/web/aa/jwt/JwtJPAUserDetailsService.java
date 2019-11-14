@@ -43,7 +43,6 @@ public class JwtJPAUserDetailsService implements UserDetailsService {
         }
 
         User user = userRepository.findByUsername(username);
-        //Todo check user is authorized
 
         if (user == null) {
             throw new UsernameNotFoundException(String.format("USER_NOT_FOUND '%s'.", username));

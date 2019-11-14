@@ -19,6 +19,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <jasypt.sprint.boot.version>2.1.2</jasypt.sprint.boot.version>
         <liquibase.version>3.6.3</liquibase.version>
         <!-- Do NOT upgrade to 3.8. Exception: Error setting up or running Liquibase: javax.persistence.PersistenceException: Unable to resolve persistence unit root URL -->
         <liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
@@ -60,6 +61,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>${jasypt.sprint.boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>

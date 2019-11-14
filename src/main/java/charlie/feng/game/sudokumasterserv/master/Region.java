@@ -62,7 +62,10 @@ public abstract class Region {
         }
     }
 
-    // remove k from this group candidate number list, it is must not in the excludeCells list;
+    /**
+     * remove k from this group candidate number list, it is must not in the excludeCells list;
+     */
+
     public void removeDigit(int k, Cell[] excludeCells, List<Cell> refCells) {
         for (int i = 0; i < 9; i++) {
             Cell currentCell = cells[i];
@@ -70,7 +73,6 @@ public abstract class Region {
                 continue;
             }
             if ((currentCell.getValue() == null) && (currentCell.isSupportCandidate(k))) {
-                //Todo Row/Col/Region
                 currentCell.removeDigitFromCandidate(k, this.getClass().getSimpleName(), refCells);
                 if (currentCell.getNumberOfCandidates() == 1) {
                     currentCell.resolvedByNakedSingle(refCells);
