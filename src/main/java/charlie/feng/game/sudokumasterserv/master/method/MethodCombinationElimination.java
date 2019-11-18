@@ -20,8 +20,8 @@ public class MethodCombinationElimination implements IMethod {
 
     public void apply(Grid grid) {
         for (int i = 0; i < 3; i++) {
-            checkSmallShape(grid.blocks[i * 3], grid.blocks[i * 3 + 1], grid.blocks[i * 3 + 2], true);
-            checkSmallShape(grid.blocks[i], grid.blocks[i + 3], grid.blocks[i + 6], false);
+            checkSmallShape(grid.getBlocks()[i * 3], grid.getBlocks()[i * 3 + 1], grid.getBlocks()[i * 3 + 2], true);
+            checkSmallShape(grid.getBlocks()[i], grid.getBlocks()[i + 3], grid.getBlocks()[i + 6], false);
         }
     }
 
@@ -48,7 +48,7 @@ public class MethodCombinationElimination implements IMethod {
                 @SuppressWarnings("PointlessArithmeticExpression")
                 int excludeSubRegion = 0 + 1 + 2 - subRegionArray[0] - subRegionArray[1];
                 //Todo refCells
-                target.removeDigit(digit, (isRow ? target.subRows[excludeSubRegion] : target.subColumns[excludeSubRegion]).cells, new ArrayList<>());
+                target.removeDigit(digit, (isRow ? target.getSubRows()[excludeSubRegion] : target.getSubColumns()[excludeSubRegion]).getCells(), new ArrayList<>());
                 //must return here because change always done, some key cell maybe changed.
                 //                return;
             }

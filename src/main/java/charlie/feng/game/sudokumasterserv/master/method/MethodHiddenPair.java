@@ -25,28 +25,32 @@ public class MethodHiddenPair implements IMethod {
 
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
-            checkHiddenPair(grid.rows[i]);
-            checkHiddenPair(grid.columns[i]);
-            checkHiddenPair(grid.blocks[i]);
+            checkHiddenPair(grid.getRows()[i]);
+            checkHiddenPair(grid.getColumns()[i]);
+            checkHiddenPair(grid.getBlocks()[i]);
         }
     }
 
     private void checkHiddenPair(Region region) {
-        Cell[] cells = region.cells;
+        Cell[] cells = region.getCells();
         Set<Integer> k1PossibleOffsetSet;
         Set<Integer> k2PossibleOffsetSet;
         for (int k1 = 2; k1 <= 9; k1++) {
-            if (region.isDigitGained(k1))
+            if (region.isDigitGained(k1)) {
                 continue;
+            }
             k1PossibleOffsetSet = region.getPossibleOffset(k1);
-            if (k1PossibleOffsetSet.size() != 2)
+            if (k1PossibleOffsetSet.size() != 2) {
                 continue;
+            }
             for (int k2 = 1; k2 < k1; k2++) {
-                if (region.isDigitGained(k2))
+                if (region.isDigitGained(k2)) {
                     continue;
+                }
                 k2PossibleOffsetSet = region.getPossibleOffset(k2);
-                if (k2PossibleOffsetSet.size() != 2)
+                if (k2PossibleOffsetSet.size() != 2) {
                     continue;
+                }
 
                 // Hidden Pair Detected
                 if (k1PossibleOffsetSet.equals(k2PossibleOffsetSet)) {

@@ -6,11 +6,11 @@ package charlie.feng.web.aa.jwt;
 
 import java.io.Serializable;
 
-class JwtTokenResponse implements Serializable {
+public class JwtTokenResponse implements Serializable {
 
     private static final long serialVersionUID = 8317676219297719109L;
 
-    protected final String token;
+    private final String token;
 
     JwtTokenResponse(String token) {
         this.token = token;

@@ -21,38 +21,44 @@ public class MethodHiddenTriplet implements IMethod {
 
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
-            checkHiddenTriplet(grid.rows[i]);
-            checkHiddenTriplet(grid.columns[i]);
-            checkHiddenTriplet(grid.blocks[i]);
+            checkHiddenTriplet(grid.getRows()[i]);
+            checkHiddenTriplet(grid.getColumns()[i]);
+            checkHiddenTriplet(grid.getBlocks()[i]);
         }
     }
 
     private void checkHiddenTriplet(Region region) {
-        Cell[] cells = region.cells;
+        Cell[] cells = region.getCells();
         Set<Integer> k1PossibleOffsetSet;
         Set<Integer> k2PossibleOffsetSet;
         Set<Integer> k3PossibleOffsetSet;
         Set<Integer> mergedOffsetSet = new HashSet<>();
 
         for (int k1 = 3; k1 <= 9; k1++) {
-            if (region.isDigitGained(k1))
+            if (region.isDigitGained(k1)) {
                 continue;
+            }
             k1PossibleOffsetSet = region.getPossibleOffset(k1);
-            if (k1PossibleOffsetSet.size() > 3)
+            if (k1PossibleOffsetSet.size() > 3) {
                 continue;
+            }
             for (int k2 = 2; k2 < k1; k2++) {
-                if (region.isDigitGained(k2))
+                if (region.isDigitGained(k2)) {
                     continue;
+                }
                 k2PossibleOffsetSet = region.getPossibleOffset(k2);
-                if (k2PossibleOffsetSet.size() > 3)
+                if (k2PossibleOffsetSet.size() > 3) {
                     continue;
+                }
 
                 for (int k3 = 1; k3 < k2; k3++) {
-                    if (region.isDigitGained(k3))
+                    if (region.isDigitGained(k3)) {
                         continue;
+                    }
                     k3PossibleOffsetSet = region.getPossibleOffset(k3);
-                    if (k3PossibleOffsetSet.size() > 3)
+                    if (k3PossibleOffsetSet.size() > 3) {
                         continue;
+                    }
 
                     mergedOffsetSet.clear();
                     mergedOffsetSet.addAll(k1PossibleOffsetSet);

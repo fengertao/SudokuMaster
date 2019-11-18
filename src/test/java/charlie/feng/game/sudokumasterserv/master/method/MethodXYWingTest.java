@@ -19,9 +19,9 @@ public class MethodXYWingTest {
 
         // X:1 Y:2 Z:3
         Grid grid = new Grid(Grid.EMPTY_GRID);
-        Cell cellA = grid.cells[1][1];
-        Cell cellB = grid.cells[1][4];
-        Cell cellC = grid.cells[4][1];
+        Cell cellA = grid.getCells()[1][1];
+        Cell cellB = grid.getCells()[1][4];
+        Cell cellC = grid.getCells()[4][1];
         cellA.removeDigitFromCandidate(3, "Mock", null);
         cellA.removeDigitFromCandidate(4, "Mock", null);
         cellA.removeDigitFromCandidate(5, "Mock", null);
@@ -48,7 +48,7 @@ public class MethodXYWingTest {
 
         new MethodXYWing().apply(grid);
 
-        Cell cellStar = grid.cells[4][4];
+        Cell cellStar = grid.getCells()[4][4];
 
         Assertions.assertFalse(cellStar.isSupportCandidate(3), "Star Cell candidates should removed digit 3");
         Assertions.assertTrue(cellStar.isSupportCandidate(1), "Star Cell candidates should keep 1");
@@ -66,9 +66,9 @@ public class MethodXYWingTest {
 
         // X:4 Y:5 Z:6
         Grid grid = new Grid(Grid.EMPTY_GRID);
-        Cell cellA = grid.cells[0][1];
-        Cell cellB = grid.cells[0][4];
-        Cell cellC = grid.cells[2][0];
+        Cell cellA = grid.getCells()[0][1];
+        Cell cellB = grid.getCells()[0][4];
+        Cell cellC = grid.getCells()[2][0];
         cellA.removeDigitFromCandidate(1, "Mock", null);
         cellA.removeDigitFromCandidate(2, "Mock", null);
         cellA.removeDigitFromCandidate(3, "Mock", null);
@@ -96,11 +96,11 @@ public class MethodXYWingTest {
         new MethodXYWing().apply(grid);
 
         List<Cell> cellStars = new ArrayList<>(5);
-        cellStars.add(grid.cells[0][0]);
-        cellStars.add(grid.cells[0][2]);
-        cellStars.add(grid.cells[2][3]);
-        cellStars.add(grid.cells[2][4]);
-        cellStars.add(grid.cells[2][5]);
+        cellStars.add(grid.getCells()[0][0]);
+        cellStars.add(grid.getCells()[0][2]);
+        cellStars.add(grid.getCells()[2][3]);
+        cellStars.add(grid.getCells()[2][4]);
+        cellStars.add(grid.getCells()[2][5]);
 
         for (Cell cellStar : cellStars) {
             Assertions.assertFalse(cellStar.isSupportCandidate(6), "Star Cell candidates should removed digit 6");
@@ -121,9 +121,9 @@ public class MethodXYWingTest {
 
         // X:7 Y:8 Z:9
         Grid grid = new Grid(Grid.EMPTY_GRID);
-        Cell cellA = grid.cells[2][2];
-        Cell cellB = grid.cells[3][2];
-        Cell cellC = grid.cells[1][0];
+        Cell cellA = grid.getCells()[2][2];
+        Cell cellB = grid.getCells()[3][2];
+        Cell cellC = grid.getCells()[1][0];
         cellA.removeDigitFromCandidate(1, "Mock", null);
         cellA.removeDigitFromCandidate(2, "Mock", null);
         cellA.removeDigitFromCandidate(3, "Mock", null);
@@ -151,11 +151,11 @@ public class MethodXYWingTest {
         new MethodXYWing().apply(grid);
 
         List<Cell> cellStars = new ArrayList<>(5);
-        cellStars.add(grid.cells[0][2]);
-        cellStars.add(grid.cells[1][2]);
-        cellStars.add(grid.cells[3][0]);
-        cellStars.add(grid.cells[4][0]);
-        cellStars.add(grid.cells[5][0]);
+        cellStars.add(grid.getCells()[0][2]);
+        cellStars.add(grid.getCells()[1][2]);
+        cellStars.add(grid.getCells()[3][0]);
+        cellStars.add(grid.getCells()[4][0]);
+        cellStars.add(grid.getCells()[5][0]);
 
         for (Cell cellStar : cellStars) {
             Assertions.assertFalse(cellStar.isSupportCandidate(9), "Star Cell candidates should removed digit 9");
@@ -168,7 +168,5 @@ public class MethodXYWingTest {
             Assertions.assertTrue(cellStar.isSupportCandidate(7), "Star Cell candidates should keep 7");
             Assertions.assertTrue(cellStar.isSupportCandidate(8), "Star Cell candidates should keep 8");
         }
-
     }
-
 }

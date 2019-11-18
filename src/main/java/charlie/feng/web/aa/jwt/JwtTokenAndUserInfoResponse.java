@@ -38,8 +38,4 @@ class JwtTokenAndUserInfoResponse extends JwtTokenResponse implements Serializab
     public List<String> getRoles() {
         return roles;
     }
-
-    public String getToken() {
-        return this.token;
-    }
 }

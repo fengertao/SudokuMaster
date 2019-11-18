@@ -18,40 +18,44 @@ public class MethodNakedPair implements IMethod {
 
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
-            checkNakedPair(grid.rows[i]);
-            checkNakedPair(grid.columns[i]);
-            checkNakedPair(grid.blocks[i]);
+            checkNakedPair(grid.getRows()[i]);
+            checkNakedPair(grid.getColumns()[i]);
+            checkNakedPair(grid.getBlocks()[i]);
         }
     }
 
     private void checkNakedPair(Region region) {
-        Cell[] cells = region.cells;
+        Cell[] cells = region.getCells();
         for (int i1 = 1; i1 < 9; i1++) {
-            if (cells[i1].getValue() != null)
+            if (cells[i1].getValue() != null) {
                 continue;
-            if (cells[i1].getNumberOfCandidates() != 2)
+            }
+            if (cells[i1].getNumberOfCandidates() != 2) {
                 continue;
+            }
             for (int i2 = 0; i2 < i1; i2++) {
-                if (cells[i2].getValue() != null)
+                if (cells[i2].getValue() != null) {
                     continue;
-                if (cells[i2].getNumberOfCandidates() != 2)
+                }
+                if (cells[i2].getNumberOfCandidates() != 2) {
                     continue;
+                }
                 boolean match = true;
                 for (int k = 1; k <= 9; k++) {
-                    if (region.cells[i1].isSupportCandidate(k) != region.cells[i2].isSupportCandidate(k)) {
+                    if (region.getCells()[i1].isSupportCandidate(k) != region.getCells()[i2].isSupportCandidate(k)) {
                         match = false;
                         break;
                     }
                 }
                 if (match) {
                     for (int k = 1; k <= 9; k++) {
-                        if (region.cells[i1].isSupportCandidate(k)) {
+                        if (region.getCells()[i1].isSupportCandidate(k)) {
                             for (int otherCell = 0; otherCell < 9; otherCell++) {
                                 if ((otherCell != i1) && (otherCell != i2)) {
-                                    if ((region.cells[otherCell].getValue() == null) && (region.cells[otherCell].isSupportCandidate(k))) {
-                                        region.cells[otherCell].removeDigitFromCandidate(k, this.getClass().getSimpleName(), Lists.newArrayList(cells[i1], cells[i2]));
-                                        if (region.cells[otherCell].getNumberOfCandidates() == 1) {
-                                            region.cells[otherCell].resolvedByNakedSingle(Lists.newArrayList(cells[i1], cells[i2]));
+                                    if ((region.getCells()[otherCell].getValue() == null) && (region.getCells()[otherCell].isSupportCandidate(k))) {
+                                        region.getCells()[otherCell].removeDigitFromCandidate(k, this.getClass().getSimpleName(), Lists.newArrayList(cells[i1], cells[i2]));
+                                        if (region.getCells()[otherCell].getNumberOfCandidates() == 1) {
+                                            region.getCells()[otherCell].resolvedByNakedSingle(Lists.newArrayList(cells[i1], cells[i2]));
                                             //must return here because change always done, some key cell maybe changed.
                                             //                                            return;
                                         }

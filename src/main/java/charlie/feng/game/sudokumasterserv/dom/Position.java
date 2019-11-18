@@ -6,7 +6,14 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.io.IOException;
 import java.sql.Timestamp;
 
@@ -16,19 +23,21 @@ public class Position {
     //Todo cascadeType?
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JsonSerialize(using = GridSerializer.class)
-    Grid grid;
+    private Grid grid;
     @Column(length = 720)
-    String code;
+    private String code;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
+    private int id;
     @Column(length = 60)
-    String createdBy;
+    private String createdBy;
     @Column
     @JsonFormat
             (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
-    Timestamp createdAt;
+    private Timestamp createdAt;
+    @Column
+    private String comment;
 
     public Position() {
     }
@@ -41,12 +50,13 @@ public class Position {
         this.comment = comment;
     }
 
-    @Column
-    String comment;
-
     public int getId() {
 
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Grid getGrid() {
@@ -74,7 +84,7 @@ public class Position {
     }
 
     public Timestamp getCreatedAt() {
-        return createdAt;
+        return new Timestamp(createdAt.getTime());
     }
 
     public void setCreatedAt(Timestamp createdAt) {
@@ -92,11 +102,11 @@ public class Position {
 
 class GridSerializer extends StdSerializer<Grid> {
 
-    public GridSerializer() {
+    GridSerializer() {
         this(null);
     }
 
-    public GridSerializer(Class<Grid> grid) {
+    GridSerializer(Class<Grid> grid) {
         super(grid);
     }
 
@@ -104,7 +114,7 @@ class GridSerializer extends StdSerializer<Grid> {
     public void serialize(
             Grid grid, JsonGenerator gen, SerializerProvider provider)
             throws IOException {
-        gen.writeString(grid.id);
+        gen.writeString(grid.getId());
     }
 
 }

@@ -10,7 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Reference Documents:
@@ -33,12 +37,12 @@ public class SudokuMaster {
         Date startTime = new Date();
         initialMethod();
         int cycle = 0;
-        grid.isChangedInCycle = true;
-        grid.resolution.logStep(null, null, grid.getPosition(), "", MsgKey.START_RESOLVE);
+        grid.setChangedInCycle(true);
+        grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.START_RESOLVE);
 
-        while ((!grid.isResolved()) && (grid.isChangedInCycle)) {
+        while ((!grid.isResolved()) && (grid.isChangedInCycle())) {
             cycle++;
-            grid.isChangedInCycle = false;
+            grid.setChangedInCycle(false);
             for (IMethod method : methods) {
                 method.apply(grid);
             }
@@ -47,12 +51,12 @@ public class SudokuMaster {
         Date endTime = new Date();
 
         if (grid.isResolved()) {
-            grid.resolution.logStep(null, null, grid.getPosition(), "", MsgKey.SUCCESS_RESOLVE);
-            logger.info("Successfully Resolved Grid " + grid.id);
+            grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.SUCCESS_RESOLVE);
+            logger.info("Successfully Resolved Grid " + grid.getId());
             logger.info("Executed " + cycle + " Cycles in " + (endTime.getTime() - startTime.getTime()) + "ms");
         } else {
-            grid.resolution.logStep(null, null, grid.getPosition(), "", MsgKey.ABORT_RESOLVE);
-            logger.info("Incompleted Grid: " + grid.id);
+            grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.ABORT_RESOLVE);
+            logger.info("Incompleted Grid: " + grid.getId());
             logger.info("Resolved Cells:   " + grid.getNumberOfResolvedCells());
             logger.info("Executed " + cycle + " Cycles in " + (endTime.getTime() - startTime.getTime()) + "ms");
         }

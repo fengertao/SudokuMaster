@@ -18,7 +18,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -114,7 +120,9 @@ public class GridController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<String> savePosition(@PathVariable String gridId, @PathVariable String positionCode, HttpServletRequest request) throws Exception {
         ResponseEntity<String> validateResponse = validatePosition(gridId, positionCode, true);
-        if (validateResponse != null) return validateResponse;
+        if (validateResponse != null) {
+            return validateResponse;
+        }
 
         Optional<charlie.feng.game.sudokumasterserv.dom.Grid> optionalGrid = gridRepo.findById(gridId);
         charlie.feng.game.sudokumasterserv.dom.Grid domGrid;
@@ -143,7 +151,9 @@ public class GridController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<String> resolvePosition(@PathVariable String gridId, @PathVariable String positionCode) throws Exception {
         ResponseEntity<String> validateResponse = validatePosition(gridId, positionCode, false);
-        if (validateResponse != null) return validateResponse;
+        if (validateResponse != null) {
+            return validateResponse;
+        }
 
         //Todo validate position is derived from grid
 
@@ -158,7 +168,9 @@ public class GridController {
     public ResponseEntity<String> validatePosition(@PathVariable String gridId, @PathVariable String positionCode) throws Exception {
 
         ResponseEntity<String> validateResponse = validatePosition(gridId, positionCode, true);
-        if (validateResponse != null) return validateResponse;
+        if (validateResponse != null) {
+            return validateResponse;
+        }
 
         JSONObject result = new JSONObject();
         result.put("msg", new JSONArray());

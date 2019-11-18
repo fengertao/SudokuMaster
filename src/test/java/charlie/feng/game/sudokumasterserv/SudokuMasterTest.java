@@ -58,7 +58,7 @@ public class SudokuMasterTest {
     public void testPlay(String gridId, String expectedSolution, int expectedResolved) {
         Grid grid = new Grid(gridId);
         if (expectedSolution.length() != 0) {
-            grid.expectedAnswer = new Grid(expectedSolution);
+            grid.setExpectedAnswer(new Grid(expectedSolution));
             new SudokuMaster().play(grid);
             Assertions.assertTrue(grid.isResolved(), "Grid " + gridId + " should be resolved");
             Assertions.assertEquals(expectedSolution, grid.getAnswer(), "Grid " + gridId + " solution should be correct");

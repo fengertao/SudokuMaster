@@ -13,8 +13,8 @@ import java.util.List;
 
 public class Cell {
     private static Logger logger = LoggerFactory.getLogger(Cell.class);
-    public int rowId;
-    public int columnId;
+    private int rowId;
+    private int columnId;
     private Integer value;
     private boolean[] candidates;
     private int blockId;
@@ -23,11 +23,11 @@ public class Cell {
 
     public Cell(Grid grid, int r, int c, int b, String value) {
         this.grid = grid;
-        this.rowId = r;
-        this.columnId = c;
+        this.setRowId(r);
+        this.setColumnId(c);
         this.blockId = b;
         candidates = new boolean[9];
-        if ((value == null) || (value.equals("0"))) {
+        if (value == null || value.equals("0")) {
             this.value = null;
             for (int k = 0; k < 9; k++) {
                 candidates[k] = true;
@@ -42,8 +42,8 @@ public class Cell {
 
     public Cell(Grid grid, int r, int c, int b, String value, String positionValue) {
         this.grid = grid;
-        this.rowId = r;
-        this.columnId = c;
+        this.setRowId(r);
+        this.setColumnId(c);
         this.blockId = b;
         candidates = new boolean[9];
         if ((value == null) || (value.equals("0"))) {
@@ -91,12 +91,12 @@ public class Cell {
                 builder.append(k + 1);
             }
         }
-        String candidates = builder.toString();
-        return candidates.equals("123456789") ? "" : candidates;
+        String candidatesStr = builder.toString();
+        return candidatesStr.equals("123456789") ? "" : candidatesStr;
     }
 
     public String locationString() {
-        return "(" + (rowId + 1) + "," + (columnId + 1) + ")";
+        return "(" + (getRowId() + 1) + "," + (getColumnId() + 1) + ")";
     }
 
 
@@ -110,9 +110,9 @@ public class Cell {
             return;
         }
         String preChangeCandidates = getCandidateString();
-        grid.isChangedInCycle = true;
+        grid.setChangedInCycle(true);
         candidates[digit - 1] = false;
-        grid.resolution.logStep(this, preChangeCandidates, refCells, grid.getPosition(), methodName, MsgKey.REMOVE_CANDIDATE, "" + digit, getCandidateString());
+        grid.getResolution().logStep(this, preChangeCandidates, refCells, grid.getPosition(), methodName, MsgKey.REMOVE_CANDIDATE, "" + digit, getCandidateString());
         if (getNumberOfCandidates() == 1) {
             gainValue(getCandidateList().get(0), methodName, refCells, preChangeCandidates);
         }
@@ -129,7 +129,7 @@ public class Cell {
         }
 
         if (candidatesInCell != 1) {
-            logger.error("Grid id:" + grid.id);
+            logger.error("Grid id:" + grid.getId());
             logger.error("Grid Position:" + grid.getPosition());
             throw new RuntimeException(String.format("Wrong resolvedByNakedSingle, %s:", locationString()));
         } else {
@@ -140,18 +140,19 @@ public class Cell {
     //If gain value via removeDigitFromCandidate(), removeDigitFromCandidate() should provide preChangeCandidate, because cell have been changed.
     private void gainValue(int digit, String methodName, List<Cell> refCells, String preChangeCandidates) {
         validateGainValue(digit);
-        if (value != null)
+        if (value != null) {
             return;
-        grid.isChangedInCycle = true;
+        }
+        grid.setChangedInCycle(true);
         value = digit;
-        grid.resolution.logStep(this, preChangeCandidates, refCells, grid.getPosition(), methodName, MsgKey.GET_VALUE, "" + digit);
+        grid.getResolution().logStep(this, preChangeCandidates, refCells, grid.getPosition(), methodName, MsgKey.GET_VALUE, "" + digit);
         for (int k2 = 0; k2 < 9; k2++) {
             if (k2 != digit - 1) {
                 candidates[k2] = false;
             }
         }
 
-        logger.trace("Cell resolved. row:" + rowId + " col:" + columnId + " value:" + value + " " + methodName);
+        logger.trace("Cell resolved. row:" + getRowId() + " col:" + getColumnId() + " value:" + value + " " + methodName);
         noticeNeighboorsAboutValueGained();
     }
 
@@ -162,11 +163,11 @@ public class Cell {
 
     private void validateRemoveDigitFromCandidate(Integer digit) {
         //Todo validate more ?
-        if (grid.expectedAnswer != null) {
-            Cell expectedCell = grid.expectedAnswer.cells[rowId][columnId];
+        if (grid.getExpectedAnswer() != null) {
+            Cell expectedCell = grid.getExpectedAnswer().getCells()[getRowId()][getColumnId()];
             if (expectedCell.getValue().equals(digit)) {
                 throw new RuntimeException(
-                        "Should not remove from candidate: Row:" + rowId + " Col:" + columnId + " Excepted value:" + expectedCell.getValue()
+                        "Should not remove from candidate: Row:" + getRowId() + " Col:" + getColumnId() + " Excepted value:" + expectedCell.getValue()
                                 + " input value:" + digit);
             }
         }
@@ -174,25 +175,40 @@ public class Cell {
 
     private void validateGainValue(int digit) {
         //Todo validate the value is existing in row/col/block
-        if (grid.expectedAnswer != null) {
-            Cell expectedCell = grid.expectedAnswer.cells[rowId][columnId];
+        if (grid.getExpectedAnswer() != null) {
+            Cell expectedCell = grid.getExpectedAnswer().getCells()[getRowId()][getColumnId()];
             if (expectedCell.getValue() != digit) {
                 throw new RuntimeException(
-                        "Wrong value: Row:" + rowId + " Col:" + columnId + " Excepted value:" + expectedCell.getValue() + " input value:" + digit);
+                        "Wrong value: Row:" + getRowId() + " Col:" + getColumnId() + " Excepted value:" + expectedCell.getValue() + " input value:" + digit);
             }
         }
         if ((value != null) && (value != digit)) {
-            throw new RuntimeException("Conflicted value: Row:" + rowId + " Col:" + columnId + " existing value:" + value + " input value:" + digit);
+            throw new RuntimeException("Conflicted value: Row:" + getRowId() + " Col:" + getColumnId() + " existing value:" + value + " input value:" + digit);
         }
     }
 
     public void noticeNeighboorsAboutValueGained() {
         if (!noticedNeighbor) {
             noticedNeighbor = true;
-            grid.rows[rowId].onCellResolved(this);
-            grid.columns[columnId].onCellResolved(this);
-            grid.blocks[blockId].onCellResolved(this);
+            grid.getRows()[getRowId()].onCellResolved(this);
+            grid.getColumns()[getColumnId()].onCellResolved(this);
+            grid.getBlocks()[blockId].onCellResolved(this);
         }
     }
 
+    public int getRowId() {
+        return rowId;
+    }
+
+    public void setRowId(int rowId) {
+        this.rowId = rowId;
+    }
+
+    public int getColumnId() {
+        return columnId;
+    }
+
+    public void setColumnId(int columnId) {
+        this.columnId = columnId;
+    }
 }

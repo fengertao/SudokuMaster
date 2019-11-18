@@ -20,7 +20,7 @@ public class MethodNakedSingle implements IMethod {
     public void apply(Grid grid) {
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
-                Cell cell = grid.cells[r][c];
+                Cell cell = grid.getCells()[r][c];
                 if (cell.getNumberOfCandidates() == 1) {
                     cell.resolvedByNakedSingle(new ArrayList<>());
                 }

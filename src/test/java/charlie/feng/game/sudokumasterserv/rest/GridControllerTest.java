@@ -18,7 +18,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -150,7 +152,7 @@ public class GridControllerTest {
                 .andExpect(jsonPath("resolution[-1].message").value("成功解决数独"))
                 .andExpect(jsonPath("resolution[-1].position").value("3|2|5|4|9|6|7|1|8|9|4|8|1|2|7|6|5|3|1|7|6|3|5|8|9|2|4|6|5|3|7|4|2|1|8|9|4|1|9|8|3|5|2|6|7|7|8|2|9|6|1|4|3|5|8|9|1|6|7|3|5|4|2|2|3|4|5|1|9|8|7|6|5|6|7|2|8|4|3|9|1"));
 
-        mvc.perform(MockMvcRequestBuilders.get(baseUrl + "|1234|3579|||12345|7|1|8|9|4|8|1|2|7|6|5|3|1|7|6|3|5|8|9|2|4|6|5|3|7|4|2|1|8|9|4|1|9|8|3|5|2|6|7|7|8|2|9|6|1|4|3|5|8|9|1|6|7|3|5|4|2|2|3|4|5|1|9|8|7|6|5|6|7|2|8|4|3|9|1"+ "/resolve"))
+        mvc.perform(MockMvcRequestBuilders.get(baseUrl + "|1234|3579|||12345|7|1|8|9|4|8|1|2|7|6|5|3|1|7|6|3|5|8|9|2|4|6|5|3|7|4|2|1|8|9|4|1|9|8|3|5|2|6|7|7|8|2|9|6|1|4|3|5|8|9|1|6|7|3|5|4|2|2|3|4|5|1|9|8|7|6|5|6|7|2|8|4|3|9|1" + "/resolve"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.length()").value(2))

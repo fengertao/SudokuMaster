@@ -4,7 +4,12 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
-import charlie.feng.game.sudokumasterserv.master.*;
+import charlie.feng.game.sudokumasterserv.master.Block;
+import charlie.feng.game.sudokumasterserv.master.Cell;
+import charlie.feng.game.sudokumasterserv.master.Column;
+import charlie.feng.game.sudokumasterserv.master.Grid;
+import charlie.feng.game.sudokumasterserv.master.Region;
+import charlie.feng.game.sudokumasterserv.master.Row;
 
 import java.util.ArrayList;
 
@@ -15,11 +20,11 @@ import java.util.ArrayList;
 public class MethodSolePosition implements IMethod {
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
-            Row row = grid.rows[i];
+            Row row = grid.getRows()[i];
             checkSolePositionLeft(row);
-            Column column = grid.columns[i];
+            Column column = grid.getColumns()[i];
             checkSolePositionLeft(column);
-            Block block = grid.blocks[i];
+            Block block = grid.getBlocks()[i];
             checkSolePositionLeft(block);
         }
     }
@@ -30,7 +35,7 @@ public class MethodSolePosition implements IMethod {
         int summary = 0;
         int expectSummary = 45;  //Sum(1..9)=45
         for (int i = 0; i < 9; i++) {
-            Cell cell = region.cells[i];
+            Cell cell = region.getCells()[i];
             if (cell.getValue() != null) {
                 counter++;
                 summary += cell.getValue();

@@ -55,8 +55,8 @@ public class JwtTokenUtil implements Serializable {
     }
 
     private Boolean isTokenExpired(String token) {
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(clock.now());
+        final Date tokenExpiration = getExpirationDateFromToken(token);
+        return tokenExpiration.before(clock.now());
     }
 
     @SuppressWarnings("SameReturnValue")

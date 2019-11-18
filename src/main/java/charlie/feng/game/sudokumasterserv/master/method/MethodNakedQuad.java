@@ -21,27 +21,31 @@ public class MethodNakedQuad implements IMethod {
 
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
-            checkNakedQuad(grid.rows[i]);
-            checkNakedQuad(grid.columns[i]);
-            checkNakedQuad(grid.blocks[i]);
+            checkNakedQuad(grid.getRows()[i]);
+            checkNakedQuad(grid.getColumns()[i]);
+            checkNakedQuad(grid.getBlocks()[i]);
         }
     }
 
     private void checkNakedQuad(Region region) {
-        Cell[] cells = region.cells;
+        Cell[] cells = region.getCells();
         Set<Integer> supportNumberSet = new HashSet<>();
         for (int i1 = 3; i1 < 9; i1++) {
-            if (cells[i1].getValue() != null)
+            if (cells[i1].getValue() != null) {
                 continue;
+            }
             for (int i2 = 2; i2 < i1; i2++) {
-                if (cells[i2].getValue() != null)
+                if (cells[i2].getValue() != null) {
                     continue;
+                }
                 for (int i3 = 1; i3 < i2; i3++) {
-                    if (cells[i3].getValue() != null)
+                    if (cells[i3].getValue() != null) {
                         continue;
+                    }
                     for (int i4 = 0; i4 < i3; i4++) {
-                        if (cells[i4].getValue() != null)
+                        if (cells[i4].getValue() != null) {
                             continue;
+                        }
                         supportNumberSet.clear();
                         for (int k = 1; k <= 9; k++) {
                             if (cells[i1].isSupportCandidate(k) || cells[i2].isSupportCandidate(k) || cells[i3].isSupportCandidate(k) || cells[i4]

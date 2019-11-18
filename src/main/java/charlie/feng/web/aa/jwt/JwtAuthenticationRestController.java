@@ -16,7 +16,12 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
@@ -27,7 +32,7 @@ import java.util.Objects;
 @CrossOrigin(origins = {"${jwt.url.ui1}", "${jwt.url.ui2}", "${jwt.url.ui3}", "${jwt.url.ui4}"})
 public class JwtAuthenticationRestController {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationRestController.class);
+    private static Logger logger = LoggerFactory.getLogger(JwtAuthenticationRestController.class);
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
@@ -69,7 +74,7 @@ public class JwtAuthenticationRestController {
         String username = jwtTokenUtil.getUsernameFromToken(token);
         JwtUserDetails user = (JwtUserDetails) jwtJPAUserDetailsService.loadUserByUsername(username);
 
-        if (jwtTokenUtil.canTokenBeRefreshed(token)) {
+        if (user.isEnabled() && jwtTokenUtil.canTokenBeRefreshed(token)) {
             String refreshedToken = jwtTokenUtil.refreshToken(token);
             return ResponseEntity.ok(new JwtTokenResponse(refreshedToken));
         } else {

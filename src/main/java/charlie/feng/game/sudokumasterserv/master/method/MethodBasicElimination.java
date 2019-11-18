@@ -4,7 +4,12 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
-import charlie.feng.game.sudokumasterserv.master.*;
+import charlie.feng.game.sudokumasterserv.master.Block;
+import charlie.feng.game.sudokumasterserv.master.Cell;
+import charlie.feng.game.sudokumasterserv.master.Column;
+import charlie.feng.game.sudokumasterserv.master.Grid;
+import charlie.feng.game.sudokumasterserv.master.Region;
+import charlie.feng.game.sudokumasterserv.master.Row;
 
 import java.util.ArrayList;
 
@@ -15,11 +20,11 @@ import java.util.ArrayList;
 public class MethodBasicElimination implements IMethod {
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
-            Row row = grid.rows[i];
+            Row row = grid.getRows()[i];
             checkBasicElimination(row);
-            Column column = grid.columns[i];
+            Column column = grid.getColumns()[i];
             checkBasicElimination(column);
-            Block block = grid.blocks[i];
+            Block block = grid.getBlocks()[i];
             checkBasicElimination(block);
         }
     }
@@ -31,17 +36,18 @@ public class MethodBasicElimination implements IMethod {
             Cell cellContainsCandidate = null;
 
             for (int i = 0; i < 9; i++) {
-                if ((region.cells[i].getValue() != null) && (region.cells[i].getValue() == digit)) {
+                if ((region.getCells()[i].getValue() != null) && (region.getCells()[i].getValue() == digit)) {
                     alreadyFound = true;
                     break;
                 }
-                if (region.cells[i].isSupportCandidate(digit)) {
+                if (region.getCells()[i].isSupportCandidate(digit)) {
                     cellsContainsCandidate++;
-                    cellContainsCandidate = region.cells[i];
+                    cellContainsCandidate = region.getCells()[i];
                 }
             }
-            if (alreadyFound)
+            if (alreadyFound) {
                 continue;
+            }
             if (cellsContainsCandidate == 1) {
                 cellContainsCandidate.gainValue(digit, this.getClass().getSimpleName(), new ArrayList<>());
 

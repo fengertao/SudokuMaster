@@ -32,32 +32,40 @@ public class MethodSwordFish implements IMethod {
         Set<Integer> possibleOffsetSet3;
 
         for (int i1 = 2; i1 < 9; i1++) {
-            Region region1 = (isRow ? grid.rows[i1] : grid.columns[i1]);
-            if (region1.isDigitGained(value))
+            Region region1 = (isRow ? grid.getRows()[i1] : grid.getColumns()[i1]);
+            if (region1.isDigitGained(value)) {
                 continue;
+            }
             possibleOffsetSet1 = region1.getPossibleOffset(value);
-            if (possibleOffsetSet1.size() != 2 && possibleOffsetSet1.size() != 3)
+            if (possibleOffsetSet1.size() != 2 && possibleOffsetSet1.size() != 3) {
                 continue;
+            }
             for (int i2 = 1; i2 < i1; i2++) {
-                Region region2 = (isRow ? grid.rows[i2] : grid.columns[i2]);
-                if (region2.isDigitGained(value))
+                Region region2 = (isRow ? grid.getRows()[i2] : grid.getColumns()[i2]);
+                if (region2.isDigitGained(value)) {
                     continue;
+                }
                 possibleOffsetSet2 = region2.getPossibleOffset(value);
-                if (possibleOffsetSet2.size() != 2 && possibleOffsetSet2.size() != 3)
+                if (possibleOffsetSet2.size() != 2 && possibleOffsetSet2.size() != 3) {
                     continue;
+                }
                 possibleOffsetSet2.addAll(possibleOffsetSet1);
-                if (possibleOffsetSet2.size() > 3)
+                if (possibleOffsetSet2.size() > 3) {
                     continue;
+                }
                 for (int i3 = 0; i3 < i2; i3++) {
-                    Region region3 = (isRow ? grid.rows[i3] : grid.columns[i3]);
-                    if (region3.isDigitGained(value))
+                    Region region3 = (isRow ? grid.getRows()[i3] : grid.getColumns()[i3]);
+                    if (region3.isDigitGained(value)) {
                         continue;
+                    }
                     possibleOffsetSet3 = region3.getPossibleOffset(value);
-                    if (possibleOffsetSet3.size() != 2 && possibleOffsetSet3.size() != 3)
+                    if (possibleOffsetSet3.size() != 2 && possibleOffsetSet3.size() != 3) {
                         continue;
+                    }
                     possibleOffsetSet3.addAll(possibleOffsetSet2);
-                    if (possibleOffsetSet3.size() != 3)
+                    if (possibleOffsetSet3.size() != 3) {
                         continue;
+                    }
 
                     //SwordFish detected, start clear
                     Integer[] offsetArray = possibleOffsetSet3.toArray(new Integer[3]);
@@ -66,23 +74,24 @@ public class MethodSwordFish implements IMethod {
                     List<Cell> refCells = new ArrayList<>();
                     for (Integer offset : possibleOffsetSet3) {
                         if (isRow) {
-                            refCells.add(grid.cells[i1][offset]);
-                            refCells.add(grid.cells[i2][offset]);
-                            refCells.add(grid.cells[i3][offset]);
+                            refCells.add(grid.getCells()[i1][offset]);
+                            refCells.add(grid.getCells()[i2][offset]);
+                            refCells.add(grid.getCells()[i3][offset]);
                         } else {
-                            refCells.add(grid.cells[offset][i1]);
-                            refCells.add(grid.cells[offset][i2]);
-                            refCells.add(grid.cells[offset][i3]);
+                            refCells.add(grid.getCells()[offset][i1]);
+                            refCells.add(grid.getCells()[offset][i2]);
+                            refCells.add(grid.getCells()[offset][i3]);
                         }
                     }
 
                     for (int iOther = 0; iOther < 9; iOther++) {
-                        if ((iOther == i1) || (iOther == i2) || (iOther == i3))
+                        if ((iOther == i1) || (iOther == i2) || (iOther == i3)) {
                             continue;
-                        Region regionOther = (isRow ? grid.rows[iOther] : grid.columns[iOther]);
-                        regionOther.cells[offsetArray[0]].removeDigitFromCandidate(value, this.getClass().getSimpleName(), refCells);
-                        regionOther.cells[offsetArray[1]].removeDigitFromCandidate(value, this.getClass().getSimpleName(), refCells);
-                        regionOther.cells[offsetArray[2]].removeDigitFromCandidate(value, this.getClass().getSimpleName(), refCells);
+                        }
+                        Region regionOther = (isRow ? grid.getRows()[iOther] : grid.getColumns()[iOther]);
+                        regionOther.getCells()[offsetArray[0]].removeDigitFromCandidate(value, this.getClass().getSimpleName(), refCells);
+                        regionOther.getCells()[offsetArray[1]].removeDigitFromCandidate(value, this.getClass().getSimpleName(), refCells);
+                        regionOther.getCells()[offsetArray[2]].removeDigitFromCandidate(value, this.getClass().getSimpleName(), refCells);
                     }
                 }
             }

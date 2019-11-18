@@ -3,7 +3,12 @@ package charlie.feng.game.sudokumasterserv.dom;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.List;
@@ -16,12 +21,37 @@ public class Grid {
 
     @JsonIgnore
     @OneToMany(mappedBy = "grid", targetEntity = Position.class, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    List<Position> positionList;
+    private List<Position> positionList;
 
     @Id
     @Column(nullable = false, length = 81)
     @Size(min = 81, max = 81)
-    String id;
+    private String id;
+
+    @Column(nullable = false)
+    private boolean resolvedByAi;
+
+    @Column(length = 81)
+    @Size(min = 81, max = 81)
+    private String answer;
+
+    @Column(length = 60)
+    private String createdBy;
+
+    @Column
+    @JsonFormat
+            (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
+    private Timestamp createdAt;
+
+    @Column(length = 2)
+    private int difficulty;
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Column
+    private String comment;
 
     public Grid(@Size(min = 81, max = 81) String id, List<Position> positionList, boolean resolvedByAi, @Size(min = 81, max = 81) String answer, int difficulty, String createdBy, Timestamp createdAt, String comment) {
         this.id = id;
@@ -33,27 +63,6 @@ public class Grid {
         this.createdAt = createdAt;
         this.comment = comment;
     }
-
-    @Column(nullable = false)
-    boolean resolvedByAi;
-
-    @Column(length = 81)
-    @Size(min = 81, max = 81)
-    String answer;
-
-    @Column(length = 60)
-    String createdBy;
-
-    @Column
-    @JsonFormat
-            (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
-    Timestamp createdAt;
-
-    @Column(length = 2)
-    int difficulty;
-
-    @Column
-    String comment;
 
     public String getId() {
         return id;
@@ -100,7 +109,7 @@ public class Grid {
     }
 
     public Timestamp getCreatedAt() {
-        return createdAt;
+        return new Timestamp(createdAt.getTime());
     }
 
     public void setCreatedAt(Timestamp createdAt) {

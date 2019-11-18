@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 public class LiquibaseTestConfig {
 
     @Autowired
-    Environment environment;
+    private Environment environment;
 
     @Bean
     public DataSource dataSource() {

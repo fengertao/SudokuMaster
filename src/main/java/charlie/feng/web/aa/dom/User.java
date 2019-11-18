@@ -5,7 +5,15 @@
 package charlie.feng.web.aa.dom;
 
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -36,7 +44,7 @@ public class User {
     @JoinTable(name = "authorities",
             joinColumns = {
                     @JoinColumn(name = "username")}, inverseJoinColumns = {
-            @JoinColumn(name = "authority ")},
+            @JoinColumn(name = "authority")},
             uniqueConstraints = @UniqueConstraint(columnNames = {"username", "authority"}))
     private List<Role> roles;
 
@@ -102,9 +110,9 @@ public class User {
         this.roles.addAll(roles);
     }
 
-    public void addRoles(List<String> roles) {
+    public void addRoles(List<String> newRoles) {
         this.roles = new ArrayList<>();
-        for (String s : roles) {
+        for (String s : newRoles) {
             this.roles.add(Role.valueOf(s));
         }
     }

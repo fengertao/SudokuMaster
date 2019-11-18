@@ -21,24 +21,27 @@ public class MethodNakedTriplet implements IMethod {
 
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
-            checkNakedTriplet(grid.rows[i]);
-            checkNakedTriplet(grid.columns[i]);
-            checkNakedTriplet(grid.blocks[i]);
+            checkNakedTriplet(grid.getRows()[i]);
+            checkNakedTriplet(grid.getColumns()[i]);
+            checkNakedTriplet(grid.getBlocks()[i]);
         }
     }
 
     private void checkNakedTriplet(Region region) {
-        Cell[] cells = region.cells;
+        Cell[] cells = region.getCells();
         Set<Integer> supportNumberSet = new HashSet<>();
         for (int i1 = 2; i1 < 9; i1++) {
-            if (cells[i1].getValue() != null)
+            if (cells[i1].getValue() != null) {
                 continue;
+            }
             for (int i2 = 1; i2 < i1; i2++) {
-                if (cells[i2].getValue() != null)
+                if (cells[i2].getValue() != null) {
                     continue;
+                }
                 for (int i3 = 0; i3 < i2; i3++) {
-                    if (cells[i3].getValue() != null)
+                    if (cells[i3].getValue() != null) {
                         continue;
+                    }
                     supportNumberSet.clear();
                     for (int k = 1; k <= 9; k++) {
                         if (cells[i1].isSupportCandidate(k) || cells[i2].isSupportCandidate(k) || cells[i3].isSupportCandidate(k)) {

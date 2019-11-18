@@ -20,9 +20,9 @@ import com.google.common.collect.ImmutableList;
 public class MethodBlockElimination implements IMethod {
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
-            checkHiddenCellInRowColumn(grid, grid.rows[i], true);
-            checkHiddenCellInRowColumn(grid, grid.columns[i], false);
-            checkHiddenCellInBlock(grid, grid.blocks[i]);
+            checkHiddenCellInRowColumn(grid, grid.getRows()[i], true);
+            checkHiddenCellInRowColumn(grid, grid.getColumns()[i], false);
+            checkHiddenCellInBlock(grid, grid.getBlocks()[i]);
         }
     }
 
@@ -36,7 +36,7 @@ public class MethodBlockElimination implements IMethod {
             int hiddenSubRegionOffset = 10;
 
             for (int iSubRegion = 0; iSubRegion < 3; iSubRegion++) {
-                if (region.subRegion[iSubRegion].supportNumber(k)) {
+                if (region.getSubRegion()[iSubRegion].supportNumber(k)) {
                     subRegionCount++;
                     hiddenSubRegionOffset = iSubRegion;
                 }
@@ -44,11 +44,11 @@ public class MethodBlockElimination implements IMethod {
             if (subRegionCount == 1) {
                 int blockId;
                 if (isRow) {
-                    blockId = region.id / 3 * 3 + hiddenSubRegionOffset;
+                    blockId = region.getId() / 3 * 3 + hiddenSubRegionOffset;
                 } else {
-                    blockId = region.id / 3 + hiddenSubRegionOffset * 3;
+                    blockId = region.getId() / 3 + hiddenSubRegionOffset * 3;
                 }
-                grid.blocks[blockId].removeDigit(k, region.subRegion[hiddenSubRegionOffset].cells, ImmutableList.copyOf(region.subRegion[hiddenSubRegionOffset].cells));
+                grid.getBlocks()[blockId].removeDigit(k, region.getSubRegion()[hiddenSubRegionOffset].getCells(), ImmutableList.copyOf(region.getSubRegion()[hiddenSubRegionOffset].getCells()));
                 //must return here because change always done, some key cell maybe changed.
                 //                return;
             }
@@ -60,37 +60,32 @@ public class MethodBlockElimination implements IMethod {
             if (block.isDigitGained(k)) {
                 continue;
             }
-            {
-                int subRegionCount = 0;
-                int hiddenSubRegionOffset = 10;
+            int subRegionCount = 0;
+            int hiddenSubRegionOffset = 10;
 
-                for (int iSubRegion = 0; iSubRegion < 3; iSubRegion++) {
-                    if (block.subRows[iSubRegion].supportNumber(k)) {
-                        subRegionCount++;
-                        hiddenSubRegionOffset = iSubRegion;
-                    }
-                }
-
-                if (subRegionCount == 1) {
-                    grid.rows[block.blockR * 3 + hiddenSubRegionOffset].removeDigit(k, block.subRows[hiddenSubRegionOffset].cells, ImmutableList.copyOf(block.subRows[hiddenSubRegionOffset].cells));
+            for (int iSubRegion = 0; iSubRegion < 3; iSubRegion++) {
+                if (block.getSubRows()[iSubRegion].supportNumber(k)) {
+                    subRegionCount++;
+                    hiddenSubRegionOffset = iSubRegion;
                 }
             }
-            {
-                int subRegionCount = 0;
-                int hiddenSubRegionOffset = 10;
 
-                for (int iSubRegion = 0; iSubRegion < 3; iSubRegion++) {
-                    if (block.subColumns[iSubRegion].supportNumber(k)) {
-                        subRegionCount++;
-                        hiddenSubRegionOffset = iSubRegion;
-                    }
-                }
+            if (subRegionCount == 1) {
+                grid.getRows()[block.getBlockR() * 3 + hiddenSubRegionOffset].removeDigit(k, block.getSubRows()[hiddenSubRegionOffset].getCells(), ImmutableList.copyOf(block.getSubRows()[hiddenSubRegionOffset].getCells()));
+            }
 
-                if (subRegionCount == 1) {
-                    grid.columns[block.blockC * 3 + hiddenSubRegionOffset].removeDigit(k, block.subColumns[hiddenSubRegionOffset].cells, ImmutableList.copyOf(block.subColumns[hiddenSubRegionOffset].cells));
-                    //must return here because change always done, some key cell maybe changed.
-                    //                    return;
+            subRegionCount = 0;
+            hiddenSubRegionOffset = 10;
+
+            for (int iSubRegion = 0; iSubRegion < 3; iSubRegion++) {
+                if (block.getSubColumns()[iSubRegion].supportNumber(k)) {
+                    subRegionCount++;
+                    hiddenSubRegionOffset = iSubRegion;
                 }
+            }
+
+            if (subRegionCount == 1) {
+                grid.getColumns()[block.getBlockC() * 3 + hiddenSubRegionOffset].removeDigit(k, block.getSubColumns()[hiddenSubRegionOffset].getCells(), ImmutableList.copyOf(block.getSubColumns()[hiddenSubRegionOffset].getCells()));
             }
 
         }

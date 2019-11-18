@@ -19,7 +19,7 @@ public class RemovePasswordAspect {
     public void removePassword(Object retVal) {
         Object returnBody = retVal;
         if (returnBody instanceof ResponseEntity) {
-            returnBody = ((ResponseEntity) returnBody).getBody();
+            returnBody = ((ResponseEntity<?>) returnBody).getBody();
         }
 
         if (returnBody instanceof User) {
@@ -27,7 +27,7 @@ public class RemovePasswordAspect {
         }
 
         if (returnBody instanceof Iterable) {
-            ((Iterable) returnBody).forEach((Object record) -> {
+            ((Iterable<?>) returnBody).forEach((Object record) -> {
                 if (record instanceof User) {
                     ((User) record).setPassword(null);
                 }

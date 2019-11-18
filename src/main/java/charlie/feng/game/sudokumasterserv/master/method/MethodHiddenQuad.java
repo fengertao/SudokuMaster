@@ -23,14 +23,14 @@ public class MethodHiddenQuad implements IMethod {
 
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
-            checkHiddenQuad(grid.rows[i]);
-            checkHiddenQuad(grid.columns[i]);
-            checkHiddenQuad(grid.blocks[i]);
+            checkHiddenQuad(grid.getRows()[i]);
+            checkHiddenQuad(grid.getColumns()[i]);
+            checkHiddenQuad(grid.getBlocks()[i]);
         }
     }
 
     private void checkHiddenQuad(Region region) {
-        Cell[] cells = region.cells;
+        Cell[] cells = region.getCells();
         Set<Integer> k1PossibleOffsetSet;
         Set<Integer> k2PossibleOffsetSet;
         Set<Integer> k3PossibleOffsetSet;
@@ -38,31 +38,39 @@ public class MethodHiddenQuad implements IMethod {
         Set<Integer> mergedOffsetSet = new HashSet<>();
 
         for (int k1 = 4; k1 <= 9; k1++) {
-            if (region.isDigitGained(k1))
+            if (region.isDigitGained(k1)) {
                 continue;
+            }
             k1PossibleOffsetSet = region.getPossibleOffset(k1);
-            if (k1PossibleOffsetSet.size() > 4)
+            if (k1PossibleOffsetSet.size() > 4) {
                 continue;
+            }
             for (int k2 = 3; k2 < k1; k2++) {
-                if (region.isDigitGained(k2))
+                if (region.isDigitGained(k2)) {
                     continue;
+                }
                 k2PossibleOffsetSet = region.getPossibleOffset(k2);
-                if (k2PossibleOffsetSet.size() > 4)
+                if (k2PossibleOffsetSet.size() > 4) {
                     continue;
+                }
 
                 for (int k3 = 2; k3 < k2; k3++) {
-                    if (region.isDigitGained(k3))
+                    if (region.isDigitGained(k3)) {
                         continue;
+                    }
                     k3PossibleOffsetSet = region.getPossibleOffset(k3);
-                    if (k3PossibleOffsetSet.size() > 4)
+                    if (k3PossibleOffsetSet.size() > 4) {
                         continue;
+                    }
 
                     for (int k4 = 1; k4 < k3; k4++) {
-                        if (region.isDigitGained(k4))
+                        if (region.isDigitGained(k4)) {
                             continue;
+                        }
                         k4PossibleOffsetSet = region.getPossibleOffset(k4);
-                        if (k4PossibleOffsetSet.size() > 4)
+                        if (k4PossibleOffsetSet.size() > 4) {
                             continue;
+                        }
 
                         mergedOffsetSet.clear();
                         mergedOffsetSet.addAll(k1PossibleOffsetSet);

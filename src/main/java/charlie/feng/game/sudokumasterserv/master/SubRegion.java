@@ -5,13 +5,22 @@
 package charlie.feng.game.sudokumasterserv.master;
 
 public class SubRegion {
-    public Cell[] cells = new Cell[3];
+    private Cell[] cells = new Cell[3];
 
     public boolean supportNumber(int k) {
         for (int i = 0; i < 3; i++) {
-            if (cells[i].isSupportCandidate(k))
+            if (getCells()[i].isSupportCandidate(k)) {
                 return true;
+            }
         }
         return false;
+    }
+
+    public Cell[] getCells() {
+        return cells;
+    }
+
+    public void setCells(Cell[] cells) {
+        this.cells = cells;
     }
 }

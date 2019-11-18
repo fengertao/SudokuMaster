@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-class JwtUserDetails implements UserDetails {
+public class JwtUserDetails implements UserDetails {
 
     private static final long serialVersionUID = 5155720064139820502L;
 
@@ -31,10 +31,10 @@ class JwtUserDetails implements UserDetails {
         this.password = password;
         this.enabled = enabled;
 
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+        List<SimpleGrantedAuthority> newAuthorities = new ArrayList<>();
+        roles.forEach(role -> newAuthorities.add(new SimpleGrantedAuthority(role.getName())));
 
-        this.authorities = authorities;
+        this.authorities = newAuthorities;
         this.fullname = fullname;
     }
 

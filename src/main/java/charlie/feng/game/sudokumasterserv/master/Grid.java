@@ -9,45 +9,45 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Grid {
-    public static String EMPTY_GRID = "000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-    public String id;
-    public Cell[][] cells;
-    public Row[] rows;
-    public Column[] columns;
-    public Block[] blocks;
-    public Grid expectedAnswer; //for debug purpose only.
-    public Resolution resolution = new Resolution();
-    boolean isChangedInCycle;
+    public static final String EMPTY_GRID = "000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    private String id;
+    private Cell[][] cells;
+    private Row[] rows;
+    private Column[] columns;
+    private Block[] blocks;
+    private Grid expectedAnswer; //for debug purpose only.
+    private Resolution resolution = new Resolution();
+    private boolean isChangedInCycle;
 
     public Grid(String id) {
-        this.id = id;
+        this.setId(id);
         load(id);
     }
 
     public Grid(String id, String position) {
-        this.id = id;
+        this.setId(id);
         load(id, position);
     }
 
-    private void load(String id) {
-        if ((id == null) || id.length() != 81) {
+    private void load(String gridId) {
+        if ((gridId == null) || gridId.length() != 81) {
             throw new IllegalArgumentException("Wrong grid id:" + id);
         }
 
-        cells = new Cell[9][9];
+        setCells(new Cell[9][9]);
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
-                String valueStr = id.substring(r * 9 + c, r * 9 + c + 1);
-                cells[r][c] = new Cell(this, r, c, r / 3 * 3 + c / 3, valueStr);
+                String valueStr = gridId.substring(r * 9 + c, r * 9 + c + 1);
+                getCells()[r][c] = new Cell(this, r, c, r / 3 * 3 + c / 3, valueStr);
             }
         }
 
         initialRegion();
     }
 
-    private void load(String id, String position) {
-        if ((id == null) || id.length() != 81) {
-            throw new IllegalArgumentException("Wrong grid id: " + id);
+    private void load(String gridId, String position) {
+        if ((gridId == null) || gridId.length() != 81) {
+            throw new IllegalArgumentException("Wrong grid id: " + gridId);
         }
 
         String[] cellPositionValues = position.split("[|]", 81);
@@ -55,15 +55,15 @@ public class Grid {
             throw new IllegalArgumentException("Wrong position: " + position);
         }
 
-        cells = new Cell[9][9];
+        setCells(new Cell[9][9]);
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
                 if (cellPositionValues[r * 9 + c].length() == 0) {
-                    cells[r][c] = new Cell(this, r, c, r / 3 * 3 + c / 3, "0");
+                    getCells()[r][c] = new Cell(this, r, c, r / 3 * 3 + c / 3, "0");
                 } else if (cellPositionValues[r * 9 + c].length() == 1) {
-                    cells[r][c] = new Cell(this, r, c, r / 3 * 3 + c / 3, cellPositionValues[r * 9 + c]);
+                    getCells()[r][c] = new Cell(this, r, c, r / 3 * 3 + c / 3, cellPositionValues[r * 9 + c]);
                 } else if (cellPositionValues[r * 9 + c].length() <= 8) {
-                    cells[r][c] = new Cell(this, r, c, r / 3 * 3 + c / 3, "0", cellPositionValues[r * 9 + c]);
+                    getCells()[r][c] = new Cell(this, r, c, r / 3 * 3 + c / 3, "0", cellPositionValues[r * 9 + c]);
                 } else {
                     throw new IllegalArgumentException(String.format("position %s have more than 8 candidates in cell (%d,%d): %s", position, r + 1, c + 1, cellPositionValues[r * 9 + c]));
                 }
@@ -74,19 +74,19 @@ public class Grid {
     }
 
     private void initialRegion() {
-        rows = new Row[9];
+        setRows(new Row[9]);
         for (int r = 0; r < 9; r++) {
-            rows[r] = new Row(this, r);
+            getRows()[r] = new Row(this, r);
         }
 
-        columns = new Column[9];
+        setColumns(new Column[9]);
         for (int c = 0; c < 9; c++) {
-            columns[c] = new Column(this, c);
+            getColumns()[c] = new Column(this, c);
         }
 
-        blocks = new Block[9];
+        setBlocks(new Block[9]);
         for (int i = 0; i < 9; i++) {
-            blocks[i] = new Block(this, i);
+            getBlocks()[i] = new Block(this, i);
         }
     }
 
@@ -98,7 +98,7 @@ public class Grid {
         int resolvedCells = 0;
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (cells[i][j].getValue() != null) {
+                if (getCells()[i][j].getValue() != null) {
                     resolvedCells++;
                 }
             }
@@ -112,9 +112,9 @@ public class Grid {
 
     public void validate() {
         for (int i = 0; i < 9; i++) {
-            rows[i].validate();
-            columns[i].validate();
-            blocks[i].validate();
+            getRows()[i].validate();
+            getColumns()[i].validate();
+            getBlocks()[i].validate();
         }
     }
 
@@ -122,7 +122,7 @@ public class Grid {
         StringBuilder builder = new StringBuilder();
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
-                Integer value = cells[r][c].getValue();
+                Integer value = getCells()[r][c].getValue();
                 builder.append(value);
             }
         }
@@ -133,11 +133,11 @@ public class Grid {
         StringBuilder builder = new StringBuilder();
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
-                Integer value = cells[r][c].getValue();
+                Integer value = getCells()[r][c].getValue();
                 if (value != null) {
                     builder.append(value);
                 } else {
-                    builder.append(cells[r][c].getCandidateString());
+                    builder.append(getCells()[r][c].getCandidateString());
                 }
                 if ((r != 8) || (c != 8)) {
                     builder.append("|");
@@ -147,10 +147,10 @@ public class Grid {
         return builder.toString();
     }
 
-    public static JSONArray validateGridId(String id) {
+    public static JSONArray validateGridId(String gridId) {
         //Todo validate there is no duplicated digital in row, column, block
         JSONArray errorList = new JSONArray();
-        if ((id.length() != 81) || !(id.matches("[0-9]{81}"))) {
+        if ((gridId.length() != 81) || !(gridId.matches("[0-9]{81}"))) {
             errorList.put("数独盘面由81位数字组成。空格请输入0。");
         }
         return errorList;
@@ -165,15 +165,15 @@ public class Grid {
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
                 String positionValue = positionCells[r * 9 + c].length() == 0 ? "123456789" : positionCells[r * 9 + c];
-                if (cells[r][c].getValue() != null) {
-                    String correctValue = String.valueOf(cells[r][c].getValue());
+                if (getCells()[r][c].getValue() != null) {
+                    String correctValue = String.valueOf(getCells()[r][c].getValue());
                     if (!positionValue.contains(correctValue)) {
                         errorList.put(String.format("单元格 (%d,%d) 内输入为 %s, 但其正确解应该为 %s。", r + 1, c + 1, positionValue, correctValue));
                     }
                 } else {
-                    for (Integer candidate : cells[r][c].getCandidateList() ) {
+                    for (Integer candidate : getCells()[r][c].getCandidateList()) {
                         if (!positionValue.contains(String.valueOf(candidate))) {
-                            errorList.put(String.format("单元格 (%d,%d) 内输入为 %s, 但其正确范围应该为 %s。", r + 1, c + 1, positionValue, cells[r][c].getCandidateString()));
+                            errorList.put(String.format("单元格 (%d,%d) 内输入为 %s, 但其正确范围应该为 %s。", r + 1, c + 1, positionValue, getCells()[r][c].getCandidateString()));
                             break;
                         }
                     }
@@ -187,7 +187,67 @@ public class Grid {
         JSONObject result = new JSONObject();
         result.put("resolved", isResolved());
         result.put("answer", isResolved() ? getAnswer() : getPosition());
-        result.put("resolution", resolution.getJson("ZH"));
+        result.put("resolution", getResolution().getJson("ZH"));
         return result;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Cell[][] getCells() {
+        return cells;
+    }
+
+    public void setCells(Cell[][] cells) {
+        this.cells = cells;
+    }
+
+    public Row[] getRows() {
+        return rows;
+    }
+
+    public void setRows(Row[] rows) {
+        this.rows = rows;
+    }
+
+    public Column[] getColumns() {
+        return columns;
+    }
+
+    public void setColumns(Column[] columns) {
+        this.columns = columns;
+    }
+
+    public Block[] getBlocks() {
+        return blocks;
+    }
+
+    public void setBlocks(Block[] blocks) {
+        this.blocks = blocks;
+    }
+
+    public Grid getExpectedAnswer() {
+        return expectedAnswer;
+    }
+
+    public void setExpectedAnswer(Grid expectedAnswer) {
+        this.expectedAnswer = expectedAnswer;
+    }
+
+    public void setResolution(Resolution resolution) {
+        this.resolution = resolution;
+    }
+
+    public boolean isChangedInCycle() {
+        return isChangedInCycle;
+    }
+
+    public void setChangedInCycle(boolean changedInCycle) {
+        isChangedInCycle = changedInCycle;
     }
 }

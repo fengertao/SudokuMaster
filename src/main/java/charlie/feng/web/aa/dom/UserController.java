@@ -19,7 +19,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -31,7 +39,7 @@ import java.util.List;
 @CrossOrigin
 public class UserController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
     private static final String PRE_AUTHORIZE_USER_CAN_QUERY_SELF_ADMIN_CAN_QUERY_ALL = "(hasRole('USER') && #username == authentication.name) || hasRole('ADMIN')";
     private static final String POST_AUTHORIZE_ADMIN_CANNOT_SEE_ROOT = "hasRole('ROOT') ||  ((hasRole('ADMIN') && (returnObject.body== null || !(returnObject.body.roles.contains(T(charlie.feng.web.aa.dom.Role).ROLE_ROOT))))) || returnObject.body.username.equals(authentication.name)";
     private final UserRepository userRepository;

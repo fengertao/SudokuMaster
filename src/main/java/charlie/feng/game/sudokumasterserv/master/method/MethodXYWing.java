@@ -53,23 +53,29 @@ public class MethodXYWing implements IMethod {
     }
 
     private void checkXYWingRowColumn(Grid grid, int rowA, int colA) {
-        Integer x, y, z;
-        Cell cellA = grid.cells[rowA][colA];
+        Integer x;
+        Integer y;
+        Integer z;
+        Cell cellA = grid.getCells()[rowA][colA];
         List<Integer> candidatesA = cellA.getCandidateList();
-        if (candidatesA.size() != 2)
+        if (candidatesA.size() != 2) {
             return;
+        }
         for (int colB = 0; colB < 9; colB++) {
-            if (colB == colA)
+            if (colB == colA) {
                 continue;
-            Cell cellB = grid.cells[rowA][colB];
+            }
+            Cell cellB = grid.getCells()[rowA][colB];
             List<Integer> candidatesB = cellB.getCandidateList();
-            if (candidatesB.size() != 2)
+            if (candidatesB.size() != 2) {
                 continue;
+            }
             Set<Integer> candidateAB = new HashSet<>(4);
             candidateAB.addAll(candidatesA);
             candidateAB.addAll(candidatesB);
-            if (candidateAB.size() != 3)
+            if (candidateAB.size() != 3) {
                 continue;
+            }
             if (candidatesA.get(0).equals(candidatesB.get(0))) {
                 x = candidatesA.get(0);
                 y = candidatesA.get(1);
@@ -91,33 +97,38 @@ public class MethodXYWing implements IMethod {
             }
 
             for (int rowC = 0; rowC < 9; rowC++) {
-                if (rowC == colA)
+                if (rowC == colA) {
                     continue;
-                Cell cellC = grid.cells[rowC][colA];
+                }
+                Cell cellC = grid.getCells()[rowC][colA];
                 List<Integer> candidatesC = cellC.getCandidateList();
-                if (candidatesC.size() != 2)
+                if (candidatesC.size() != 2) {
                     continue;
+                }
                 Set<Integer> candidateAC = new HashSet<>(4);
                 candidateAC.addAll(candidatesA);
                 candidateAC.addAll(candidatesC);
-                if (candidateAC.size() != 3)
+                if (candidateAC.size() != 3) {
                     continue;
+                }
                 if (x.equals(candidatesC.get(0))) {
                     continue; //cellCshould contains y and z only
                 } else if (x.equals(candidatesC.get(1))) {
                     continue; //cellCshould contains y and z only
                 } else if (y.equals(candidatesC.get(0))) {
-                    if (!z.equals(candidatesC.get(1)))
+                    if (!z.equals(candidatesC.get(1))) {
                         continue;
+                    }
                 } else if (y.equals(candidatesC.get(1))) {
-                    if (!z.equals(candidatesC.get(0)))
+                    if (!z.equals(candidatesC.get(0))) {
                         continue;
+                    }
                 } else {
                     throw new RuntimeException("Wrong logic");
                 }
 
                 //XY-Wing detected, now remove z from * cell
-                grid.cells[rowC][colB].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
+                grid.getCells()[rowC][colB].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
             }
 
         }
@@ -129,24 +140,29 @@ public class MethodXYWing implements IMethod {
      * else Cell A and B in same column
      */
     private void checkXYWingRowBlock(Grid grid, int rowA, int colA, boolean isABSameRow) {
-        Integer x, y, z;
-        Cell cellA = grid.cells[rowA][colA];
+        Integer x;
+        Integer y;
+        Integer z;
+        Cell cellA = grid.getCells()[rowA][colA];
         List<Integer> candidatesA = cellA.getCandidateList();
-        if (candidatesA.size() != 2)
+        if (candidatesA.size() != 2) {
             return;
+        }
         for (int rowColB = 0; rowColB < 9; rowColB++) {
             if ((isABSameRow) && (rowColB == colA) || (!isABSameRow) && (rowColB == rowA)) {
                 continue;
             }
-            Cell cellB = isABSameRow ? grid.cells[rowA][rowColB] : grid.cells[rowColB][colA];
+            Cell cellB = isABSameRow ? grid.getCells()[rowA][rowColB] : grid.getCells()[rowColB][colA];
             List<Integer> candidatesB = cellB.getCandidateList();
-            if (candidatesB.size() != 2)
+            if (candidatesB.size() != 2) {
                 continue;
+            }
             Set<Integer> candidateAB = new HashSet<>(4);
             candidateAB.addAll(candidatesA);
             candidateAB.addAll(candidatesB);
-            if (candidateAB.size() != 3)
+            if (candidateAB.size() != 3) {
                 continue;
+            }
             if (candidatesA.get(0).equals(candidatesB.get(0))) {
                 x = candidatesA.get(0);
                 y = candidatesA.get(1);
@@ -168,56 +184,62 @@ public class MethodXYWing implements IMethod {
             }
 
             //find cellC which is same block with cellA and not same rowcol with CellB
-            for (int rowC = (cellA.rowId / 3) * 3; rowC <= (cellA.rowId / 3) * 3 + 2; rowC++) {
-                if (isABSameRow && rowC == rowA)
+            for (int rowC = (cellA.getRowId() / 3) * 3; rowC <= (cellA.getRowId() / 3) * 3 + 2; rowC++) {
+                if (isABSameRow && rowC == rowA) {
                     continue; //Since A and B in same row, C should not in same row. elsewise apply hidden triplet method.
-                for (int colC = (cellA.columnId / 3) * 3; colC <= (cellA.columnId / 3) * 3 + 2; colC++) {
-                    if (!isABSameRow && colC == colA)
+                }
+                for (int colC = (cellA.getColumnId() / 3) * 3; colC <= (cellA.getColumnId() / 3) * 3 + 2; colC++) {
+                    if (!isABSameRow && colC == colA) {
                         continue; //Since A and B in same col, C should not in same col. elsewise apply hidden triplet method.
-                    Cell cellC = grid.cells[rowC][colC];
+                    }
+                    Cell cellC = grid.getCells()[rowC][colC];
                     List<Integer> candidatesC = cellC.getCandidateList();
-                    if (candidatesC.size() != 2)
+                    if (candidatesC.size() != 2) {
                         continue;
+                    }
                     Set<Integer> candidateAC = new HashSet<>(4);
                     candidateAC.addAll(candidatesA);
                     candidateAC.addAll(candidatesC);
-                    if (candidateAC.size() != 3)
+                    if (candidateAC.size() != 3) {
                         continue;
+                    }
                     if (x.equals(candidatesC.get(0))) {
                         continue; //cellCshould contains y and z only
                     } else if (x.equals(candidatesC.get(1))) {
                         continue; //cellCshould contains y and z only
                     } else if (y.equals(candidatesC.get(0))) {
-                        if (!z.equals(candidatesC.get(1)))
+                        if (!z.equals(candidatesC.get(1))) {
                             continue;
+                        }
                     } else if (y.equals(candidatesC.get(1))) {
-                        if (!z.equals(candidatesC.get(0)))
+                        if (!z.equals(candidatesC.get(0))) {
                             continue;
+                        }
                     } else {
                         throw new RuntimeException("Wrong logic");
                     }
 
                     //XY-Wing detected, now remove z from * cell
                     if (isABSameRow) {
-                        for (int colStar = (cellA.columnId / 3) * 3; colStar <= (cellA.columnId / 3) * 3 + 2; colStar++) {
+                        for (int colStar = (cellA.getColumnId() / 3) * 3; colStar <= (cellA.getColumnId() / 3) * 3 + 2; colStar++) {
                             if ((colStar != colA) && (colStar != rowColB)) {
-                                grid.cells[rowA][colStar].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
+                                grid.getCells()[rowA][colStar].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
                             }
                         }
-                        for (int colStar = (cellB.columnId / 3) * 3; colStar <= (cellB.columnId / 3) * 3 + 2; colStar++) {
+                        for (int colStar = (cellB.getColumnId() / 3) * 3; colStar <= (cellB.getColumnId() / 3) * 3 + 2; colStar++) {
                             if (colStar != colC) {
-                                grid.cells[rowC][colStar].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
+                                grid.getCells()[rowC][colStar].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
                             }
                         }
                     } else {
-                        for (int rowStar = (cellA.rowId / 3) * 3; rowStar <= (cellA.rowId / 3) * 3 + 2; rowStar++) {
+                        for (int rowStar = (cellA.getRowId() / 3) * 3; rowStar <= (cellA.getRowId() / 3) * 3 + 2; rowStar++) {
                             if ((rowStar != rowA) && (rowStar != rowColB)) {
-                                grid.cells[rowStar][colA].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
+                                grid.getCells()[rowStar][colA].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
                             }
                         }
-                        for (int rowStar = (cellB.rowId / 3) * 3; rowStar <= (cellB.rowId / 3) * 3 + 2; rowStar++) {
+                        for (int rowStar = (cellB.getRowId() / 3) * 3; rowStar <= (cellB.getRowId() / 3) * 3 + 2; rowStar++) {
                             if (rowStar != rowC) {
-                                grid.cells[rowStar][colC].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
+                                grid.getCells()[rowStar][colC].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
                             }
                         }
                     }

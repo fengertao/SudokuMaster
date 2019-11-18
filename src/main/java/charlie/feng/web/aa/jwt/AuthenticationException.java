@@ -4,7 +4,7 @@
 
 package charlie.feng.web.aa.jwt;
 
-class AuthenticationException extends RuntimeException {
+public class AuthenticationException extends RuntimeException {
     public AuthenticationException(String message, Throwable cause) {
         super(message, cause);
     }
