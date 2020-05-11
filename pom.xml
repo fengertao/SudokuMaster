@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.1.RELEASE</version>
+        <version>2.2.7.RELEASE</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <groupId>charlie.feng.game</groupId>
@@ -18,12 +18,12 @@
     <description>Sudoku Master Service</description>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>14</java.version>
         <jasypt.sprint.boot.version>2.1.2</jasypt.sprint.boot.version>
         <liquibase.version>3.6.3</liquibase.version>
         <!-- Do NOT upgrade to 3.8. Exception: Error setting up or running Liquibase: javax.persistence.PersistenceException: Unable to resolve persistence unit root URL -->
         <liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
-        <spring-data-jpa.version>2.1.10.RELEASE</spring-data-jpa.version>
+<!--        <spring-data-jpa.version>2.1.10.RELEASE</spring-data-jpa.version>-->
         <!-- Could be override by -P dev/mysql/prod -->
         <springProfilesActive>dev</springProfilesActive>
     </properties>
@@ -147,12 +147,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>3.1.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
-                    <version>3.12.0</version>
+                    <version>3.13.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -180,7 +180,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
+                <version>3.0.0-M1</version>
                 <configuration>
                     <goals>install</goals>
                 </configuration>
@@ -214,7 +214,7 @@
                     <dependency>
                         <groupId>org.springframework.data</groupId>
                         <artifactId>spring-data-jpa</artifactId>
-                        <version>${spring-data-jpa.version}</version>
+                        <version>${project.parent.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.springframework.boot</groupId>
