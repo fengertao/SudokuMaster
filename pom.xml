@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2018-2019,  Charlie Feng. All Rights Reserved.
+  ~ Copyright (c) 2018-2020,  Charlie Feng. All Rights Reserved.
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.7.RELEASE</version>
+        <version>2.3.0.RELEASE</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <groupId>charlie.feng.game</groupId>
@@ -20,18 +20,40 @@
     <properties>
         <java.version>14</java.version>
         <jasypt.sprint.boot.version>2.1.2</jasypt.sprint.boot.version>
-        <liquibase.version>3.6.3</liquibase.version>
+        <liquibase.version>3.9.0</liquibase.version>
         <!-- Do NOT upgrade to 3.8. Exception: Error setting up or running Liquibase: javax.persistence.PersistenceException: Unable to resolve persistence unit root URL -->
-        <liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
-<!--        <spring-data-jpa.version>2.1.10.RELEASE</spring-data-jpa.version>-->
+        <liquibase-hibernate5.version>3.9</liquibase-hibernate5.version>
         <!-- Could be override by -P dev/mysql/prod -->
         <springProfilesActive>dev</springProfilesActive>
     </properties>
-
+    <url>https://github.com/fengertao/SudokuMasterServ</url>
+    <organization>
+        <name>N.A.</name>
+        <url>N.A.</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>All Right Reserved.</name>
+            <url>https://github.com/fengertao/SudokuMasterServ</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Charlie Feng</name>
+            <email>N.A.</email>
+            <organization>N.A.</organization>
+            <organizationUrl>N.A.</organizationUrl>
+        </developer>
+    </developers>
     <scm>
         <connection>scm:git:git@github.com:fengertao/SudokuMasterServ.git</connection>
-        <tag>HEAD</tag>
+        <developerConnection>scm:git:git@github.com:fengertao/SudokuMasterServ.git</developerConnection>
+        <url>https://github.com/fengertao/SudokuMasterServ</url>
     </scm>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/fengertao/SudokuMasterServ/issues</url>
+    </issueManagement>
 
     <dependencies>
         <dependency>
@@ -61,6 +83,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.ulisesbocchio</groupId>
@@ -180,7 +206,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.0.0-M1</version>
+                <version>2.5.3</version>
                 <configuration>
                     <goals>install</goals>
                 </configuration>
@@ -344,7 +370,7 @@
                     <linkXref>true</linkXref>
                     <sourceEncoding>utf-8</sourceEncoding>
                     <minimumTokens>100</minimumTokens>
-                    <targetJdk>13</targetJdk>
+                    <targetJdk>14</targetJdk>
                     <excludes>
 <!--                        <exclude>**/*Bean.java</exclude>-->
                         <exclude>**/generated/*.java</exclude>
