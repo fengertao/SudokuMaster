@@ -113,6 +113,12 @@ sudo java -jar -Djasypt.encryptor.password=blarblar SudokuMaster*.jar &
 history -c && history -w
 ```
 Tips:
+If you forget jasypt master password, but remember mysql user and password, you may run as
+```bash
+sudo java -jar -Dspring.datasource.username=dev -Dspring.datasource.password=MySQL666 SudokuMaster*.jar &
+```
+
+Tips:
 You might want $HISTIGNORE: "A colon-separated list of patterns used to decide which command lines should be saved on the history list."
 This line in your ~/.bashrc should do the job:
 ```properties
