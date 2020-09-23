@@ -6,9 +6,9 @@ package charlie.feng.game.sudokumasterserv.master.method;
 
 import charlie.feng.game.sudokumasterserv.master.Cell;
 import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.Region;
-import com.google.common.collect.Lists;
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
  */
 public class MethodHiddenQuad implements IMethod {
 
+    @Override
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
             checkHiddenQuad(grid.getRows()[i]);
@@ -29,7 +30,7 @@ public class MethodHiddenQuad implements IMethod {
         }
     }
 
-    private void checkHiddenQuad(Region region) {
+    private void checkHiddenQuad(AbstractRegion region) {
         Cell[] cells = region.getCells();
         Set<Integer> k1PossibleOffsetSet;
         Set<Integer> k2PossibleOffsetSet;
@@ -85,7 +86,7 @@ public class MethodHiddenQuad implements IMethod {
                                     if ((kOther == k1) || (kOther == k2) || (kOther == k3) || (kOther == k4)) {
                                         continue;
                                     }
-                                    List<Integer> refCellsIndex = Lists.newArrayList(mergedOffsetSet);
+                                    List<Integer> refCellsIndex = new ArrayList<>(mergedOffsetSet);
                                     refCellsIndex.remove(offset);
                                     List<Cell> refCells = refCellsIndex.stream().map(index -> cells[index]).collect(Collectors.toList());
                                     cells[offset].removeDigitFromCandidate(kOther, this.getClass().getSimpleName(), refCells);

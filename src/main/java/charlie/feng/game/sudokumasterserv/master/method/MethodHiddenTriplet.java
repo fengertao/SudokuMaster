@@ -6,9 +6,9 @@ package charlie.feng.game.sudokumasterserv.master.method;
 
 import charlie.feng.game.sudokumasterserv.master.Cell;
 import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.Region;
-import com.google.common.collect.Lists;
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +19,7 @@ import java.util.Set;
  */
 public class MethodHiddenTriplet implements IMethod {
 
+    @Override
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
             checkHiddenTriplet(grid.getRows()[i]);
@@ -27,7 +28,7 @@ public class MethodHiddenTriplet implements IMethod {
         }
     }
 
-    private void checkHiddenTriplet(Region region) {
+    private void checkHiddenTriplet(AbstractRegion region) {
         Cell[] cells = region.getCells();
         Set<Integer> k1PossibleOffsetSet;
         Set<Integer> k2PossibleOffsetSet;
@@ -73,7 +74,7 @@ public class MethodHiddenTriplet implements IMethod {
                                     continue;
                                 }
                                 //Todo RefCells
-                                cells[offset].removeDigitFromCandidate(kOther, this.getClass().getSimpleName(), Lists.newArrayList());
+                                cells[offset].removeDigitFromCandidate(kOther, this.getClass().getSimpleName(), new ArrayList<>());
                                 //must return here because change always done, some key cell maybe changed.
                                 //                                return;
                             }

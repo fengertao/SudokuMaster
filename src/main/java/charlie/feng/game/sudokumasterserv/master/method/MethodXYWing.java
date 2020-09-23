@@ -6,8 +6,8 @@ package charlie.feng.game.sudokumasterserv.master.method;
 
 import charlie.feng.game.sudokumasterserv.master.Cell;
 import charlie.feng.game.sudokumasterserv.master.Grid;
-import com.google.common.collect.Lists;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +41,7 @@ import java.util.Set;
  * 分析方法与之前一样，结果是打星号的单元格中不能出现候选数Z。
  */
 public class MethodXYWing implements IMethod {
+    @Override
     public void apply(Grid grid) {
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
@@ -128,7 +129,7 @@ public class MethodXYWing implements IMethod {
                 }
 
                 //XY-Wing detected, now remove z from * cell
-                grid.getCells()[rowC][colB].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
+                grid.getCells()[rowC][colB].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Arrays.asList(cellA, cellB, cellC));
             }
 
         }
@@ -223,23 +224,23 @@ public class MethodXYWing implements IMethod {
                     if (isABSameRow) {
                         for (int colStar = (cellA.getColumnId() / 3) * 3; colStar <= (cellA.getColumnId() / 3) * 3 + 2; colStar++) {
                             if ((colStar != colA) && (colStar != rowColB)) {
-                                grid.getCells()[rowA][colStar].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
+                                grid.getCells()[rowA][colStar].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Arrays.asList(cellA, cellB, cellC));
                             }
                         }
                         for (int colStar = (cellB.getColumnId() / 3) * 3; colStar <= (cellB.getColumnId() / 3) * 3 + 2; colStar++) {
                             if (colStar != colC) {
-                                grid.getCells()[rowC][colStar].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
+                                grid.getCells()[rowC][colStar].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Arrays.asList(cellA, cellB, cellC));
                             }
                         }
                     } else {
                         for (int rowStar = (cellA.getRowId() / 3) * 3; rowStar <= (cellA.getRowId() / 3) * 3 + 2; rowStar++) {
                             if ((rowStar != rowA) && (rowStar != rowColB)) {
-                                grid.getCells()[rowStar][colA].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
+                                grid.getCells()[rowStar][colA].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Arrays.asList(cellA, cellB, cellC));
                             }
                         }
                         for (int rowStar = (cellB.getRowId() / 3) * 3; rowStar <= (cellB.getRowId() / 3) * 3 + 2; rowStar++) {
                             if (rowStar != rowC) {
-                                grid.getCells()[rowStar][colC].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Lists.newArrayList(cellA, cellB, cellC));
+                                grid.getCells()[rowStar][colC].removeDigitFromCandidate(z, this.getClass().getSimpleName(), Arrays.asList(cellA, cellB, cellC));
                             }
                         }
                     }

@@ -6,7 +6,7 @@ package charlie.feng.game.sudokumasterserv.master;
 
 import java.util.Set;
 
-public class Block extends Region {
+public class Block extends AbstractRegion {
 
     private int blockR;
     private int blockC;

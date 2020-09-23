@@ -18,6 +18,7 @@ import java.util.Set;
  */
 public class MethodCombinationElimination implements IMethod {
 
+    @Override
     public void apply(Grid grid) {
         for (int i = 0; i < 3; i++) {
             checkSmallShape(grid.getBlocks()[i * 3], grid.getBlocks()[i * 3 + 1], grid.getBlocks()[i * 3 + 2], true);

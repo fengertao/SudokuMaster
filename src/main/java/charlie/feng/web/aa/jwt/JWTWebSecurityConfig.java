@@ -128,7 +128,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/index.html")
                 //Todo Below url are used by ReactJs 16.10
                 .antMatchers("/images/**", "/static/**", "/*.json", "/*.js", "/logo.*", "/theme.less", "/robot.txt", "/favicon.ico", "/app/**");
-        if (h2ConsoleEnabled && !StringUtils.isEmpty(h2ConsolePath)) { //Not for production!
+        //Not for production!
+        if (h2ConsoleEnabled && !StringUtils.isEmpty(h2ConsolePath)) {
             ignoredRequestConfigurer.antMatchers("/h2-console/**");
         }
     }

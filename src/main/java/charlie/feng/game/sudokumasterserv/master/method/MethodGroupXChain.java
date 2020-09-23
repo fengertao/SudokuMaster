@@ -14,6 +14,7 @@ import charlie.feng.game.sudokumasterserv.master.Grid;
 
 public class MethodGroupXChain implements IMethod {
 
+    @Override
     public void apply(Grid grid) {
         //Todo to be implement
     }

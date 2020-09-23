@@ -6,9 +6,9 @@ package charlie.feng.game.sudokumasterserv.master.method;
 
 import charlie.feng.game.sudokumasterserv.master.Cell;
 import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.Region;
-import com.google.common.collect.ImmutableList;
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
 
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -23,6 +23,7 @@ import java.util.Set;
  */
 public class MethodHiddenPair implements IMethod {
 
+    @Override
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
             checkHiddenPair(grid.getRows()[i]);
@@ -31,7 +32,7 @@ public class MethodHiddenPair implements IMethod {
         }
     }
 
-    private void checkHiddenPair(Region region) {
+    private void checkHiddenPair(AbstractRegion region) {
         Cell[] cells = region.getCells();
         Set<Integer> k1PossibleOffsetSet;
         Set<Integer> k2PossibleOffsetSet;
@@ -60,7 +61,7 @@ public class MethodHiddenPair implements IMethod {
                                 continue;
                             }
                             int refIndex = k2PossibleOffsetSet.stream().reduce(Integer::sum).get() - offset;
-                            cells[offset].removeDigitFromCandidate(kOther, this.getClass().getSimpleName(), ImmutableList.of(cells[refIndex]));
+                            cells[offset].removeDigitFromCandidate(kOther, this.getClass().getSimpleName(), Collections.singletonList(cells[refIndex]));
                             //must return here because change always done, some key cell maybe changed.
                             //                            return;
                         }

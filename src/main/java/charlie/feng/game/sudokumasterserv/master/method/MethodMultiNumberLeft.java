@@ -15,6 +15,7 @@ import charlie.feng.game.sudokumasterserv.master.Grid;
 
 public class MethodMultiNumberLeft implements IMethod {
 
+    @Override
     public void apply(Grid grid) {
     }
 

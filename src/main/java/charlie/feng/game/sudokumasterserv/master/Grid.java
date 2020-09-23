@@ -15,7 +15,8 @@ public class Grid {
     private Row[] rows;
     private Column[] columns;
     private Block[] blocks;
-    private Grid expectedAnswer; //for debug purpose only.
+    //for debug purpose only
+    private Grid expectedAnswer;
     private Resolution resolution = new Resolution();
     private boolean isChangedInCycle;
 

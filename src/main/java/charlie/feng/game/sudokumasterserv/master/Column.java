@@ -4,7 +4,7 @@
 
 package charlie.feng.game.sudokumasterserv.master;
 
-public class Column extends Region {
+public class Column extends AbstractRegion {
 
     public Column(Grid grid, int colId) {
         this.setGrid(grid);

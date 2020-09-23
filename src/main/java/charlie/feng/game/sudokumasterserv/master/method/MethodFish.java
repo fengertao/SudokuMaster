@@ -16,6 +16,7 @@ import charlie.feng.game.sudokumasterserv.master.Grid;
 
 public class MethodFish implements IMethod {
 
+    @Override
     public void apply(Grid grid) {
         //Todo to be implement
     }

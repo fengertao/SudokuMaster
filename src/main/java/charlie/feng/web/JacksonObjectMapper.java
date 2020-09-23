@@ -9,7 +9,6 @@ public class JacksonObjectMapper {
     public ObjectMapper objectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-//        mapper.enable(SerializationFeature.INDENT_OUTPUT).setDateFormat(new SimpleDateFormat("dd-MM-yyyy hh:mm"));
         return mapper;
     }
 }

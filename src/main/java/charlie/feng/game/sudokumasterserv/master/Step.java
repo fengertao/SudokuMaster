@@ -12,15 +12,17 @@ public class Step {
 
     private static Logger logger = LoggerFactory.getLogger(Step.class);
 
-    private int index;
-    private String cell;
-    private JSONArray refCells;
-    private String preChangeCandidates;
-    private String position;
-    private String techKey; //Todo i18n
-    private MsgKey msgKey;
-    private String[] msgParams;
-    private int level; //detail level. 0: start, end resolving. 1: generate value. 2: remove candidate value.
+    private final int index;
+    private final String cell;
+    private final JSONArray refCells;
+    private final String preChangeCandidates;
+    private final String position;
+    //Todo I18n
+    private final String techKey;
+    private final MsgKey msgKey;
+    private final String[] msgParams;
+    //detail level. 0: start, end resolving. 1: generate value. 2: remove candidate value.
+    private int level;
 
     public Step(int index, Cell cell, String preChangeCandidates, List<Cell> refCells, String position, String techKey, MsgKey msgKey, String[] msgParams) {
         this.index = index;

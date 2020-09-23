@@ -6,9 +6,9 @@ package charlie.feng.game.sudokumasterserv.master.method;
 
 import charlie.feng.game.sudokumasterserv.master.Cell;
 import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.Region;
-import com.google.common.collect.ImmutableList;
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +19,7 @@ import java.util.Set;
  */
 public class MethodNakedQuad implements IMethod {
 
+    @Override
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
             checkNakedQuad(grid.getRows()[i]);
@@ -27,7 +28,7 @@ public class MethodNakedQuad implements IMethod {
         }
     }
 
-    private void checkNakedQuad(Region region) {
+    private void checkNakedQuad(AbstractRegion region) {
         Cell[] cells = region.getCells();
         Set<Integer> supportNumberSet = new HashSet<>();
         for (int i1 = 3; i1 < 9; i1++) {
@@ -62,7 +63,7 @@ public class MethodNakedQuad implements IMethod {
                             excludeCells[3] = cells[i4];
 
                             for (Integer hiddenNumber : supportNumberSet) {
-                                region.removeDigit(hiddenNumber, excludeCells, ImmutableList.of(cells[i1], cells[i2], cells[i3], cells[i4]));
+                                region.removeDigit(hiddenNumber, excludeCells, Arrays.asList(cells[i1], cells[i2], cells[i3], cells[i4]));
                                 //must return here because change always done, some key cell maybe changed.
                                 //                                return;
                             }

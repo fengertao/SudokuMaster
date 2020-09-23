@@ -5,7 +5,7 @@
 package charlie.feng.game.sudokumasterserv.master.method;
 
 import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.Region;
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
 
 import java.util.ArrayList;
 
@@ -14,6 +14,7 @@ import java.util.ArrayList;
  */
 public class MethodHiddenSingle implements IMethod {
 
+    @Override
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
             checkHiddenSingle(grid.getRows()[i]);
@@ -22,7 +23,7 @@ public class MethodHiddenSingle implements IMethod {
         }
     }
 
-    private void checkHiddenSingle(Region region) {
+    private void checkHiddenSingle(AbstractRegion region) {
         for (int digit = 1; digit <= 9; digit++) {
             if (region.isDigitGained(digit)) {
                 continue;

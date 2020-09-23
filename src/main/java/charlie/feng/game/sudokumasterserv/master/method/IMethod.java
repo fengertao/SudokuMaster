@@ -11,6 +11,10 @@ import charlie.feng.game.sudokumasterserv.master.Grid;
  */
 public interface IMethod {
 
+    /**
+     * Execute the method, change grid position if any opportunity found.
+     * @param grid the Grid to be play
+     */
     void apply(Grid grid);
 
 }

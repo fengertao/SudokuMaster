@@ -19,7 +19,7 @@ import java.util.Optional;
 public class JwtJPAUserDetailsService implements UserDetailsService {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private static List<JwtUserDetails> inMemoryUserList = new ArrayList<>();
+    private static final List<JwtUserDetails> IN_MEMORY_USER_LIST = new ArrayList<>();
 
     // Build-in user will save into datadabase by liquibase. keep below code for reference only.
     // Call org.springframework.security.crypto.bcrypt.BCrypt.hashpw(plain_password, BCrypt.gensalt()) to generate password.
@@ -35,7 +35,7 @@ public class JwtJPAUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<JwtUserDetails> findInMemory = inMemoryUserList.stream()
+        Optional<JwtUserDetails> findInMemory = IN_MEMORY_USER_LIST.stream()
                 .filter(user -> user.getUsername().equals(username)).findFirst();
 
         if (findInMemory.isPresent()) {

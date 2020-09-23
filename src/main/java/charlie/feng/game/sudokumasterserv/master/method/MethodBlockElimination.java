@@ -6,8 +6,9 @@ package charlie.feng.game.sudokumasterserv.master.method;
 
 import charlie.feng.game.sudokumasterserv.master.Block;
 import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.Region;
-import com.google.common.collect.ImmutableList;
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
+
+import java.util.Arrays;
 
 /**
  * 区块排除法
@@ -18,6 +19,8 @@ import com.google.common.collect.ImmutableList;
  * 当某数字在某列中可填入的位置正好都在同一区块上，因为该列中必须要有该数字，所以该区块中不在该列内的单元格上将不能再出现该数字。
  */
 public class MethodBlockElimination implements IMethod {
+
+    @Override
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {
             checkHiddenCellInRowColumn(grid, grid.getRows()[i], true);
@@ -26,7 +29,7 @@ public class MethodBlockElimination implements IMethod {
         }
     }
 
-    private void checkHiddenCellInRowColumn(Grid grid, Region region, boolean isRow) {
+    private void checkHiddenCellInRowColumn(Grid grid, AbstractRegion region, boolean isRow) {
         for (int k = 1; k <= 9; k++) {
             if (region.isDigitGained(k)) {
                 continue;
@@ -48,7 +51,7 @@ public class MethodBlockElimination implements IMethod {
                 } else {
                     blockId = region.getId() / 3 + hiddenSubRegionOffset * 3;
                 }
-                grid.getBlocks()[blockId].removeDigit(k, region.getSubRegion()[hiddenSubRegionOffset].getCells(), ImmutableList.copyOf(region.getSubRegion()[hiddenSubRegionOffset].getCells()));
+                grid.getBlocks()[blockId].removeDigit(k, region.getSubRegion()[hiddenSubRegionOffset].getCells(), Arrays.asList(region.getSubRegion()[hiddenSubRegionOffset].getCells()));
                 //must return here because change always done, some key cell maybe changed.
                 //                return;
             }
@@ -71,7 +74,7 @@ public class MethodBlockElimination implements IMethod {
             }
 
             if (subRegionCount == 1) {
-                grid.getRows()[block.getBlockR() * 3 + hiddenSubRegionOffset].removeDigit(k, block.getSubRows()[hiddenSubRegionOffset].getCells(), ImmutableList.copyOf(block.getSubRows()[hiddenSubRegionOffset].getCells()));
+                grid.getRows()[block.getBlockR() * 3 + hiddenSubRegionOffset].removeDigit(k, block.getSubRows()[hiddenSubRegionOffset].getCells(), Arrays.asList(block.getSubRows()[hiddenSubRegionOffset].getCells()));
             }
 
             subRegionCount = 0;
@@ -85,7 +88,7 @@ public class MethodBlockElimination implements IMethod {
             }
 
             if (subRegionCount == 1) {
-                grid.getColumns()[block.getBlockC() * 3 + hiddenSubRegionOffset].removeDigit(k, block.getSubColumns()[hiddenSubRegionOffset].getCells(), ImmutableList.copyOf(block.getSubColumns()[hiddenSubRegionOffset].getCells()));
+                grid.getColumns()[block.getBlockC() * 3 + hiddenSubRegionOffset].removeDigit(k, block.getSubColumns()[hiddenSubRegionOffset].getCells(), Arrays.asList(block.getSubColumns()[hiddenSubRegionOffset].getCells()));
             }
 
         }

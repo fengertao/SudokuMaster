@@ -17,6 +17,7 @@ import java.util.ArrayList;
  */
 public class MethodNakedSingle implements IMethod {
 
+    @Override
     public void apply(Grid grid) {
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {

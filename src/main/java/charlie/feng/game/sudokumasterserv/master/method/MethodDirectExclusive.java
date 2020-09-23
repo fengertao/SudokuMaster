@@ -13,6 +13,7 @@ import charlie.feng.game.sudokumasterserv.master.Grid;
  */
 //Todo whether this method should be before first cycle only?
 public class MethodDirectExclusive implements IMethod {
+    @Override
     public void apply(Grid grid) {
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {

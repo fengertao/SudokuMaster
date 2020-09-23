@@ -2,8 +2,8 @@ package charlie.feng.web;
 
 public class ErrorInfo {
 
-    private String errorToken;
-    private String message;
+    private final String errorToken;
+    private final String message;
 
     public String getErrorToken() {
         return errorToken;

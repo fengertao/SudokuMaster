@@ -29,7 +29,7 @@ public class GridControllerTest {
     private GridController gridController;
     private MockMvc mvc;
 
-    private Matcher<String> numberRangeMatcher = new BaseMatcher<String>() {
+    private final Matcher<String> numberRangeMatcher = new BaseMatcher<>() {
         public boolean matches(Object value) {
             int intValue = Integer.parseInt(value.toString());
             return intValue > 100 && intValue < 1000;

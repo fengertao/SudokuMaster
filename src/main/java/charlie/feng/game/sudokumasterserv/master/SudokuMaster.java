@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
 
 /**
  * Reference Documents:
@@ -27,14 +27,14 @@ public class SudokuMaster {
 
     private static Logger logger = LoggerFactory.getLogger(SudokuMaster.class);
 
-    private List<IMethod> methods = new ArrayList<>();
+    private final List<IMethod> methods = new ArrayList<>();
 
     public SudokuMaster() {
         this.initialMethod();
     }
 
     public void play(Grid grid) {
-        Date startTime = new Date();
+        long startTime = System.currentTimeMillis();
         initialMethod();
         int cycle = 0;
         grid.setChangedInCycle(true);
@@ -48,17 +48,17 @@ public class SudokuMaster {
             }
         }
 
-        Date endTime = new Date();
+        long endTime = System.currentTimeMillis();
 
         if (grid.isResolved()) {
             grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.SUCCESS_RESOLVE);
             logger.info("Successfully Resolved Grid " + grid.getId());
-            logger.info("Executed " + cycle + " Cycles in " + (endTime.getTime() - startTime.getTime()) + "ms");
+            logger.info("Executed " + cycle + " Cycles in " + (endTime - startTime) + "ms");
         } else {
             grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.ABORT_RESOLVE);
             logger.info("Incompleted Grid: " + grid.getId());
             logger.info("Resolved Cells:   " + grid.getNumberOfResolvedCells());
-            logger.info("Executed " + cycle + " Cycles in " + (endTime.getTime() - startTime.getTime()) + "ms");
+            logger.info("Executed " + cycle + " Cycles in " + (endTime - startTime) + "ms");
         }
     }
 

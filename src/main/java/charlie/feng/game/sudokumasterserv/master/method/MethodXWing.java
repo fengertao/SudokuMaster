@@ -6,7 +6,7 @@ package charlie.feng.game.sudokumasterserv.master.method;
 
 import charlie.feng.game.sudokumasterserv.master.Cell;
 import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.Region;
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ import java.util.Set;
 
 public class MethodXWing implements IMethod {
 
+    @Override
     public void apply(Grid grid) {
         for (int k = 1; k <= 9; k++) {
             checkXWing(grid, k, true);
@@ -35,7 +36,7 @@ public class MethodXWing implements IMethod {
         Set<Integer> possibleOffsetSet2;
 
         for (int i1 = 1; i1 < 9; i1++) {
-            Region region1 = (isRow ? grid.getRows()[i1] : grid.getColumns()[i1]);
+            AbstractRegion region1 = (isRow ? grid.getRows()[i1] : grid.getColumns()[i1]);
             if (region1.isDigitGained(value)) {
                 continue;
             }
@@ -44,7 +45,7 @@ public class MethodXWing implements IMethod {
                 continue;
             }
             for (int i2 = 0; i2 < i1; i2++) {
-                Region region2 = (isRow ? grid.getRows()[i2] : grid.getColumns()[i2]);
+                AbstractRegion region2 = (isRow ? grid.getRows()[i2] : grid.getColumns()[i2]);
                 if (region2.isDigitGained(value)) {
                     continue;
                 }
@@ -72,7 +73,7 @@ public class MethodXWing implements IMethod {
                     if ((iOther == i1) || (iOther == i2)) {
                         continue;
                     }
-                    Region regionOther = (isRow ? grid.getRows()[iOther] : grid.getColumns()[iOther]);
+                    AbstractRegion regionOther = (isRow ? grid.getRows()[iOther] : grid.getColumns()[iOther]);
                     regionOther.getCells()[offsetArray[0]].removeDigitFromCandidate(value, this.getClass().getSimpleName(), refCells);
                     regionOther.getCells()[offsetArray[1]].removeDigitFromCandidate(value, this.getClass().getSimpleName(), refCells);
                 }

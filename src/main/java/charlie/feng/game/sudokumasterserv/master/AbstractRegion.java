@@ -4,21 +4,25 @@
 
 package charlie.feng.game.sudokumasterserv.master;
 
-import com.google.common.collect.Lists;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class Region {
-    private static Set<Integer> expectedSet = new HashSet<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+public abstract class AbstractRegion {
+    private static final Set<Integer> EXPECTED_SET = new HashSet<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
 
     private Cell[] cells;
     private SubRegion[] subRegion;
     private int id;
     private Grid grid;
 
+    /**
+     * get the I18n message key for region type
+     * @return I18n message key for region type
+     */
     protected abstract MsgKey getMsgKeyForValueExistType();
 
     public boolean isDigitGained(int value) {
@@ -37,9 +41,9 @@ public abstract class Region {
             if (!neighbor.equals(cell)) {
                 if (neighbor.getValue() == null) {
 
-                    neighbor.removeDigitFromCandidate(value, getMsgKeyForValueExistType().name(), Lists.newArrayList(cell));
+                    neighbor.removeDigitFromCandidate(value, getMsgKeyForValueExistType().name(), Collections.singletonList(cell));
                     if (neighbor.getNumberOfCandidates() == 1) {
-                        neighbor.resolvedByNakedSingle(Lists.newArrayList(cell));
+                        neighbor.resolvedByNakedSingle(Collections.singletonList(cell));
                     }
                 }
             }
@@ -55,17 +59,16 @@ public abstract class Region {
             resultSet.add(getCells()[i].getValue());
         }
 
-        if (!resultSet.equals(expectedSet)) {
+        if (!resultSet.equals(EXPECTED_SET)) {
             //Todo better exception handling
             throw new RuntimeException(
                     "validate failure, Grid id:" + getGrid().getId() + " " + this.getClass().getSimpleName() + " id:" + getId() + " result:" + resultSet);
         }
     }
 
-    /**
+    /*
      * remove k from this group candidate number list, it is must not in the excludeCells list;
      */
-
     public void removeDigit(int k, Cell[] excludeCells, List<Cell> refCells) {
         for (int i = 0; i < 9; i++) {
             Cell currentCell = getCells()[i];

@@ -16,9 +16,9 @@ public class Cell {
     private int rowId;
     private int columnId;
     private Integer value;
-    private boolean[] candidates;
-    private int blockId;
-    private Grid grid;
+    private final boolean[] candidates;
+    private final int blockId;
+    private final Grid grid;
     private boolean noticedNeighbor = false;
 
     public Cell(Grid grid, int r, int c, int b, String value) {
@@ -27,7 +27,7 @@ public class Cell {
         this.setColumnId(c);
         this.blockId = b;
         candidates = new boolean[9];
-        if (value == null || value.equals("0")) {
+        if (value == null || "0".equals(value)) {
             this.value = null;
             for (int k = 0; k < 9; k++) {
                 candidates[k] = true;
@@ -46,7 +46,7 @@ public class Cell {
         this.setColumnId(c);
         this.blockId = b;
         candidates = new boolean[9];
-        if ((value == null) || (value.equals("0"))) {
+        if ((value == null) || ("0".equals(value))) {
             this.value = null;
             String positionFullValue = StringUtils.isEmpty(positionValue) ? "123456789" : positionValue;
             for (int k = 0; k < 9; k++) {
@@ -92,7 +92,7 @@ public class Cell {
             }
         }
         String candidatesStr = builder.toString();
-        return candidatesStr.equals("123456789") ? "" : candidatesStr;
+        return "123456789".equals(candidatesStr) ? "" : candidatesStr;
     }
 
     public String locationString() {
