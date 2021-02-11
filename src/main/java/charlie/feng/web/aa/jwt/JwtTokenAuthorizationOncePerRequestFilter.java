@@ -63,7 +63,7 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
             logger.debug("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
         }
 
-        if (!StringUtils.isEmpty(username)) {
+        if (StringUtils.hasText(username)) {
             logger.debug("JWT_TOKEN_USERNAME_VALUE '{}'", username);
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

@@ -48,7 +48,7 @@ public class Cell {
         candidates = new boolean[9];
         if ((value == null) || ("0".equals(value))) {
             this.value = null;
-            String positionFullValue = StringUtils.isEmpty(positionValue) ? "123456789" : positionValue;
+            String positionFullValue = !StringUtils.hasText(positionValue) ? "123456789" : positionValue;
             for (int k = 0; k < 9; k++) {
                 candidates[k] = positionFullValue.contains(String.valueOf(k + 1));
             }

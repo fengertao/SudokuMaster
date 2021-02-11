@@ -13,9 +13,9 @@ Sudoku Master source code contains 2 part:
 ### Software Environment
 
 Install below software into your develop box. (Linux, Mac, or Windows with Git Bash)
-* NodeJS (12.0.0+)
-* Yarn (1.19.0+)
-* JDK (1.8+)
+* NodeJS (15.8.0+)
+* Yarn (1.22.4+)
+* JDK (15+)
 * Maven (3.5+)
 * IDE (Suggest Intellij for SudokuMasterServ and Visual Studio Code for SudokuMasterUI)
 

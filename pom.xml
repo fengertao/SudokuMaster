@@ -18,7 +18,7 @@
     <description>Sudoku Master Service</description>
 
     <properties>
-        <java.version>14</java.version>
+        <java.version>15</java.version>
         <jasypt.sprint.boot.version>3.0.3</jasypt.sprint.boot.version>
         <liquibase.version>4.2.2</liquibase.version>
         <!-- Do NOT upgrade to 3.8. Exception: Error setting up or running Liquibase: javax.persistence.PersistenceException: Unable to resolve persistence unit root URL -->
@@ -138,6 +138,11 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.dpaukov</groupId>
+            <artifactId>combinatoricslib3</artifactId>
+            <version>3.3.0</version>
         </dependency>
 
         <dependency>
