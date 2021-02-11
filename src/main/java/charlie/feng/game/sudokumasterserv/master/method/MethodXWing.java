@@ -7,10 +7,13 @@ package charlie.feng.game.sudokumasterserv.master.method;
 import charlie.feng.game.sudokumasterserv.master.Cell;
 import charlie.feng.game.sudokumasterserv.master.Grid;
 import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
+import org.paukov.combinatorics3.Generator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 
 /**
  * 矩形对角线法 (X-wing)
@@ -23,60 +26,61 @@ import java.util.Set;
 
 public class MethodXWing implements IMethod {
 
+    protected int getNumberOfRegions() {
+        return 2;
+    }
+
     @Override
     public void apply(Grid grid) {
         for (int k = 1; k <= 9; k++) {
-            checkXWing(grid, k, true);
-            checkXWing(grid, k, false);
+            checkInGrid(grid, k, true);
+            checkInGrid(grid, k, false);
         }
     }
 
-    private void checkXWing(Grid grid, int value, boolean isRow) {
-        Set<Integer> possibleOffsetSet1;
-        Set<Integer> possibleOffsetSet2;
+    private void checkInGrid(Grid grid, int value, boolean isRow) {
 
-        for (int i1 = 1; i1 < 9; i1++) {
-            AbstractRegion region1 = (isRow ? grid.getRows()[i1] : grid.getColumns()[i1]);
-            if (region1.isDigitGained(value)) {
+        Generator.combination(0, 1, 2, 3, 4, 5, 6, 7, 8)
+                .simple(getNumberOfRegions())
+                .stream()
+                .forEach(regionIds -> checkInRegion(regionIds, grid, value, isRow));
+    }
+
+    private void checkInRegion(List<Integer> regionIds, Grid grid, int value, boolean isRow) {
+        Set<Integer> possibleOffsetSet = new HashSet<>();
+        int numberOfRegions = regionIds.size();
+        for (int i : regionIds) {
+            AbstractRegion region = (isRow ? grid.getRows()[i] : grid.getColumns()[i]);
+            if (region.isDigitGained(value)) {
+                return;
+            }
+            Set<Integer> iPossibleOffsetSet = region.getPossibleOffset(value);
+            possibleOffsetSet.addAll(iPossibleOffsetSet);
+            if (possibleOffsetSet.size() > numberOfRegions) {
+                return;
+            }
+        }
+        //X-Wing detected, start clear
+        Integer[] offsetArray = possibleOffsetSet.toArray(new Integer[0]);
+        List<Cell> refCells = new ArrayList<>();
+        for (Integer offset : offsetArray) {
+            if (isRow) {
+                for (int i : regionIds) {
+                    refCells.add(grid.getCells()[i][offset]);
+                }
+            } else {
+                for (int i : regionIds) {
+                    refCells.add(grid.getCells()[offset][i]);
+                }
+            }
+        }
+        for (int iOther = 0; iOther < 9; iOther++) {
+            if (regionIds.contains(iOther)) {
                 continue;
             }
-            possibleOffsetSet1 = region1.getPossibleOffset(value);
-            if (possibleOffsetSet1.size() != 2) {
-                continue;
-            }
-            for (int i2 = 0; i2 < i1; i2++) {
-                AbstractRegion region2 = (isRow ? grid.getRows()[i2] : grid.getColumns()[i2]);
-                if (region2.isDigitGained(value)) {
-                    continue;
-                }
-                possibleOffsetSet2 = region2.getPossibleOffset(value);
-                if (possibleOffsetSet2.size() != 2) {
-                    continue;
-                }
-                if (!possibleOffsetSet1.equals(possibleOffsetSet2)) {
-                    continue;
-                }
-                //X-Wing detected, start clear
-                Integer[] offsetArray = possibleOffsetSet1.toArray(new Integer[2]);
-                List<Cell> refCells = new ArrayList<>();
-                for (Integer offset : offsetArray) {
-                    if (isRow) {
-                        refCells.add(grid.getCells()[i1][offset]);
-                        refCells.add(grid.getCells()[i2][offset]);
-                    } else {
-                        refCells.add(grid.getCells()[offset][i1]);
-                        refCells.add(grid.getCells()[offset][i2]);
-                    }
-                }
-
-                for (int iOther = 0; iOther < 9; iOther++) {
-                    if ((iOther == i1) || (iOther == i2)) {
-                        continue;
-                    }
-                    AbstractRegion regionOther = (isRow ? grid.getRows()[iOther] : grid.getColumns()[iOther]);
-                    regionOther.getCells()[offsetArray[0]].removeDigitFromCandidate(value, this.getClass().getSimpleName(), refCells);
-                    regionOther.getCells()[offsetArray[1]].removeDigitFromCandidate(value, this.getClass().getSimpleName(), refCells);
-                }
+            AbstractRegion regionOther = (isRow ? grid.getRows()[iOther] : grid.getColumns()[iOther]);
+            for (int offset : offsetArray) {
+                regionOther.getCells()[offset].removeDigitFromCandidate(value, this.getClass().getSimpleName(), refCells);
             }
         }
     }

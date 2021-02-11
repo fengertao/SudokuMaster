@@ -104,10 +104,17 @@ public class Cell {
         return candidates[digit - 1];
     }
 
-    public void removeDigitFromCandidate(Integer digit, String methodName, List<Cell> refCells) {
+    /**
+     *
+     * @param digit
+     * @param methodName
+     * @param refCells
+     * @return true for really remove digit, false for digit doesn't existing before remove
+     */
+    public boolean removeDigitFromCandidate(Integer digit, String methodName, List<Cell> refCells) {
         validateRemoveDigitFromCandidate(digit);
         if (!candidates[digit - 1]) {
-            return;
+            return false;
         }
         String preChangeCandidates = getCandidateString();
         grid.setChangedInCycle(true);
@@ -116,6 +123,7 @@ public class Cell {
         if (getNumberOfCandidates() == 1) {
             gainValue(getCandidateList().get(0), methodName, refCells, preChangeCandidates);
         }
+        return true;
     }
 
     public void resolvedByNakedSingle(List<Cell> refCells) {
