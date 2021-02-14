@@ -24,8 +24,6 @@ public class JwtJPAUserDetailsService implements UserDetailsService {
     // Build-in user will save into datadabase by liquibase. keep below code for reference only.
     // Call org.springframework.security.crypto.bcrypt.BCrypt.hashpw(plain_password, BCrypt.gensalt()) to generate password.
     // inMemoryUserList.add(new JwtUserDetails(1L, "charlie", "$2a$10$R1AqQ0jWE.uWwwzl5fwgOOdmWq0.yXCEqc65p4600KHJli.VK.Pke", "ROLE_ADMIN")); //password 888
-    //static {
-    //}
 
     private final UserRepository userRepository;
 

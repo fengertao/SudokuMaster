@@ -30,7 +30,7 @@ public class Grid {
         load(id, position);
     }
 
-    private void load(String gridId) {
+    public void load(String gridId) {
         if ((gridId == null) || gridId.length() != 81) {
             throw new IllegalArgumentException("Wrong grid id:" + id);
         }
@@ -124,7 +124,7 @@ public class Grid {
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
                 Integer value = getCells()[r][c].getValue();
-                builder.append(value);
+                builder.append(value == null ? "0" : value);
             }
         }
         return builder.toString();

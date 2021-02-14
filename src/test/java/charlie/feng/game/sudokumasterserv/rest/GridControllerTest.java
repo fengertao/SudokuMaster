@@ -101,11 +101,6 @@ public class GridControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("resolved").value(false))
                 .andExpect(jsonPath("msg").value("数独盘面由81位数字组成。空格请输入0。"));
-
-        //        mvc.perform(MockMvcRequestBuilders.post("/user/post")
-        //                .param("id","3")
-        //                .param("age","18"))
-        //                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test

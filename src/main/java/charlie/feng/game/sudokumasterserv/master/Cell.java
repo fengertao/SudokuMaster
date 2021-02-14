@@ -169,6 +169,14 @@ public class Cell {
         gainValue(digit, methodName, refCells, getCandidateString());
     }
 
+    /**
+     * Try set the value to cell. only used in bruteforce or try related method
+     * @param digit
+     */
+    public void tryValue(int digit) {
+        value = digit;
+    }
+
     private void validateRemoveDigitFromCandidate(Integer digit) {
         //Todo validate more ?
         if (grid.getExpectedAnswer() != null) {

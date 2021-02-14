@@ -6,7 +6,7 @@ package charlie.feng.game.sudokumasterserv.master;
 public enum MsgKey {
     START_RESOLVE("Start resolving grid %s", "开始解决数独", 0),
     SUCCESS_RESOLVE("Resolved grid %s", "成功解决数独", 0),
-    ABORT_RESOLVE("Abort resolving grid %s", "放弃解决数独", 0),
+    BRUTE_FORCE_RESOLVE("Brute force resolved grid %s", "暴力尝试解决数独", 0),
     //p1 is cell location, p2 is new value
     GET_VALUE("Get value [%s].", "填入 [%s].", 1),
     //p1 is cell location, p2 is new value, p3 is remain value
