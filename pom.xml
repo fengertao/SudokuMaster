@@ -13,7 +13,7 @@
     </parent>
     <groupId>charlie.feng.game</groupId>
     <artifactId>sudokumasterserv</artifactId>
-    <version>0.7.0</version>
+    <version>0.7.1-SNAPSHOT</version>
     <name>sudokumasterserv</name>
     <description>Sudoku Master Service</description>
 
