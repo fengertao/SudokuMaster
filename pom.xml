@@ -2,14 +2,14 @@
 <!--
   ~ Copyright (c) 2018-2020,  Charlie Feng. All Rights Reserved.
   -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.2</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <version>2.4.4</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>charlie.feng.game</groupId>
     <artifactId>sudokumasterserv</artifactId>
@@ -18,10 +18,9 @@
     <description>Sudoku Master Service</description>
 
     <properties>
-        <java.version>15</java.version>
+        <java.version>16</java.version>
         <jasypt.sprint.boot.version>3.0.3</jasypt.sprint.boot.version>
         <liquibase.version>4.2.2</liquibase.version>
-        <!-- Do NOT upgrade to 3.8. Exception: Error setting up or running Liquibase: javax.persistence.PersistenceException: Unable to resolve persistence unit root URL -->
         <liquibase-hibernate5.version>4.0.0</liquibase-hibernate5.version>
         <!-- Could be override by -P dev/mysql/prod -->
         <springProfilesActive>dev</springProfilesActive>
@@ -49,8 +48,8 @@
         <connection>scm:git:git@github.com:fengertao/SudokuMasterServ.git</connection>
         <developerConnection>scm:git:git@github.com:fengertao/SudokuMasterServ.git</developerConnection>
         <url>https://github.com/fengertao/SudokuMasterServ</url>
-      <tag>sudokumasterserv-0.7.0</tag>
-  </scm>
+        <tag>sudokumasterserv-0.7.0</tag>
+    </scm>
     <issueManagement>
         <system>GitHub</system>
         <url>https://github.com/fengertao/SudokuMasterServ/issues</url>
@@ -208,7 +207,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${parent.version}</version>
+                <version>${project.parent.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -218,7 +217,18 @@
                     <goals>install</goals>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+            </plugin>
+            <!-- Todo remove java.naming export after spring boot support JDK16 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>--add-exports=java.naming/com.sun.jndi.ldap=ALL-UNNAMED</argLine>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
@@ -305,10 +315,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-            </plugin>
+
         </plugins>
     </build>
     <profiles>
@@ -379,7 +386,7 @@
                     <minimumTokens>100</minimumTokens>
                     <targetJdk>14</targetJdk>
                     <excludes>
-<!--                        <exclude>**/*Bean.java</exclude>-->
+                        <!--                        <exclude>**/*Bean.java</exclude>-->
                         <exclude>**/generated/*.java</exclude>
                     </excludes>
                     <excludeRoots>
