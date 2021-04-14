@@ -101,6 +101,12 @@ public class GridControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("resolved").value(false))
                 .andExpect(jsonPath("msg").value("数独盘面由81位数字组成。空格请输入0。"));
+
+        //Test invalid grid id;
+        mvc.perform(MockMvcRequestBuilders.get("/grid/003000802000700090100090400010609700050207060607508040001060009060004000508000030/resolve"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("resolved").value(false))
+                .andExpect(jsonPath("msg").value("数独盘面错误，请检查输入的盘面。"));
     }
 
     @Test

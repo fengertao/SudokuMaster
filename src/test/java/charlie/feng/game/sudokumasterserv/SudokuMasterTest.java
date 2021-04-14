@@ -62,7 +62,7 @@ public class SudokuMasterTest {
 
         grid = new Grid(gridId);
         grid.setExpectedAnswer(new Grid(expectedSolution));
-        new SudokuMaster().playGracefully(grid);
+        new SudokuMaster().playWithoutBruteForce(grid);
         if (expectedResolved == 81) {
             Assertions.assertTrue(grid.isResolved(), "Grid " + gridId + " should be resolved");
             Assertions.assertEquals(expectedSolution, grid.getAnswer(), "Grid " + gridId + " solution should be correct");
@@ -72,4 +72,14 @@ public class SudokuMasterTest {
         }
     }
 
+    @DisplayName("Grid Play should detect bad input grid")
+    @ParameterizedTest(name = "{index} => gridId={0}")
+    @CsvSource({
+            "003000802000700090100090400010609700050207060607508040001060009060004000508000030"
+    })
+    public void testValidateResult(String gridId) {
+        Grid grid = new Grid(gridId);
+        new SudokuMaster().play(grid);
+        Assertions.assertTrue(grid.isWrongGrid(), "Grid " + gridId + " should be wrong grid");
+    }
 }

@@ -15,6 +15,12 @@ public class Grid {
     private Row[] rows;
     private Column[] columns;
     private Block[] blocks;
+    private boolean wrongGrid;
+
+    public boolean isWrongGrid() {
+        return wrongGrid;
+    }
+
     //for debug purpose only
     private Grid expectedAnswer;
     private Resolution resolution = new Resolution();
@@ -112,10 +118,15 @@ public class Grid {
     }
 
     public void validate() {
-        for (int i = 0; i < 9; i++) {
-            getRows()[i].validate();
-            getColumns()[i].validate();
-            getBlocks()[i].validate();
+        try {
+            for (int i = 0; i < 9; i++) {
+                getRows()[i].validate();
+                getColumns()[i].validate();
+                getBlocks()[i].validate();
+            }
+        } catch (Exception e) {
+            //Todo Log exception here
+            wrongGrid = true;
         }
     }
 
@@ -186,7 +197,8 @@ public class Grid {
 
     public JSONObject getJsonResult() throws JSONException {
         JSONObject result = new JSONObject();
-        result.put("resolved", isResolved());
+        result.put("resolved", isResolved() && !isWrongGrid());
+        result.put("msg", isWrongGrid() ? "数独盘面错误，请检查输入的盘面。" : null);
         result.put("answer", isResolved() ? getAnswer() : getPosition());
         result.put("resolution", getResolution().getJson("ZH"));
         return result;
@@ -251,4 +263,12 @@ public class Grid {
     public void setChangedInCycle(boolean changedInCycle) {
         isChangedInCycle = changedInCycle;
     }
+
+    public enum PlayResult {
+        RESOLVED,
+        UNRESOLVED,
+        WRONG_GRID;
+    }
 }
+
+

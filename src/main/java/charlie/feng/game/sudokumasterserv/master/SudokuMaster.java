@@ -35,17 +35,21 @@ public class SudokuMaster {
     }
 
     public void play(Grid grid) {
-        playGracefully(grid);
-        if (!grid.isResolved()) {
+        playWithoutBruteForce(grid);
+        if (grid.isResolved()) {
+            grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.SUCCESS_RESOLVE);
+            logger.info("Successfully Resolved Grid " + grid.getId());
+        } else {
             int numberOfResolvedCells = grid.getNumberOfResolvedCells();
             new MethodBruteForce().apply(grid);
             grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.BRUTE_FORCE_RESOLVE);
             logger.info("Brute Force Resolved Grid: " + grid.getId());
             logger.info("Before Brute Force Cells Resolved Cells:   " + numberOfResolvedCells);
         }
+        grid.validate();
     }
 
-    public void playGracefully(Grid grid) {
+    public void playWithoutBruteForce(Grid grid) {
         initialMethod();
         grid.setChangedInCycle(true);
         grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.START_RESOLVE);
@@ -56,10 +60,7 @@ public class SudokuMaster {
                 method.apply(grid);
             }
         }
-        if (grid.isResolved()) {
-            grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.SUCCESS_RESOLVE);
-            logger.info("Successfully Resolved Grid " + grid.getId());
-        }
+
     }
 
 

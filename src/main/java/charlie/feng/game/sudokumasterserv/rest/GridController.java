@@ -65,6 +65,7 @@ public class GridController {
     @PutMapping(value = "/grid/{id}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<String> saveGrid(@PathVariable String id, HttpServletRequest request) throws Exception {
+        //Todo validate whether this grid is resolvable.
         JSONArray gridErrorMsg = Grid.validateGridId(id);
         if (gridErrorMsg.length() != 0) {
             logger.debug("Wrong grid : " + id);
@@ -101,7 +102,11 @@ public class GridController {
         logger.debug("Resolving grid : " + id);
         Grid grid = new Grid(id);
         sudokuMaster.play(grid);
-        return new ResponseEntity<>(grid.getJsonResult().toString(2), HttpStatus.OK);
+        if (grid.isWrongGrid()) {
+            return new ResponseEntity<>(grid.getJsonResult().toString(2), HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(grid.getJsonResult().toString(2), HttpStatus.OK);
+        }
     }
 
     @ResponseBody
