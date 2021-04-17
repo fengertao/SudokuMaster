@@ -7,28 +7,31 @@ package charlie.feng.web.aa.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClock;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+
 @Component
 public class JwtTokenUtil implements Serializable {
 
     static final String CLAIM_KEY_USERNAME = "sub";
     static final String CLAIM_KEY_CREATED = "iat";
+    @Serial
     private static final long serialVersionUID = -3301605591108950415L;
     private final Clock clock = DefaultClock.INSTANCE;
 
-    @Value("${jwt.signing.key.secret}")
-    private String secret;
+    private final SecretKey secretKey = Keys.hmacShaKeyFor(new byte[512]);
 
     @Value("${jwt.token.expiration.in.seconds}")
     private Long expiration;
@@ -51,7 +54,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -75,7 +78,7 @@ public class JwtTokenUtil implements Serializable {
         final Date expirationDate = calculateExpirationDate(createdDate);
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(createdDate)
-                .setExpiration(expirationDate).signWith(SignatureAlgorithm.HS512, secret).compact();
+                .setExpiration(expirationDate).signWith(secretKey).compact();
     }
 
     public Boolean canTokenBeRefreshed(String token) {
@@ -90,7 +93,7 @@ public class JwtTokenUtil implements Serializable {
         claims.setIssuedAt(createdDate);
         claims.setExpiration(expirationDate);
 
-        return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret).compact();
+        return Jwts.builder().setClaims(claims).signWith(secretKey).compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {

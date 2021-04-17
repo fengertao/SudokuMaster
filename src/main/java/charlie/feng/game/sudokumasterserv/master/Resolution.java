@@ -1,6 +1,6 @@
 package charlie.feng.game.sudokumasterserv.master;
 
-import org.json.JSONArray;
+import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +27,9 @@ public class Resolution {
         return steps;
     }
 
-    public JSONArray getJson(String lang) {
-        JSONArray array = new JSONArray();
-        steps.forEach(step -> array.put(step.getJSONObject(lang)));
+    public JsonArray getJson(String lang) {
+        JsonArray array = new JsonArray();
+        steps.forEach(step -> array.add(step.getJsonObject(lang)));
         return array;
     }
 }

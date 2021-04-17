@@ -10,9 +10,8 @@ import charlie.feng.game.sudokumasterserv.dom.PositionRepository;
 import charlie.feng.game.sudokumasterserv.master.Grid;
 import charlie.feng.game.sudokumasterserv.master.SudokuMaster;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -64,14 +63,14 @@ public class GridController {
     @ResponseBody
     @PutMapping(value = "/grid/{id}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> saveGrid(@PathVariable String id, HttpServletRequest request) throws Exception {
+    public ResponseEntity<String> saveGrid(@PathVariable String id, HttpServletRequest request) {
         //Todo validate whether this grid is resolvable.
-        JSONArray gridErrorMsg = Grid.validateGridId(id);
-        if (gridErrorMsg.length() != 0) {
+        JsonArray gridErrorMsg = Grid.validateGridId(id);
+        if (gridErrorMsg.size() != 0) {
             logger.debug("Wrong grid : " + id);
-            JSONObject result = new JSONObject();
-            result.put("msg", gridErrorMsg);
-            return new ResponseEntity<>(result.toString(2), HttpStatus.BAD_REQUEST);
+            JsonObject result = new JsonObject();
+            result.add("msg", gridErrorMsg);
+            return new ResponseEntity<>(result.toString(), HttpStatus.BAD_REQUEST);
         }
 
         Optional<charlie.feng.game.sudokumasterserv.dom.Grid> optionalGrid = gridRepo.findById(id);
@@ -89,23 +88,23 @@ public class GridController {
     @ResponseBody
     @RequestMapping(value = "/grid/{id}/resolve",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> resolve(@PathVariable String id) throws Exception {
-        JSONArray gridErrorMsg = Grid.validateGridId(id);
-        if (gridErrorMsg.length() != 0) {
+    public ResponseEntity<String> resolve(@PathVariable String id) {
+        JsonArray gridErrorMsg = Grid.validateGridId(id);
+        if (gridErrorMsg.size() != 0) {
             logger.debug("Wrong grid : " + id);
-            JSONObject result = new JSONObject();
-            result.put("resolved", false);
-            result.put("msg", gridErrorMsg);
-            return new ResponseEntity<>(result.toString(2), HttpStatus.BAD_REQUEST);
+            JsonObject result = new JsonObject();
+            result.addProperty("resolved", false);
+            result.add("msg", gridErrorMsg);
+            return new ResponseEntity<>(result.toString(), HttpStatus.BAD_REQUEST);
         }
 
         logger.debug("Resolving grid : " + id);
         Grid grid = new Grid(id);
         sudokuMaster.play(grid);
         if (grid.isWrongGrid()) {
-            return new ResponseEntity<>(grid.getJsonResult().toString(2), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(grid.getJsonResult().toString(), HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>(grid.getJsonResult().toString(2), HttpStatus.OK);
+            return new ResponseEntity<>(grid.getJsonResult().toString(), HttpStatus.OK);
         }
     }
 
@@ -123,7 +122,7 @@ public class GridController {
     @ResponseBody
     @PutMapping(value = "/position/{gridId}/{positionCode}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> savePosition(@PathVariable String gridId, @PathVariable String positionCode, HttpServletRequest request) throws Exception {
+    public ResponseEntity<String> savePosition(@PathVariable String gridId, @PathVariable String positionCode, HttpServletRequest request) {
         ResponseEntity<String> validateResponse = validatePosition(gridId, positionCode, true);
         if (validateResponse != null) {
             return validateResponse;
@@ -154,7 +153,7 @@ public class GridController {
     @ResponseBody
     @RequestMapping(value = "/position/{gridId}/{positionCode}/resolve",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> resolvePosition(@PathVariable String gridId, @PathVariable String positionCode) throws Exception {
+    public ResponseEntity<String> resolvePosition(@PathVariable String gridId, @PathVariable String positionCode) {
         ResponseEntity<String> validateResponse = validatePosition(gridId, positionCode, false);
         if (validateResponse != null) {
             return validateResponse;
@@ -164,42 +163,44 @@ public class GridController {
 
         Grid grid = new Grid(gridId, positionCode);
         sudokuMaster.play(grid);
-        return new ResponseEntity<>(grid.getJsonResult().put("isValid", true).toString(2), HttpStatus.OK);
+        JsonObject result = grid.getJsonResult();
+        result.addProperty("isValid", true);
+        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
     @ResponseBody
     @RequestMapping(value = "/position/{gridId}/{positionCode}/validate",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> validatePosition(@PathVariable String gridId, @PathVariable String positionCode) throws Exception {
+    public ResponseEntity<String> validatePosition(@PathVariable String gridId, @PathVariable String positionCode) {
 
         ResponseEntity<String> validateResponse = validatePosition(gridId, positionCode, true);
         if (validateResponse != null) {
             return validateResponse;
         }
 
-        JSONObject result = new JSONObject();
-        result.put("msg", new JSONArray());
-        result.put("isValid", true);
-        return new ResponseEntity<>(result.toString(2), HttpStatus.OK);
+        JsonObject result = new JsonObject();
+        result.add("msg", new JsonArray());
+        result.addProperty("isValid", true);
+        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
 
     }
 
-    private ResponseEntity<String> validatePosition(String gridId, String positionCode, boolean skipValidateNonResolvedGrid) throws JSONException {
-        JSONArray errorList = Grid.validateGridId(gridId);
-        if (errorList.length() > 0) {
-            JSONObject result = new JSONObject();
-            result.put("isValid", false);
-            result.put("msg", errorList);
-            return new ResponseEntity<>(result.toString(2), HttpStatus.OK);
+    private ResponseEntity<String> validatePosition(String gridId, String positionCode, boolean skipValidateNonResolvedGrid) {
+        JsonArray errorList = Grid.validateGridId(gridId);
+        if (errorList.size() > 0) {
+            JsonObject result = new JsonObject();
+            result.addProperty("isValid", false);
+            result.add("msg", errorList);
+            return new ResponseEntity<>(result.toString(), HttpStatus.OK);
         }
         Grid grid = new Grid(gridId);
         sudokuMaster.play(grid);
         errorList = grid.validatePosition(positionCode, skipValidateNonResolvedGrid);
-        if (errorList.length() > 0) {
-            JSONObject result = new JSONObject();
-            result.put("isValid", false);
-            result.put("msg", errorList);
-            return new ResponseEntity<>(result.toString(2), HttpStatus.OK);
+        if (errorList.size() > 0) {
+            JsonObject result = new JsonObject();
+            result.addProperty("isValid", false);
+            result.add("msg", errorList);
+            return new ResponseEntity<>(result.toString(), HttpStatus.OK);
         }
         return null;
     }

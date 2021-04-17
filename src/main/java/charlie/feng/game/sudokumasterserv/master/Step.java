@@ -1,8 +1,7 @@
 package charlie.feng.game.sudokumasterserv.master;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +13,7 @@ public class Step {
 
     private final int index;
     private final String cell;
-    private final JSONArray refCells;
+    private final JsonArray refCells;
     private final String preChangeCandidates;
     private final String position;
     //Todo I18n
@@ -26,9 +25,9 @@ public class Step {
 
     public Step(int index, Cell cell, String preChangeCandidates, List<Cell> refCells, String position, String techKey, MsgKey msgKey, String[] msgParams) {
         this.index = index;
-        JSONArray refCellArray = new JSONArray();
+        JsonArray refCellArray = new JsonArray();
         if (refCells != null) {
-            refCells.forEach(refCell -> refCellArray.put(refCell.locationString()));
+            refCells.forEach(refCell -> refCellArray.add(refCell.locationString()));
         }
         this.refCells = refCellArray;
         this.cell = (cell == null ? "" : cell.locationString());
@@ -46,28 +45,23 @@ public class Step {
 
     }
 
-    public JSONObject getJSONObject(String lang) {
+    public JsonObject getJsonObject(String lang) {
+        JsonObject json = new JsonObject();
+        json.addProperty("index", index);
+        json.addProperty("level", level);
+        json.addProperty("cell", cell);
+        json.addProperty("preChangeCandidates", preChangeCandidates);
+        json.addProperty("position", position);
+        json.addProperty("message", msgKey.getMsg(lang, msgParams));
+        String techJson;
         try {
-            JSONObject json = new JSONObject();
-            json.put("index", index);
-            json.put("level", level);
-            json.put("cell", cell);
-            json.put("preChangeCandidates", preChangeCandidates);
-            json.put("position", position);
-            json.put("message", msgKey.getMsg(lang, msgParams));
-            Object techJson;
-            try {
-                MsgKey techMsgKey = MsgKey.valueOf(techKey);
-                techJson = techMsgKey.getMsg(lang);
-            } catch (IllegalArgumentException e) {
-                techJson = techKey;
-            }
-            json.put("techniques", techJson);
-            json.put("refCells", refCells);
-            return json;
-        } catch (JSONException e) {
-            logger.error("Error during generate step Json", e);
+            MsgKey techMsgKey = MsgKey.valueOf(techKey);
+            techJson = techMsgKey.getMsg(lang);
+        } catch (IllegalArgumentException e) {
+            techJson = techKey;
         }
-        return null;
+        json.addProperty("techniques", techJson);
+        json.add("refCells", refCells);
+        return json;
     }
 }

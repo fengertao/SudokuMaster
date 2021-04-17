@@ -4,9 +4,8 @@
 
 package charlie.feng.game.sudokumasterserv.master;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public class Grid {
     public static final String EMPTY_GRID = "000000000000000000000000000000000000000000000000000000000000000000000000000000000";
@@ -159,17 +158,17 @@ public class Grid {
         return builder.toString();
     }
 
-    public static JSONArray validateGridId(String gridId) {
+    public static JsonArray validateGridId(String gridId) {
         //Todo validate there is no duplicated digital in row, column, block
-        JSONArray errorList = new JSONArray();
+        JsonArray errorList = new JsonArray();
         if ((gridId.length() != 81) || !(gridId.matches("[0-9]{81}"))) {
-            errorList.put("数独盘面由81位数字组成。空格请输入0。");
+            errorList.add("数独盘面由81位数字组成。空格请输入0。");
         }
         return errorList;
     }
 
-    public JSONArray validatePosition(String position, boolean skipValidateNonResolvedGrid) {
-        JSONArray errorList = new JSONArray();
+    public JsonArray validatePosition(String position, boolean skipValidateNonResolvedGrid) {
+        JsonArray errorList = new JsonArray();
         if (!isResolved() && skipValidateNonResolvedGrid) {
             return errorList;
         }
@@ -180,12 +179,12 @@ public class Grid {
                 if (getCells()[r][c].getValue() != null) {
                     String correctValue = String.valueOf(getCells()[r][c].getValue());
                     if (!positionValue.contains(correctValue)) {
-                        errorList.put(String.format("单元格 (%d,%d) 内输入为 %s, 但其正确解应该为 %s。", r + 1, c + 1, positionValue, correctValue));
+                        errorList.add(String.format("单元格 (%d,%d) 内输入为 %s, 但其正确解应该为 %s。", r + 1, c + 1, positionValue, correctValue));
                     }
                 } else {
                     for (Integer candidate : getCells()[r][c].getCandidateList()) {
                         if (!positionValue.contains(String.valueOf(candidate))) {
-                            errorList.put(String.format("单元格 (%d,%d) 内输入为 %s, 但其正确范围应该为 %s。", r + 1, c + 1, positionValue, getCells()[r][c].getCandidateString()));
+                            errorList.add(String.format("单元格 (%d,%d) 内输入为 %s, 但其正确范围应该为 %s。", r + 1, c + 1, positionValue, getCells()[r][c].getCandidateString()));
                             break;
                         }
                     }
@@ -195,12 +194,12 @@ public class Grid {
         return errorList;
     }
 
-    public JSONObject getJsonResult() throws JSONException {
-        JSONObject result = new JSONObject();
-        result.put("resolved", isResolved() && !isWrongGrid());
-        result.put("msg", isWrongGrid() ? "数独盘面错误，请检查输入的盘面。" : null);
-        result.put("answer", isResolved() ? getAnswer() : getPosition());
-        result.put("resolution", getResolution().getJson("ZH"));
+    public JsonObject getJsonResult() {
+        JsonObject result = new JsonObject();
+        result.addProperty("resolved", isResolved() && !isWrongGrid());
+        result.addProperty("msg", isWrongGrid() ? "数独盘面错误，请检查输入的盘面。" : null);
+        result.addProperty("answer", isResolved() ? getAnswer() : getPosition());
+        result.add("resolution", getResolution().getJson("ZH"));
         return result;
     }
 
@@ -267,7 +266,7 @@ public class Grid {
     public enum PlayResult {
         RESOLVED,
         UNRESOLVED,
-        WRONG_GRID;
+        WRONG_GRID
     }
 }
 
