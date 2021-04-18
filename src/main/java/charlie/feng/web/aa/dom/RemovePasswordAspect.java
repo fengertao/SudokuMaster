@@ -14,7 +14,6 @@ public class RemovePasswordAspect {
     private void publicUserController() {
     }
 
-    @SuppressWarnings("unchecked")
     @AfterReturning(value = "publicUserController()", returning = "retVal")
     public void removePassword(Object retVal) {
         Object returnBody = retVal;

@@ -6,6 +6,7 @@ package charlie.feng.web.aa.jwt;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 class JwtTokenAndUserInfoResponse extends JwtTokenResponse implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 8317676219297719109L;
 
     private final String username;

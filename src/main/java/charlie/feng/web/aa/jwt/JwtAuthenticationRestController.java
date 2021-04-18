@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 //Todo remove hard coded origin
-@SuppressWarnings("MVCPathVariableInspection")
 @RestController
 @CrossOrigin(origins = {"${jwt.url.ui1}", "${jwt.url.ui2}", "${jwt.url.ui3}", "${jwt.url.ui4}"})
 public class JwtAuthenticationRestController {

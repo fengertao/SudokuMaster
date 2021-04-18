@@ -8,6 +8,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
+import java.util.Objects;
 
 @TestConfiguration
 public class LiquibaseTestConfig {
@@ -18,7 +19,7 @@ public class LiquibaseTestConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setDriverClassName(environment.getProperty("spring.datasource.driverClassName"));
+        ds.setDriverClassName(Objects.requireNonNull(environment.getProperty("spring.datasource.driverClassName")));
         ds.setUrl(environment.getProperty("spring.datasource.url"));
         ds.setUsername(environment.getProperty("spring.datasource.username"));
         ds.setPassword(environment.getProperty("spring.datasource.password"));
