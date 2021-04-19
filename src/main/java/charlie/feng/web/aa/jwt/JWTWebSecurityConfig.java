@@ -128,6 +128,12 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/index.html")
                 //Todo Below url are used by ReactJs 16.10
                 .antMatchers("/images/**", "/static/**", "/*.json", "/*.js", "/logo.*", "/theme.less", "/robot.txt", "/favicon.ico", "/app/**");
+        //Steps to enable h2-console in dev profile:
+        //1. Delete src/main/resources/static folder
+        //2. Invalidate caches in intellij and restart
+        //3. Rebuild project
+        //4. Clear cache in browser
+        //5. Navigate to http://127.0.0.1:8080/h2-console
         //Not for production!
         if (h2ConsoleEnabled && StringUtils.hasText(h2ConsolePath)) {
             ignoredRequestConfigurer.antMatchers("/h2-console/**");
