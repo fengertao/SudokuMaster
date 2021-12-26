@@ -81,8 +81,6 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
         return roleHierarchy;
     }
 
-
-    @Bean
     public PasswordEncoder passwordEncoderBean() {
         return new BCryptPasswordEncoder();
     }

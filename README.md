@@ -7,19 +7,20 @@ Sudoku Master source code contains 2 part:
 * Backend service, which is hosted in https://github.com/fengertao/SudokuMasterServ
 * Frontend UI, which is hosted in  https://github.com/fengertao/SudokuMasterUI
 
-
 ## Build Sudoku Master
 
 ### Software Environment
 
 Install below software into your develop box. (Linux, Mac, or Windows with Git Bash)
-* NodeJS (15.8.0+)
-* Yarn (1.22.4+)
-* JDK (15+)
+
+* NodeJS (16.0.0+)
+* Yarn (1.22.17+)
+* JDK (17+)
 * Maven (3.5+)
 * IDE (Suggest Intellij for SudokuMasterServ and Visual Studio Code for SudokuMasterUI)
 
 ### Download source code
+
 ```bash
 mkdir sudoku
 cd sudoku
@@ -28,6 +29,7 @@ git clone -b develop git@github.com:fengertao/SudokuMasterServ.git
 ```
 
 ### Build Script for Development
+
 ```bash
 cd SudokuMasterUI
 yarn install
@@ -42,6 +44,7 @@ java -jar SudokuMasterServ-*.jar
 ```
 
 ### Build Script for Production
+
 ```bash
 cd SudokuMasterUI
 yarn install
@@ -57,11 +60,12 @@ sftp sudokumasterserv-*.jar $YOURID@$YOURSERVER/
 
 ### Config password
 
-Database username / password are saved in application-xxx.properties, encrypted with jasypt.
-the master password of jasypt should be save into application-xxx.properties with key "jasypt.encryptor.password=XXX"
+Database username / password are saved in application-xxx.properties, encrypted with jasypt. the master password of
+jasypt should be save into application-xxx.properties with key "jasypt.encryptor.password=XXX"
 or be provided during command line "-Djasypt.encryptor.password=XXX"
 
-Suppose jasypt master password is "ILoveSudoku" and mysql password is "MasterIsHere", you below command to generate encrypted password
+Suppose jasypt master password is "ILoveSudoku" and mysql password is "MasterIsHere", you below command to generate
+encrypted password
 
 ```base
 $ java -cp jasypt-1.9.3.jar org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI algorithm=PBEWithMD5AndDES password=ILoveSudoku input=MasterIsHere
@@ -77,6 +81,7 @@ lIF3yhPlUuNTYdm1GXdJjx64CE9qrnrB
 ```
 
 And copy generate encrypted password into application-prod.properties before maven build
+
 ```properties
 spring.datasource.password=ENC(lIF3yhPlUuNTYdm1GXdJjx64CE9qrnrB)
 ```
@@ -108,21 +113,26 @@ $ systemctl status mysql.service
 #### Deplay Sodoku Master
 
 ```bash
-sudo java -jar -Djasypt.encryptor.password=blarblar SudokuMaster*.jar &
-# sudo java -jar -Djasypt.encryptor.password=${SUDOKU_MASTER_PWD} SudokuMaster*.jar &
+nohup java -jar -Djasypt.encryptor.password=blarblar SudokuMaster*.jar &
+# nohup java -jar -Djasypt.encryptor.password=${SUDOKU_MASTER_PWD} SudokuMaster*.jar &
 history -c && history -w
-```
-Tips:
-If you forget jasypt master password, but remember mysql user and password, you may run as
-```bash
-sudo java -jar -Dspring.datasource.username=dev -Dspring.datasource.password=MySQL666 SudokuMaster*.jar &
 ```
 
 Tips:
-You might want $HISTIGNORE: "A colon-separated list of patterns used to decide which command lines should be saved on the history list."
+If you forget jasypt master password, but remember mysql user and password, you may run as
+
+```bash
+nohup java -jar -Dspring.datasource.username=dev -Dspring.datasource.password=MySQL666 sudokumaster*.jar &
+```
+
+Tips:
+You might want $HISTIGNORE: "A colon-separated list of patterns used to decide which command lines should be saved on
+the history list."
 This line in your ~/.bashrc should do the job:
+
 ```properties
 HISTIGNORE='*encrypt*:*password*'
 ```
-Also, you can add a space at the beginning of a command to exclude it from history.
-This works as long as $HISTCONTROL contains ignorespace or ignoreboth, which is default on any distro I've used.
+
+Also, you can add a space at the beginning of a command to exclude it from history. This works as long as $HISTCONTROL
+contains ignorespace or ignoreboth, which is default on any distro I've used.
