@@ -20,7 +20,7 @@
         <java.version>17</java.version>
         <jasypt.sprint.boot.version>3.0.3</jasypt.sprint.boot.version>
         <jjwt.version>0.11.2</jjwt.version>
-        <liquibase.version>4.4.1</liquibase.version>
+        <liquibase.version>4.8.0</liquibase.version>
         <liquibase-hibernate5.version>4.4.1</liquibase-hibernate5.version>
         <!-- Could be override by -P dev/mysql/prod -->
         <springProfilesActive>dev</springProfilesActive>
