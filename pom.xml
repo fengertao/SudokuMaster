@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.2</version>
+        <version>2.6.6</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <groupId>charlie.feng.game</groupId>
@@ -20,8 +20,8 @@
         <java.version>17</java.version>
         <jasypt.sprint.boot.version>3.0.3</jasypt.sprint.boot.version>
         <jjwt.version>0.11.2</jjwt.version>
-        <liquibase.version>4.4.1</liquibase.version>
-        <liquibase-hibernate5.version>4.4.1</liquibase-hibernate5.version>
+        <liquibase.version>4.12.0</liquibase.version>
+        <liquibase-hibernate5.version>4.12.0</liquibase-hibernate5.version>
         <!-- Could be override by -P dev/mysql/prod -->
         <springProfilesActive>dev</springProfilesActive>
     </properties>
@@ -64,7 +64,7 @@
         </repositories>
         <pluginRepositories>
             <pluginRepository>
-                <id>repository.spring.milestone</id>
+                <id>repository.springplugin.milestone</id>
                 <name>Spring Milestone Repository</name>
                 <url>https://repo.spring.io/libs-milestone</url>
                 <url>https://repo.spring.io/libs-release</url>

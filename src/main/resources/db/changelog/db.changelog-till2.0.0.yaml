@@ -127,7 +127,7 @@ databaseChangeLog:
                     nullable: false
                   name: password
                   type: VARCHAR(100)
-            tableName: user
+            tableName: USER
   - changeSet:
       id: 1573623421349-7
       author: D-SHB-25009070
@@ -278,7 +278,7 @@ databaseChangeLog:
             file: db/changelog/csv/user.csv
             quotchar: '"'
             separator: ','
-            tableName: user
+            tableName: USER
   - changeSet:
       id: 1573623421349-13
       author: D-SHB-25009070
@@ -320,7 +320,7 @@ databaseChangeLog:
             onDelete: RESTRICT
             onUpdate: RESTRICT
             referencedColumnNames: username
-            referencedTableName: user
+            referencedTableName: USER
             validate: true
   - changeSet:
       id: 1573623421349-17
