@@ -7,13 +7,15 @@ package charlie.feng.web.aa.dom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.util.List;
+
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 
-public interface UserRepository extends PagingAndSortingRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 
     String POST_FILTER_ADMIN_CANNOT_SEE_ROOT = "hasRole('ROOT') || ((hasRole('ADMIN') && !(filterObject.roles.contains(T(charlie.feng.web.aa.dom.Role).ROLE_ROOT)))) ";
 
@@ -23,7 +25,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, Integer
      */
     @Override
     @PostFilter(POST_FILTER_ADMIN_CANNOT_SEE_ROOT)
-    Iterable<User> findAll();
+    List<User> findAll();
 
 
     /*

@@ -46,7 +46,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   name: resolved_by_ai
-                  type: BIT(1)
+                  type: BOOLEAN
             tableName: grid
   - changeSet:
       id: 1573623421349-3
@@ -118,7 +118,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   name: enabled
-                  type: BIT(1)
+                  type: BOOLEAN
               - column:
                   name: full_name
                   type: VARCHAR(100)
@@ -127,7 +127,7 @@ databaseChangeLog:
                     nullable: false
                   name: password
                   type: VARCHAR(100)
-            tableName: USER
+            tableName: appuser
   - changeSet:
       id: 1573623421349-7
       author: D-SHB-25009070
@@ -275,10 +275,10 @@ databaseChangeLog:
                   type: STRING
             commentLineStartsWith: '#'
             encoding: UTF-8
-            file: db/changelog/csv/user.csv
+            file: db/changelog/csv/appuser.csv
             quotchar: '"'
             separator: ','
-            tableName: USER
+            tableName: appuser
   - changeSet:
       id: 1573623421349-13
       author: D-SHB-25009070
@@ -320,7 +320,7 @@ databaseChangeLog:
             onDelete: RESTRICT
             onUpdate: RESTRICT
             referencedColumnNames: username
-            referencedTableName: USER
+            referencedTableName: appuser
             validate: true
   - changeSet:
       id: 1573623421349-17
