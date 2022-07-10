@@ -28,6 +28,28 @@ public class Position {
     private String code;
 
     @Id
+    /*
+        SequenceGenerator works in H2 but not works in MySQL
+        initialValue must be manual set, liquibase loaded data do not update sequence.
+
+        @GeneratedValue(generator = "positionsequence")
+        @SequenceGenerator(name = "positionsequence", sequenceName = "positionsequence", allocationSize = 1, initialValue = 4)
+     */
+    /*
+        Start from hibernate 5, do not suggest use GenerationType.AUTO, because hibernate default strategy change from Identity to Table.
+        As suggestion per https://thorben-janssen.com/5-things-you-need-to-know-when-using-hibernate-with-mysql/, could change as below.
+        but this do not work for H2 v2.x, error NULL not allowed for column "ID"
+        @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+        @GenericGenerator(name = "native", strategy = "native")
+     */
+    /*
+        H2 GenerationType.IDENTITY Null value issue declared fixed at early Y2022, but it seems doesn't work
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+     */
+    /*
+        previously work, but after upgrade sometime, hibernate_sequence.csv do not work on initial value for H2 database.
+        @GeneratedValue(strategy = GenerationType.AUTO)
+     */
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column(length = 60)
