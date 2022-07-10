@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.6</version>
+        <version>3.0.0-M3</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <groupId>charlie.feng.game</groupId>
@@ -54,22 +54,20 @@
         <system>GitHub</system>
         <url>https://github.com/fengertao/SudokuMasterServ/issues</url>
     </issueManagement>
-    <!--    <repositories>
-            <repository>
-                <id>repository.spring.milestone</id>
-                <name>Spring Milestone Repository</name>
-                <url>https://repo.spring.io/libs-milestone</url>
-                <url>https://repo.spring.io/libs-release</url>
-            </repository>
-        </repositories>
-        <pluginRepositories>
-            <pluginRepository>
-                <id>repository.springplugin.milestone</id>
-                <name>Spring Milestone Repository</name>
-                <url>https://repo.spring.io/libs-milestone</url>
-                <url>https://repo.spring.io/libs-release</url>
-            </pluginRepository>
-        </pluginRepositories>-->
+    <repositories>
+        <repository>
+            <id>repository.spring.milestone</id>
+            <name>Spring Milestone Repository</name>
+            <url>https://repo.spring.io/libs-milestone</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>repository.springplugin.milestone</id>
+            <name>Spring Milestone Repository</name>
+            <url>https://repo.spring.io/libs-milestone</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <dependencies>
         <dependency>
