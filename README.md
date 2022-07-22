@@ -4,8 +4,10 @@ This project is the backend service of Sudoku Master.
 
 Sudoku Master source code contains 2 part:
 
-* Backend service, which is hosted in https://github.com/fengertao/SudokuMasterServ
-* Frontend UI, which is hosted in  https://github.com/fengertao/SudokuMasterUI
+* SudokuMasterServ
+  Backend service, coding by Spring Boot
+* SudokuMasterUI
+  Frontend UI, coding by ReactJS
 
 ## Build Sudoku Master
 
@@ -22,10 +24,8 @@ Install below software into your develop box. (Linux, Mac, or Windows with Git B
 ### Download source code
 
 ```bash
-mkdir sudoku
-cd sudoku
-git clone -b develop git@github.com:fengertao/SudokuMasterUI.git
-git clone -b develop git@github.com:fengertao/SudokuMasterServ.git
+git clone -b develop git@github.com:fengertao/SudokuMaster.git
+cd SudokuMaster
 ```
 
 ### Build Script for Development
