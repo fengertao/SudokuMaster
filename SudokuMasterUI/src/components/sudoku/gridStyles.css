@@ -1,0 +1,250 @@
+/**
+ * Copyright (c) 2018-2019,  Charlie Feng. All Rights Reserved.
+ */
+
+.gridFg {
+    position: relative;
+    z-index: 1;
+    left: 0px;
+    top: -373px;
+    height: 380px;
+}
+
+.gridBg {
+    position: relative;
+    z-index: 0;
+    left: 0px;
+    top: 10px;
+    width: 380px;
+    height: 380px;
+}
+
+.gridTable {
+    border-left: #eeeeee 3px solid;
+    border-bottom: #eeeeee 3px solid;
+    border-right: #eeeeee 3px solid;
+    border-top: #eeeeee 3px solid;
+    table-layout: fixed;
+    vertical-align: middle;
+    width: 384px;
+    height: 384px;
+    padding: 0px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    text-align: center;
+}
+tr.grid {
+    height: 40px;
+}
+
+.cell {
+    border-left: 0 solid;
+    border-bottom: 0 solid;
+    border-right: 0 solid;
+    border-top: 0 solid;
+    width: 40px;
+    line-height: 40px;
+    height: 40px;
+    text-align: center;
+    color: #eeeeee;
+    font-size: 21pt;
+    padding: 0px;
+    position: relative;
+}
+.word0 {
+    color: transparent;
+}
+.word1 {
+    color: red;
+}
+.word2 {
+    color: orange;
+}
+.word3 {
+    color: yellow;
+}
+.word4 {
+    color: lightgreen;
+}
+.word5 {
+    color: cyan;
+}
+.word6 {
+    color: lightblue;
+}
+.word7 {
+    color: gold;
+}
+.word8 {
+    color: pink;
+}
+.word9 {
+    color: white;
+}
+
+.cell .inputspan {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 0px;
+    bottom: 0px;
+    z-index: 2;
+}
+.cell .displayspan {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 0px;
+    bottom: 0px;
+    z-index: 1;
+    font-family: lucida handwriting, comic sans ms, cursive;
+}
+
+.candidates {
+    color: white;
+    line-height: 12px;
+    font-size: 11pt !important;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace;
+}
+
+.cell input {
+    border-right: 0;
+    border-left: 0;
+    border-top: 0;
+    border-bottom: 0;
+    margin: 0;
+    width: 40px;
+    line-height: 40px;
+    font-size: 21pt;
+    height: 40px;
+    text-align: center;
+    background-color: transparent;
+}
+
+.writeInput {
+    font-family: lucida handwriting, comic sans ms, cursive;
+}
+
+.slowlyBlink {
+    animation: slowlyBlink 2s infinite;
+}
+
+@keyframes slowlyBlink {
+    from {
+        opacity: 1;
+    }
+    25% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.25;
+    }
+    75% {
+        opacity: 1;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.ripple {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    z-index: 1;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(1);
+        opacity: 0.75;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0; /*圆形放大的同时，透明度逐渐减小为0*/
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.75;
+    }
+}
+
+.ripple span {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    left: 2px;
+    bottom: 4px;
+    background: green;
+    border-radius: 50%;
+    animation: ripple 3s linear infinite;
+    z-index: -2;
+}
+.ripple span:nth-child(2) {
+    animation-delay: 1.5s; /*第二个span动画延迟1.5秒*/
+}
+
+.switch {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    left: 0px;
+    bottom: 0px;
+    z-index: 1;
+}
+.switch span:nth-child(2) {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 0px;
+    bottom: 0px;
+    z-index: -2;
+
+    animation: switchOut 3s infinite;
+}
+.switch span:nth-child(3) {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 0px;
+    bottom: 0px;
+    z-index: -2;
+
+    animation: switchIn 3s infinite;
+}
+
+@keyframes switchOut {
+    from {
+        opacity: 1;
+    }
+    25% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    75% {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes switchIn {
+    from {
+        opacity: 0;
+    }
+    25% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
