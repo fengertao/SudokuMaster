@@ -29,6 +29,15 @@ const PlayGrid = () => {
     const [gridTableVisible, setGridTableVisible] = useState(false);
     const [positionTableVisible, setPositionTableVisible] = useState(false);
 
+    const switchMusic = () => {
+        let audio_player = document.getElementById('audio_player');
+        if (audio_player.paused) {
+            audio_player.play();
+        } else {
+            audio_player.pause();
+        }
+    }
+
     const validateAccess = () => {
         if (authState.username === 'guest') {
             message.warn(
@@ -315,9 +324,15 @@ const PlayGrid = () => {
                     &nbsp;&nbsp;
                     <Button onClick={() => message.warn('Under Construction')}>单步执行</Button>
                     &nbsp;&nbsp;
+                    <Button onClick={() => switchMusic()}>开关音乐</Button>
+                    <p />
+                    &nbsp;&nbsp;
                     <Button type="primary" onClick={e => handleClickResolve(e)}>
                         解盘&nbsp;&nbsp;> >
                     </Button>
+                    <audio id="audio_player" loop autoPlay="true">
+                        <source src={require('../../style/musics/theLanguageOfPipa.mp3')} />
+                    </audio>
                     <CreateGridForm
                         ref={setInputForm}
                         visible={inputVisible}

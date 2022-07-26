@@ -17,7 +17,7 @@ export default () => {
                 <AuthenticatedRoute
                     exact
                     path="/"
-                    render={() => <Redirect to="/app/dashboard/index" push />}
+                    render={() => <Redirect to="/app/sudoku" push />}
                 />
                 <AuthenticatedRoute path="/app" component={App} />
                 <Route path="/404" component={NotFound} />
