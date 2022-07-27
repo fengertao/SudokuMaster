@@ -42,8 +42,8 @@ public class JwtAuthenticationRestControllerTest {
         //Standalone MVC builder do not load properties files.
         mvc = MockMvcBuilders.standaloneSetup(controller)
                 .setControllerAdvice(new GlobalControllerExceptionHandler())
-                .addPlaceholderValue("jwt.path.refresh", "//refresh")
-                .addPlaceholderValue("jwt.path.authentication", "//authenticate")
+                .addPlaceholderValue("jwt.path.refresh", "/refresh")
+                .addPlaceholderValue("jwt.path.authentication", "/authenticate")
                 .addPlaceholderValue("jwt.url.ui1", "http://localhost:3006")
                 .addPlaceholderValue("jwt.url.ui2", "http://localhost:3000")
                 .addPlaceholderValue("jwt.url.ui3", "http://127.0.0.1:3006")
