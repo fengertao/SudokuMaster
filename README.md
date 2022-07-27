@@ -115,7 +115,7 @@ $ systemctl status mysql.service
 # sudo mysqladmin -p -u root version
 ```
 
-#### Deploy Sudoku Master
+#### Deploy Sudoku Master (nohup mode)
 
 ```bash
 nohup java -jar -Djasypt.encryptor.password=blarblar sudokumaster*.jar &
@@ -141,3 +141,48 @@ HISTIGNORE='*encrypt*:*password*'
 
 Also, you can add a space at the beginning of a command to exclude it from history. This works as long as $HISTCONTROL
 contains ignorespace or ignoreboth, which is default on any distro I've used.
+
+#### Deploy Sudoku Master (service mode)
+
+```bash
+ln -s sudokumasterserv-*-SNAPSHOT.jar sudokumasterserv.jar
+cat > sudokumaster.sh <<EOF
+java -jar -Djasypt.encryptor.password=$PWD -Dserver.port=8080 /home/ubuntu/sudokumasterserv.jar
+EOF
+
+chmod a+x sudokumaster.sh
+cd /etc/systemd/system
+sudo cat >sudokumaster.service <<EOF
+[Unit]
+Description=Sudoku Master
+After=syslog.target
+
+[Service]
+User=ubuntu
+ExecStart=/home/ubuntu/sudokumaster.sh
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo chmod a+x sudokumaster.service
+sudo systemctl enable sudokumaster.service
+sudo systemctl start sudokumaster.service
+
+```
+#### compare between nohup mode and service mode
+
+The advantage of nohup mode:
+* After user logout, application still running, and log can be fetch from nohup.log
+* no hardcoded Jasypt master password write into file
+
+The disadvantage of nohup mode:
+* After server reboot, application will not auto start
+
+The advantage of service mode:
+* After user logout, application still running, and log can be fetch from service log.
+* After server reboot, application will not auto start.
+
+The disadvantage of nohup mode:
+* hardcoded master password in file, so far no good solution.
