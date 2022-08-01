@@ -42,7 +42,8 @@ const Cell = React.memo(props => {
     }, [value]);
 
     const handleKeyDown = event => {
-        if (event.keyCode === 8) {
+        //46 for Delete, 32 for space
+        if ((event.keyCode === 46) || (event.keyCode === 32)) {
             setShowValue('');
             setShowClassName(`word0`);
             sudokuDispatch(updateCellCandidate(props.index, ''));
@@ -54,9 +55,12 @@ const Cell = React.memo(props => {
         let newValue = '';
         let formatted = '';
 
+        if (switchValue === " ") {
+            switchValue = "0"
+        }
         setInputValue('');
         if (!'1234567890'.includes(switchValue)) {
-            message.warn('请按1-9键切换单元格内的候选数值，按0键或退格键清空单元格');
+            message.warn('请按1-9键切换单元格内的候选数值，按0键或空格或删除键清空单元格');
             return;
         }
 

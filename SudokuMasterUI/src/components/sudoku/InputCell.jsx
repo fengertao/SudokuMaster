@@ -31,27 +31,24 @@ const InputCell = React.memo(React.forwardRef((props,ref) => {
     }, [value]);
 
     const handleKeyDown = event => {
-        //8 : backspace, 46：delete
-        if ((event.keyCode === 8) || (event.keyCode === 46)) {
-            props.onCellValueChange(props.index, "0");
+        //46：delete. 8: backspace. 32: space
+        //48~57: from 0 to 9
+        console.log(event.keyCode)
+        if ((event.keyCode === 46) || (event.keyCode === 8) || (event.keyCode === 32) || ((event.keyCode >= 48 ) && (event.keyCode <= 57)) ){
+            console.log("good");
+            props.onCellKeyDown(props.index, event.keyCode);
+        } else {
+            console.log("bad")
+            message.warn('请按1-9键切换单元格内的候选数值，按0或空格键或退格键清空单元格');
+            return false;
         }
     };
 
     const handleValueChange = event => {
-        let newValue = event.target.value;
-
-        setInputValue('');
-        if (newValue === ' ') {
-            newValue = '0'
-        }
-        if (!'1234567890'.includes(newValue)) {
-            message.warn('请按1-9键切换单元格内的候选数值，按0或空格键或退格键清空单元格');
-            return;
-        }
-
-        setShowValue(calculateShowValue(newValue));
-        setShowClassName(`word${newValue}`);
-        props.onCellValueChange(props.index, newValue);
+        setInputValue("");
+        setInputClassName(`word${value}`);
+        setShowValue(calculateShowValue(value));
+        setShowClassName(`word${value}`);
     };
 
 

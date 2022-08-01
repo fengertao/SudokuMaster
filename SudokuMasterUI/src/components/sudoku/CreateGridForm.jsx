@@ -34,32 +34,45 @@ const CreateGridForm = Form.create()(props => {
         setInputString(e.target.value)
     };
 
-    const onCellValueChange = (index, newValue) => {
-        console.log(inputBoxRef)
-        console.log(inputBoxRef.current)
+    const onCellKeyDown = (index, key) => {
+
         var tempString = inputString;
 
         while (tempString.length <= index) {
             tempString += "0"
         }
-        tempString = tempString.substring(0, index) + newValue + tempString.substring(index + 1);
-        setInputString(tempString)
-        props.form.setFieldsValue({'newGridId':tempString});
 
-        if (index < 80) {
-            console.log("changed focus when index " + index)
-            cellRef[index + 1].current.focus()
+        //46：delete. 8: backspace. 32: space
+        //48~57: from 0 to 9
+        if (key === 32) {
+            key = 48
+        }
+        if (key === 46) {
+            tempString = tempString.substring(0, index) + 0 + tempString.substring(index + 1);
+            setInputString(tempString)
+            props.form.setFieldsValue({'newGridId':tempString});
+        } else if (key === 8) {
+            if (index > 0 ) {
+                tempString = tempString.substring(0, index - 1) + "0" + tempString.substring(index);
+                setInputString(tempString)
+                props.form.setFieldsValue({'newGridId':tempString});
+                cellRef[index - 1].current.focus()
+            }
         } else {
-            /*
-            * Todo On user input last cell, should focus on the inputbox or the ok button.
-            * However, there are issue:
-            * 1. don't know how to focus on antd Modal Ok button
-            * 2. After setInputString(tempString) or props.form.setFieldValue() line, the "inputBoxRef" will lost, we cannot focus anymore.
-            * Seems like after reactJS component changed state, it may change to another Dom so original ref lot.
-            *
-            *
-            * inputBoxRef.current.focus()
-            */
+            //Number only
+            tempString = tempString.substring(0, index) + (key-48) + tempString.substring(index + 1);
+            setInputString(tempString)
+            props.form.setFieldsValue({'newGridId':tempString});
+            if( index < 80) {
+                /*
+                * Todo on user input last cell, should focus on the inputbox or the ok button.
+                * However, there are issue:
+                * 1. don't know how to focus on antd Modal Ok button
+                * 2. After setInputString(tempString) or props.form.setFieldValue() line, the "inputBoxRef" will lost, we cannot focus anymore.
+                * Seems like after reactJS component changed state, it may change to another Dom so original ref lot.
+                */
+                cellRef[index + 1].current.focus()
+            }
         }
     }
 
@@ -102,7 +115,7 @@ const CreateGridForm = Form.create()(props => {
                                                         index={iRow * 9 + iCol}
                                                         ref={cellRef[iRow * 9 + iCol]}
                                                         inputString={inputString}
-                                                        onCellValueChange={onCellValueChange}
+                                                        onCellKeyDown={onCellKeyDown}
                                                     />
                                                 );
                                             })}
