@@ -5,9 +5,11 @@
 import React, { useState, useEffect } from 'react';
 
 import { message } from 'antd';
-
+import { KEYCODE } from "../../utils/dom"
 
 const InputCell = React.memo(React.forwardRef((props,ref) => {
+
+
     let [inputValue, setInputValue] = useState('');
     let [, setInputClassName] = useState();
     let [showValue, setShowValue] = useState('');
@@ -31,17 +33,40 @@ const InputCell = React.memo(React.forwardRef((props,ref) => {
     }, [value]);
 
     const handleKeyDown = event => {
-        //46：delete. 8: backspace. 32: space
-        //48~57: from 0 to 9
-        console.log(event.keyCode)
-        if ((event.keyCode === 46) || (event.keyCode === 8) || (event.keyCode === 32) || ((event.keyCode >= 48 ) && (event.keyCode <= 57)) ){
-            console.log("good");
-            props.onCellKeyDown(props.index, event.keyCode);
-        } else {
-            console.log("bad")
-            message.warn('请按1-9键切换单元格内的候选数值，按0或空格键或退格键清空单元格');
-            return false;
+        switch(event.keyCode) {
+            case KEYCODE.DELETE:
+            case KEYCODE.BACK_SPACE:
+            case KEYCODE.SPACE:
+            case KEYCODE.CHAR_0:
+            case KEYCODE.CHAR_1:
+            case KEYCODE.CHAR_2:
+            case KEYCODE.CHAR_3:
+            case KEYCODE.CHAR_4:
+            case KEYCODE.CHAR_5:
+            case KEYCODE.CHAR_6:
+            case KEYCODE.CHAR_7:
+            case KEYCODE.CHAR_8:
+            case KEYCODE.CHAR_9:
+            case KEYCODE.LEFT:
+            case KEYCODE.RIGHT:
+            case KEYCODE.UP:
+            case KEYCODE.DOWN:
+                props.onCellKeyDown(props.index, event.keyCode);
+                break;
+            default:
+                message.warn('请按1-9键切换单元格内的候选数值，按0或空格键或退格键清空单元格');
+                return false;
         }
+
+
+        // if ((event.keyCode === KEYCODE.DELETE) || (event.keyCode === KEYCODE.BACK_SPACE) || (event.keyCode === KEYCODE.SPACE) || ((event.keyCode >= KEYCODE.CHAR_0 ) && (event.keyCode <= KEYCODE.CHAR_9)) ){
+        //     props.onCellKeyDown(props.index, event.keyCode);
+        // } else if (event.keyCode === KEYCODE.TAB) {
+        //     //Just default action
+        // } else {
+        //     message.warn('请按1-9键切换单元格内的候选数值，按0或空格键或退格键清空单元格');
+        //     return false;
+        // }
     };
 
     const handleValueChange = event => {
@@ -50,7 +75,6 @@ const InputCell = React.memo(React.forwardRef((props,ref) => {
         setShowValue(calculateShowValue(value));
         setShowClassName(`word${value}`);
     };
-
 
     return (
         <td className="cell">

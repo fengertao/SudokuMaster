@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Form, Modal, Input } from 'antd';
 import bg from './bg.png';
 import InputCell from './InputCell';
+import { KEYCODE } from "../../utils/dom"
 
 const CreateGridForm = Form.create()(props => {
     const { visible, onCancel, onCreate, form } = props;
@@ -39,41 +40,75 @@ const CreateGridForm = Form.create()(props => {
         var tempString = inputString;
 
         while (tempString.length <= index) {
-            tempString += "0"
+            tempString += "0";
         }
 
-        //46：delete. 8: backspace. 32: space
-        //48~57: from 0 to 9
-        if (key === 32) {
-            key = 48
+        if (key === KEYCODE.SPACE) {
+            key = KEYCODE.CHAR_0;
         }
-        if (key === 46) {
-            tempString = tempString.substring(0, index) + 0 + tempString.substring(index + 1);
-            setInputString(tempString)
-            props.form.setFieldsValue({'newGridId':tempString});
-        } else if (key === 8) {
-            if (index > 0 ) {
-                tempString = tempString.substring(0, index - 1) + "0" + tempString.substring(index);
+
+        switch(key) {
+            case KEYCODE.DELETE:
+                tempString = tempString.substring(0, index) + 0 + tempString.substring(index + 1);
                 setInputString(tempString)
                 props.form.setFieldsValue({'newGridId':tempString});
-                cellRef[index - 1].current.focus()
-            }
-        } else {
-            //Number only
-            tempString = tempString.substring(0, index) + (key-48) + tempString.substring(index + 1);
-            setInputString(tempString)
-            props.form.setFieldsValue({'newGridId':tempString});
-            if( index < 80) {
-                /*
-                * Todo on user input last cell, should focus on the inputbox or the ok button.
-                * However, there are issue:
-                * 1. don't know how to focus on antd Modal Ok button
-                * 2. After setInputString(tempString) or props.form.setFieldValue() line, the "inputBoxRef" will lost, we cannot focus anymore.
-                * Seems like after reactJS component changed state, it may change to another Dom so original ref lot.
-                */
-                cellRef[index + 1].current.focus()
-            }
+                break;
+            case KEYCODE.BACK_SPACE:
+                if (index > 0 ) {
+                    tempString = tempString.substring(0, index - 1) + "0" + tempString.substring(index);
+                    setInputString(tempString)
+                    props.form.setFieldsValue({'newGridId':tempString});
+                    cellRef[index - 1].current.focus()
+                }
+                break;
+            case KEYCODE.CHAR_0:
+            case KEYCODE.CHAR_1:
+            case KEYCODE.CHAR_2:
+            case KEYCODE.CHAR_3:
+            case KEYCODE.CHAR_4:
+            case KEYCODE.CHAR_5:
+            case KEYCODE.CHAR_6:
+            case KEYCODE.CHAR_7:
+            case KEYCODE.CHAR_8:
+            case KEYCODE.CHAR_9:
+                tempString = tempString.substring(0, index) + (key-48) + tempString.substring(index + 1);
+                setInputString(tempString)
+                props.form.setFieldsValue({'newGridId':tempString});
+                if( index < 80) {
+                    /*
+                    * Todo on user input last cell, should focus on the inputbox or the ok button.
+                    * However, there are issue:
+                    * 1. don't know how to focus on antd Modal Ok button
+                    * 2. After setInputString(tempString) or props.form.setFieldValue() line, the "inputBoxRef" will lost, we cannot focus anymore.
+                    * Seems like after reactJS component changed state, it may change to another Dom so original ref lot.
+                    */
+                    cellRef[index + 1].current.focus()
+                }
+                break;
+            case KEYCODE.LEFT:
+                if (index > 0 ) {
+                    cellRef[index - 1].current.focus()
+                }
+                break;
+            case KEYCODE.RIGHT:
+                if (index < 80 ) {
+                    cellRef[index + 1].current.focus()
+                }
+                break;
+            case KEYCODE.UP:
+                if (index > 8 ) {
+                    cellRef[index - 9].current.focus()
+                }
+                break;
+            case KEYCODE.DOWN:
+                if (index < 72 ) {
+                    cellRef[index + 9].current.focus()
+                }
+                break;
+            default:
+                return false;
         }
+
     }
 
     const onClickOkButton = e => {

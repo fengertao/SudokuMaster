@@ -330,7 +330,7 @@ const PlayGrid = () => {
                     <Button type="primary" onClick={e => handleClickResolve(e)}>
                         解盘&nbsp;&nbsp;> >
                     </Button>
-                    <audio id="audio_player" loop autoPlay="true">
+                    <audio id="audio_player" loop autoPlay>
                         <source src={require('../../style/musics/theLanguageOfPipa.mp3')} />
                     </audio>
                     <CreateGridForm

@@ -6,6 +6,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { SudokuContext } from '@/context/SudokuContext';
 import { updateCellCandidate } from '@/context/SudokuAction';
 import {} from '@/context/SudokuAction';
+import { KEYCODE } from "../../utils/dom"
 
 import { message } from 'antd';
 
@@ -43,7 +44,7 @@ const Cell = React.memo(props => {
 
     const handleKeyDown = event => {
         //46 for Delete, 32 for space
-        if ((event.keyCode === 46) || (event.keyCode === 32)) {
+        if ((event.keyCode === KEYCODE.DELETE) || (event.keyCode === KEYCODE.SPACE)) {
             setShowValue('');
             setShowClassName(`word0`);
             sudokuDispatch(updateCellCandidate(props.index, ''));
