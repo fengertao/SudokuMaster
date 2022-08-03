@@ -99,6 +99,21 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(jwtUnAuthorizedResponseAuthenticationEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
+                .antMatchers(
+                        HttpMethod.POST,
+                        authenticationPath,
+                        errorPath,
+                        signupPath
+                ).permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/**")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/")
+                .permitAll()
+                .antMatchers("/index.html")
+                .permitAll()
+                //Todo Below url are used by ReactJs 16.10
+                .antMatchers("/images/**", "/static/**", "/*.json", "/*.js", "/logo.*", "/theme.less", "/robot.txt", "/favicon.ico", "/app/**")
+                .permitAll()
                 .expressionHandler(roleHierarchyWebExpressionHandler())
                 .anyRequest().authenticated();
 
@@ -113,19 +128,6 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity webSecurity) {
-        WebSecurity.IgnoredRequestConfigurer ignoredRequestConfigurer = webSecurity
-                .ignoring()
-                .antMatchers(
-                        HttpMethod.POST,
-                        authenticationPath,
-                        errorPath,
-                        signupPath
-                )
-                .antMatchers(HttpMethod.OPTIONS, "/**")
-                .antMatchers(HttpMethod.GET, "/")
-                .antMatchers("/index.html")
-                //Todo Below url are used by ReactJs 16.10
-                .antMatchers("/images/**", "/static/**", "/*.json", "/*.js", "/logo.*", "/theme.less", "/robot.txt", "/favicon.ico", "/app/**");
         //Steps to enable h2-console in dev profile:
         //1. Delete src/main/resources/static folder
         //2. Invalidate caches in intellij and restart
@@ -134,7 +136,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
         //5. Navigate to http://127.0.0.1:8080/h2-console
         //Not for production!
         if (h2ConsoleEnabled && StringUtils.hasText(h2ConsolePath)) {
-            ignoredRequestConfigurer.antMatchers("/h2-console/**");
+            webSecurity.ignoring().antMatchers("/h2-console/**");
         }
     }
 }
