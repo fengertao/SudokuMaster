@@ -58,14 +58,14 @@
         <repository>
             <id>repository.spring.milestone</id>
             <name>Spring Milestone Repository</name>
-            <url>https://repo.spring.io/libs-milestone</url>
+            <url>https://repo.spring.io/libs-milestone-local</url>
         </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
             <id>repository.springplugin.milestone</id>
             <name>Spring Milestone Repository</name>
-            <url>https://repo.spring.io/libs-milestone</url>
+            <url>https://repo.spring.io/libs-milestone-local</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -130,6 +130,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>

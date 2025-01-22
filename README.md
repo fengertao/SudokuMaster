@@ -21,6 +21,18 @@ Install below software into your develop box. (Linux, Mac, or Windows with Git B
 * Maven (3.5+)
 * IDE (Suggest Intellij for SudokuMasterServ and Visual Studio Code for SudokuMasterUI)
 
+Tips:
+
+* NodeJS 17+ default use IPV6 for DNS service. If your device do not support IPV6, use NodeJS 16
+* If you meet Error: ENOENT: no such file or directory, open '...\.yarn-metadata.json', try to clean yarn cache:
+```bash
+npm install yarn -g --force
+yarn --c
+rm package-lock.json
+rm yarn-lock.json
+yarn install 
+```
+
 ### Download source code
 
 ```bash
@@ -70,6 +82,8 @@ mvn clean package
 cd target
 java -jar SudokuMasterServ-*.jar
 ```
+Access to http://localhost:3006 to debug UI
+If you want to debug service, you need logout and login, else you will get invalid token error.
 
 ### Build Script for Production
 
@@ -95,7 +109,7 @@ Please notice server need at lest 1GB memory to support mysql
 
 ```bash
 $ sudo apt update
-$ sudo apt install openjdk-17-jre-headless
+$ sudo apt install openjdk-21-jre-headless
 $ sudo apt install mysql-server
 $ sudo mysql
 mysql> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password by '$MYSQL_NEW_ROOT_PASSWORD'
@@ -107,6 +121,8 @@ mysql> create schema sudokumaster;
 mysql> CREATE USER 'dev'@'%' IDENTIFIED BY 'MySQL666';
 mysql> GRANT ALL PRIVILEGES ON sudokumaster.* TO 'dev'@'%' WITH GRANT OPTION;
 # and create user for production env, which is in application-prod
+mysql> CREATE USER 'sudokumaster'@'%' IDENTIFIED BY 'MySQL666';
+mysql> GRANT ALL PRIVILEGES ON sudokumaster.* TO 'sudokumaster'@'%' WITH GRANT OPTION;
 mysql> FLUSH PRIVILEGES;
 mysql> SELECT user,authentication_string,plugin,host FROM mysql.user;
 mysql> exit
