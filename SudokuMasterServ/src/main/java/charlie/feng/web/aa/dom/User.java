@@ -24,7 +24,7 @@ public class User {
 
     @Id
     @Column(nullable = false, length = 50)
-    @Size(min = 6)
+    @Size(min = 5)
     private String username;
 
     @Column(nullable = false, length = 100)
