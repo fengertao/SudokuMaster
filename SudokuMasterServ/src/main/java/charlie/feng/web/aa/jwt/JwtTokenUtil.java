@@ -17,8 +17,6 @@ import javax.crypto.SecretKey;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 
@@ -54,7 +52,11 @@ public class JwtTokenUtil implements Serializable {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -69,16 +71,9 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername());
-    }
-
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
         final Date createdDate = clock.now();
         final Date expirationDate = calculateExpirationDate(createdDate);
-
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(createdDate)
-                .setExpiration(expirationDate).signWith(secretKey).compact();
+        return Jwts.builder().subject(userDetails.getUsername()).issuedAt(createdDate).expiration(expirationDate).signWith(secretKey).compact();
     }
 
     public Boolean canTokenBeRefreshed(String token) {
@@ -88,12 +83,8 @@ public class JwtTokenUtil implements Serializable {
     public String refreshToken(String token) {
         final Date createdDate = clock.now();
         final Date expirationDate = calculateExpirationDate(createdDate);
-
         final Claims claims = getAllClaimsFromToken(token);
-        claims.setIssuedAt(createdDate);
-        claims.setExpiration(expirationDate);
-
-        return Jwts.builder().setClaims(claims).signWith(secretKey).compact();
+        return Jwts.builder().claims(claims).issuedAt(createdDate).expiration(expirationDate).signWith(secretKey).compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
