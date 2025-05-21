@@ -40,7 +40,7 @@ public class User {
     @Email(message = "{errors.invalid_email}")
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "authorities",
             joinColumns = {
                     @JoinColumn(name = "username")}, inverseJoinColumns = {
