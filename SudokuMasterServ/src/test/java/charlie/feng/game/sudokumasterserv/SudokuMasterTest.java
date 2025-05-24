@@ -4,14 +4,15 @@
 
 package charlie.feng.game.sudokumasterserv;
 
-import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.SudokuMaster;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import charlie.feng.game.sudokumasterserv.master.Grid;
+import charlie.feng.game.sudokumasterserv.master.SudokuMaster;
 
 @ExtendWith(SpringExtension.class)
 public class SudokuMasterTest {
@@ -58,6 +59,7 @@ public class SudokuMasterTest {
         Grid grid = new Grid(gridId);
         new SudokuMaster().play(grid);
         Assertions.assertTrue(grid.isResolved(), "Grid " + gridId + " should be resolved");
+        Assertions.assertFalse(grid.isWrongGrid(), "Grid " + gridId + " resolution validation error");
         Assertions.assertEquals(expectedSolution, grid.getAnswer(), "Grid " + gridId + " solution should be correct");
 
         grid = new Grid(gridId);
