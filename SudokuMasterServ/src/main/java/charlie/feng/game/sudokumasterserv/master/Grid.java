@@ -15,11 +15,6 @@ public class Grid {
     private Column[] columns;
     private Block[] blocks;
     private boolean wrongGrid;
-
-    public boolean isWrongGrid() {
-        return wrongGrid;
-    }
-
     //for debug purpose only
     private Grid expectedAnswer;
     private Resolution resolution = new Resolution();
@@ -33,6 +28,19 @@ public class Grid {
     public Grid(String id, String position) {
         this.setId(id);
         load(id, position);
+    }
+
+    public static JsonArray validateGridId(String gridId) {
+        //Todo validate there is no duplicated digital in row, column, block
+        JsonArray errorList = new JsonArray();
+        if ((gridId.length() != 81) || !(gridId.matches("[0-9]{81}"))) {
+            errorList.add("数独盘面由81位数字组成。空格请输入0。");
+        }
+        return errorList;
+    }
+
+    public boolean isWrongGrid() {
+        return wrongGrid;
     }
 
     public void load(String gridId) {
@@ -100,6 +108,10 @@ public class Grid {
         return resolution;
     }
 
+    public void setResolution(Resolution resolution) {
+        this.resolution = resolution;
+    }
+
     public int getNumberOfResolvedCells() {
         int resolvedCells = 0;
         for (int i = 0; i < 9; i++) {
@@ -124,7 +136,9 @@ public class Grid {
                 getBlocks()[i].validate();
             }
         } catch (Exception e) {
-            //Todo Log exception here
+            //Todo Proper Log exception here
+            //e.printStackTrace();
+            System.out.println("Grid " + id + " wrong resolution:" + getAnswer());
             wrongGrid = true;
         }
     }
@@ -156,15 +170,6 @@ public class Grid {
             }
         }
         return builder.toString();
-    }
-
-    public static JsonArray validateGridId(String gridId) {
-        //Todo validate there is no duplicated digital in row, column, block
-        JsonArray errorList = new JsonArray();
-        if ((gridId.length() != 81) || !(gridId.matches("[0-9]{81}"))) {
-            errorList.add("数独盘面由81位数字组成。空格请输入0。");
-        }
-        return errorList;
     }
 
     public JsonArray validatePosition(String position, boolean skipValidateNonResolvedGrid) {
@@ -249,10 +254,6 @@ public class Grid {
 
     public void setExpectedAnswer(Grid expectedAnswer) {
         this.expectedAnswer = expectedAnswer;
-    }
-
-    public void setResolution(Resolution resolution) {
-        this.resolution = resolution;
     }
 
     public boolean isChangedInCycle() {
