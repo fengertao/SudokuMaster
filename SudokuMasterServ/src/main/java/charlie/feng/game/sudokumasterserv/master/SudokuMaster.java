@@ -4,18 +4,17 @@
 
 package charlie.feng.game.sudokumasterserv.master;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-
+import charlie.feng.game.sudokumasterserv.master.method.IMethod;
+import charlie.feng.game.sudokumasterserv.master.method.MethodBruteForce;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import charlie.feng.game.sudokumasterserv.master.method.IMethod;
-import charlie.feng.game.sudokumasterserv.master.method.MethodBruteForce;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -36,6 +35,9 @@ public class SudokuMaster {
     }
 
     public void play(Grid grid) {
+        grid.setChangedInCycle(true);
+        grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.START_RESOLVE);
+
         playWithCost1Method(grid);
         if (!grid.isResolved()) {
             playWithCost1and2Method(grid);
@@ -59,8 +61,6 @@ public class SudokuMaster {
 
     public void playWithoutBruteForce(Grid grid) {
         grid.setChangedInCycle(true);
-        grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.START_RESOLVE);
-
         while ((!grid.isResolved()) && (grid.isChangedInCycle())) {
             while ((!grid.isResolved()) && (grid.isChangedInCycle())) {
                 grid.setChangedInCycle(false);
@@ -79,8 +79,6 @@ public class SudokuMaster {
     }
 
     private void playWithCost1Method(Grid grid) {
-        grid.setChangedInCycle(true);
-        grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.START_RESOLVE);
         while ((!grid.isResolved()) && (grid.isChangedInCycle())) {
             grid.setChangedInCycle(false);
             for (IMethod method : methods) {
@@ -92,8 +90,6 @@ public class SudokuMaster {
     }
 
     private void playWithCost1and2Method(Grid grid) {
-        grid.setChangedInCycle(true);
-        grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.START_RESOLVE);
         while ((!grid.isResolved()) && (grid.isChangedInCycle())) {
             grid.setChangedInCycle(false);
             for (IMethod method : methods) {
