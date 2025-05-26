@@ -10,9 +10,10 @@ import charlie.feng.game.sudokumasterserv.master.Grid;
  * 强弱链法
  * 掌握了强弱链几乎可以举一反三解决所有的高级技巧。但实现太难，慢慢整吧。
  * 参考文献：http://www.sudokufans.org.cn/forums/topic/38/#comment-157
+ * https://hodoku.sourceforge.net/en/tech_chains.php
  */
 
-public class MethodHardSoftChain implements IMethod {
+public class MethodStrongWeakChain implements IMethod {
 
     @Override
     public void apply(Grid grid) {
