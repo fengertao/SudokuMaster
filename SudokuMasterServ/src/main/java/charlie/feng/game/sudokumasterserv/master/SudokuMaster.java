@@ -4,17 +4,18 @@
 
 package charlie.feng.game.sudokumasterserv.master;
 
-import charlie.feng.game.sudokumasterserv.master.method.IMethod;
-import charlie.feng.game.sudokumasterserv.master.method.MethodBruteForce;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import charlie.feng.game.sudokumasterserv.master.method.IMethod;
+import charlie.feng.game.sudokumasterserv.master.method.MethodBruteForce;
 
 
 /**
@@ -35,6 +36,13 @@ public class SudokuMaster {
     }
 
     public void play(Grid grid) {
+        playWithCost1Method(grid);
+        if (!grid.isResolved()) {
+            playWithCost1and2Method(grid);
+        }
+        if (!grid.isResolved()) {
+            playWithoutBruteForce(grid);
+        }
         playWithoutBruteForce(grid);
         if (grid.isResolved()) {
             grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.SUCCESS_RESOLVE);
@@ -50,19 +58,51 @@ public class SudokuMaster {
     }
 
     public void playWithoutBruteForce(Grid grid) {
-        initialMethod();
         grid.setChangedInCycle(true);
         grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.START_RESOLVE);
 
         while ((!grid.isResolved()) && (grid.isChangedInCycle())) {
-            grid.setChangedInCycle(false);
+            while ((!grid.isResolved()) && (grid.isChangedInCycle())) {
+                grid.setChangedInCycle(false);
+                for (IMethod method : methods) {
+                    if (method.getCost() < 8) {
+                        method.apply(grid);
+                    }
+                }
+            }
             for (IMethod method : methods) {
-                method.apply(grid);
+                if (method.getCost() > 8) {
+                    method.apply(grid);
+                }
             }
         }
-
     }
 
+    private void playWithCost1Method(Grid grid) {
+        grid.setChangedInCycle(true);
+        grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.START_RESOLVE);
+        while ((!grid.isResolved()) && (grid.isChangedInCycle())) {
+            grid.setChangedInCycle(false);
+            for (IMethod method : methods) {
+                if (method.getCost() == 1) {
+                    method.apply(grid);
+                }
+            }
+        }
+    }
+
+    private void playWithCost1and2Method(Grid grid) {
+        grid.setChangedInCycle(true);
+        grid.getResolution().logStep(null, null, grid.getPosition(), "", MsgKey.START_RESOLVE);
+        while ((!grid.isResolved()) && (grid.isChangedInCycle())) {
+            grid.setChangedInCycle(false);
+            for (IMethod method : methods) {
+                if (method.getCost() == 1 || method.getCost() == 2) {
+                    method.apply(grid);
+                }
+            }
+        }
+    }
 
     private void initialMethod() {
         Reflections reflections = new Reflections(this.getClass().getPackage().getName() + ".method");

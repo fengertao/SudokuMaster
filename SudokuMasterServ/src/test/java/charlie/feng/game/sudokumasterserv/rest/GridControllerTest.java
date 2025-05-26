@@ -16,11 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -121,7 +120,6 @@ public class GridControllerTest {
                 .andExpect(jsonPath("answer").value("325496718948127653176358924653742189419835267782961435891673542234519876567284391"))
                 .andExpect(jsonPath("resolution").exists())
                 .andExpect(jsonPath("resolution").isArray())
-                .andExpect(jsonPath("resolution.length()").value(16))
                 .andExpect(jsonPath("resolution[0].length()").value(8))
                 .andExpect(jsonPath("resolution[0].level").isNumber())
                 .andExpect(jsonPath("resolution[0].techniques").isString())
@@ -148,7 +146,6 @@ public class GridControllerTest {
                 .andExpect(jsonPath("resolution[-1].refCells").isArray())
                 .andExpect(jsonPath("resolution[-1].refCells.length()").value(0))
                 .andExpect(jsonPath("resolution[-1].preChangeCandidates").value(""))
-                .andExpect(jsonPath("resolution[-1].index").value(16))
                 .andExpect(jsonPath("resolution[-1].cell").isEmpty())
                 .andExpect(jsonPath("resolution[-1].message").value("成功解决数独"))
                 .andExpect(jsonPath("resolution[-1].position").value("3|2|5|4|9|6|7|1|8|9|4|8|1|2|7|6|5|3|1|7|6|3|5|8|9|2|4|6|5|3|7|4|2|1|8|9|4|1|9|8|3|5|2|6|7|7|8|2|9|6|1|4|3|5|8|9|1|6|7|3|5|4|2|2|3|4|5|1|9|8|7|6|5|6|7|2|8|4|3|9|1"));

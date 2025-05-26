@@ -4,15 +4,16 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
-import charlie.feng.game.sudokumasterserv.master.Cell;
-import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
-import org.paukov.combinatorics3.Generator;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.paukov.combinatorics3.Generator;
+
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
+import charlie.feng.game.sudokumasterserv.master.Cell;
+import charlie.feng.game.sudokumasterserv.master.Grid;
 
 
 /**
@@ -25,6 +26,11 @@ import java.util.Set;
  */
 
 public class MethodXWing implements IMethod {
+
+    @Override
+    public int getCost() {
+        return 1;
+    }
 
     protected int getNumberOfRegions() {
         return 2;

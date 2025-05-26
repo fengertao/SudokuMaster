@@ -4,18 +4,24 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
-import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.Row;
-import org.paukov.combinatorics3.Generator;
-
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+
+import org.paukov.combinatorics3.Generator;
+
+import charlie.feng.game.sudokumasterserv.master.Grid;
+import charlie.feng.game.sudokumasterserv.master.Row;
 
 /**
  * 暴力解题法。
  * 在其它方法试过都无法解题的时候，用暴力解题法
  */
 public class MethodBruteForce implements IMethod {
+    @Override
+    public int getCost() {
+        return 99;
+    }
+
     @Override
     public void apply(Grid grid) {
         Grid solution = bruteForceOnRow(grid, 0);

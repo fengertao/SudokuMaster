@@ -4,20 +4,25 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
+import java.util.ArrayList;
+
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
 import charlie.feng.game.sudokumasterserv.master.Block;
 import charlie.feng.game.sudokumasterserv.master.Cell;
 import charlie.feng.game.sudokumasterserv.master.Column;
 import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
 import charlie.feng.game.sudokumasterserv.master.Row;
-
-import java.util.ArrayList;
 
 /**
  * 单元唯一法
  * 某单元的8个格子的数字已经确定了，则剩下格子的数字可以确定
  */
 public class MethodSolePosition implements IMethod {
+    @Override
+    public int getCost() {
+        return 1;
+    }
+
     @Override
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {

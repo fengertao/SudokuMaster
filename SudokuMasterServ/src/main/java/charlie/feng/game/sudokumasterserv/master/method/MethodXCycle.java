@@ -14,6 +14,11 @@ import charlie.feng.game.sudokumasterserv.master.Grid;
 public class MethodXCycle implements IMethod {
 
     @Override
+    public int getCost() {
+        return 8;
+    }
+
+    @Override
     public void apply(Grid grid) {
         //X-Cycle is a special case of SwordFish
     }

@@ -4,12 +4,12 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
-import charlie.feng.game.sudokumasterserv.master.Cell;
-import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
-
 import java.util.Collections;
 import java.util.Set;
+
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
+import charlie.feng.game.sudokumasterserv.master.Cell;
+import charlie.feng.game.sudokumasterserv.master.Grid;
 
 /**
  * 隐式数对法
@@ -22,6 +22,11 @@ import java.util.Set;
  * while in this method, it is used to exclude other numbers for those cells.
  */
 public class MethodHiddenPair implements IMethod {
+
+    @Override
+    public int getCost() {
+        return 1;
+    }
 
     @Override
     public void apply(Grid grid) {

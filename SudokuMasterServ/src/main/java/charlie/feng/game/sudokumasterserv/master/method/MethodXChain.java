@@ -4,13 +4,13 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
-import charlie.feng.game.sudokumasterserv.master.Cell;
-import charlie.feng.game.sudokumasterserv.master.Grid;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import charlie.feng.game.sudokumasterserv.master.Cell;
+import charlie.feng.game.sudokumasterserv.master.Grid;
 
 /**
  * Note: Strong Weak chain with only 1 digit called XChain.
@@ -21,6 +21,11 @@ import java.util.Set;
  */
 
 public class MethodXChain implements IMethod {
+
+    @Override
+    public int getCost() {
+        return 9;
+    }
 
     @Override
     public void apply(Grid grid) {        // For each digit 1-9

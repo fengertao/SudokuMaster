@@ -4,12 +4,12 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
-import charlie.feng.game.sudokumasterserv.master.Block;
-import charlie.feng.game.sudokumasterserv.master.Grid;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
+import charlie.feng.game.sudokumasterserv.master.Block;
+import charlie.feng.game.sudokumasterserv.master.Grid;
 
 /**
  * 组合排除法
@@ -17,6 +17,11 @@ import java.util.Set;
  * 如果在纵向并行的两个区块中，某个数字可能填入的位置正好都分别占据相同的两列，则这两列可以被用来对纵向并行的另一区块做列排除。
  */
 public class MethodCombinationElimination implements IMethod {
+
+    @Override
+    public int getCost() {
+        return 1;
+    }
 
     @Override
     public void apply(Grid grid) {

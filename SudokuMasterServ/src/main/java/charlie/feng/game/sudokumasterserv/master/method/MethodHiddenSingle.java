@@ -4,15 +4,20 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
-import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
-
 import java.util.ArrayList;
+
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
+import charlie.feng.game.sudokumasterserv.master.Grid;
 
 /**
  * 在某单元格，虽然它有多个候选数，但观察它所在的行、列或块，只有本单元格有这个候选数，即可确认本单元格
  */
 public class MethodHiddenSingle implements IMethod {
+
+    @Override
+    public int getCost() {
+        return 1;
+    }
 
     @Override
     public void apply(Grid grid) {

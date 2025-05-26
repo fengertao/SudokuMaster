@@ -4,15 +4,15 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
-import charlie.feng.game.sudokumasterserv.master.Cell;
-import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
+import charlie.feng.game.sudokumasterserv.master.Cell;
+import charlie.feng.game.sudokumasterserv.master.Grid;
 
 /**
  * 隐式四数集法
@@ -20,6 +20,11 @@ import java.util.stream.Collectors;
  * 则这四个单元格的候选数中的其他数字可以被删除。
  */
 public class MethodHiddenQuad implements IMethod {
+
+    @Override
+    public int getCost() {
+        return 2;
+    }
 
     @Override
     public void apply(Grid grid) {

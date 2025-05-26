@@ -4,10 +4,10 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
+import java.util.ArrayList;
+
 import charlie.feng.game.sudokumasterserv.master.Cell;
 import charlie.feng.game.sudokumasterserv.master.Grid;
-
-import java.util.ArrayList;
 
 /**
  * 显式唯一法
@@ -16,6 +16,11 @@ import java.util.ArrayList;
  * 如果某一单元格所在的行，列及区块中共出现了8个不同的数字，那么该单元格可以确定地填入还未出现过的数字
  */
 public class MethodNakedSingle implements IMethod {
+
+    @Override
+    public int getCost() {
+        return 1;
+    }
 
     @Override
     public void apply(Grid grid) {

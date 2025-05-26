@@ -4,20 +4,25 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
+import java.util.ArrayList;
+
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
 import charlie.feng.game.sudokumasterserv.master.Block;
 import charlie.feng.game.sudokumasterserv.master.Cell;
 import charlie.feng.game.sudokumasterserv.master.Column;
 import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
 import charlie.feng.game.sudokumasterserv.master.Row;
-
-import java.util.ArrayList;
 
 /**
  * 单元排除法
  * 在某一单元（即行，列或区块）中找到能填入某一数字的唯一位置，换句话说，就是把单元中其他的空白位置都排除掉。它对应于候选数法中的隐式唯一法。
  */
 public class MethodBasicElimination implements IMethod {
+    @Override
+    public int getCost() {
+        return 1;
+    }
+
     @Override
     public void apply(Grid grid) {
         for (int i = 0; i < 9; i++) {

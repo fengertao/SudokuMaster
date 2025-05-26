@@ -4,11 +4,11 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
+import java.util.Arrays;
+
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
 import charlie.feng.game.sudokumasterserv.master.Cell;
 import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
-
-import java.util.Arrays;
 
 /**
  * 显式数对法
@@ -16,6 +16,11 @@ import java.util.Arrays;
  * 则这两个候选数字不能再出现在该行，列或区块的其他单元格的候选数中。
  */
 public class MethodNakedPair implements IMethod {
+
+    @Override
+    public int getCost() {
+        return 1;
+    }
 
     @Override
     public void apply(Grid grid) {

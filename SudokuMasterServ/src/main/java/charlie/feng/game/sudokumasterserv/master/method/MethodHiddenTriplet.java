@@ -4,13 +4,13 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
-import charlie.feng.game.sudokumasterserv.master.Cell;
-import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
+import charlie.feng.game.sudokumasterserv.master.Cell;
+import charlie.feng.game.sudokumasterserv.master.Grid;
 
 /**
  * 隐式三数集法
@@ -18,6 +18,11 @@ import java.util.Set;
  * 则这三个单元格的候选数中的其他数字可以被删除。
  */
 public class MethodHiddenTriplet implements IMethod {
+
+    @Override
+    public int getCost() {
+        return 2;
+    }
 
     @Override
     public void apply(Grid grid) {

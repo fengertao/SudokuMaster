@@ -4,13 +4,13 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
-import charlie.feng.game.sudokumasterserv.master.Cell;
-import charlie.feng.game.sudokumasterserv.master.Grid;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import charlie.feng.game.sudokumasterserv.master.Cell;
+import charlie.feng.game.sudokumasterserv.master.Grid;
 
 /**
  * XY形态匹配法 (XY-wing)
@@ -41,6 +41,11 @@ import java.util.Set;
  * 分析方法与之前一样，结果是打星号的单元格中不能出现候选数Z。
  */
 public class MethodXYWing implements IMethod {
+    @Override
+    public int getCost() {
+        return 2;
+    }
+
     @Override
     public void apply(Grid grid) {
         for (int row = 0; row < 9; row++) {

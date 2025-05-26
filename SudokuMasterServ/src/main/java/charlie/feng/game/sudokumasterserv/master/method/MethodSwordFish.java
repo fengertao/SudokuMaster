@@ -12,6 +12,11 @@ package charlie.feng.game.sudokumasterserv.master.method;
  */
 public class MethodSwordFish extends MethodXWing implements IMethod {
     @Override
+    public int getCost() {
+        return 2;
+    }
+
+    @Override
     protected int getNumberOfRegions() {
         return 3;
     }

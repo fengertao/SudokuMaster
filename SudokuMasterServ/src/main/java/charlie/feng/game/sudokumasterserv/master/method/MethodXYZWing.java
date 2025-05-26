@@ -30,6 +30,11 @@ import charlie.feng.game.sudokumasterserv.master.Grid;
 public class MethodXYZWing implements IMethod {
 
     @Override
+    public int getCost() {
+        return 2;
+    }
+
+    @Override
     public void apply(Grid grid) {
         // Find all cells with exactly 3 candidates (potential XYZ cells)
         for (int row = 0; row < 9; row++) {

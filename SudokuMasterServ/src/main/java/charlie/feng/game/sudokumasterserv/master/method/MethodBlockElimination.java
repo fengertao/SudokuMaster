@@ -4,11 +4,11 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
+import java.util.Arrays;
+
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
 import charlie.feng.game.sudokumasterserv.master.Block;
 import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
-
-import java.util.Arrays;
 
 /**
  * 区块排除法
@@ -19,6 +19,11 @@ import java.util.Arrays;
  * 当某数字在某列中可填入的位置正好都在同一区块上，因为该列中必须要有该数字，所以该区块中不在该列内的单元格上将不能再出现该数字。
  */
 public class MethodBlockElimination implements IMethod {
+
+    @Override
+    public int getCost() {
+        return 1;
+    }
 
     @Override
     public void apply(Grid grid) {

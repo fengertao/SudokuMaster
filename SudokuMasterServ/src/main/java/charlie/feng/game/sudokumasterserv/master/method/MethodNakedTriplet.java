@@ -4,13 +4,13 @@
 
 package charlie.feng.game.sudokumasterserv.master.method;
 
-import charlie.feng.game.sudokumasterserv.master.Cell;
-import charlie.feng.game.sudokumasterserv.master.Grid;
-import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import charlie.feng.game.sudokumasterserv.master.AbstractRegion;
+import charlie.feng.game.sudokumasterserv.master.Cell;
+import charlie.feng.game.sudokumasterserv.master.Grid;
 
 /**
  * 显式三数集法
@@ -18,6 +18,11 @@ import java.util.Set;
  * 由于这个三数集中的3个数字正好可以分别填入这3个单元格中，所以该行，列或区块中其他的单元格中不可能再填入这3个数字。
  */
 public class MethodNakedTriplet implements IMethod {
+
+    @Override
+    public int getCost() {
+        return 2;
+    }
 
     @Override
     public void apply(Grid grid) {
