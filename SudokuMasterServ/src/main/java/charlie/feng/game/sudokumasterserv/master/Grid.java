@@ -4,10 +4,15 @@
 
 package charlie.feng.game.sudokumasterserv.master;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class Grid {
+    private static Logger logger = LoggerFactory.getLogger(Grid.class);
+
     public static final String EMPTY_GRID = "000000000000000000000000000000000000000000000000000000000000000000000000000000000";
     private String id;
     private Cell[][] cells;
@@ -138,7 +143,7 @@ public class Grid {
         } catch (Exception e) {
             //Todo Proper Log exception here
             //e.printStackTrace();
-            System.out.println("Grid " + id + " wrong resolution:" + getAnswer());
+            logger.info("Grid " + id + " wrong resolution:" + getAnswer());
             wrongGrid = true;
         }
     }
