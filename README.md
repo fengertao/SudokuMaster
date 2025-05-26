@@ -23,7 +23,15 @@ Install below software into your develop box. (Linux, Mac, or Windows with Git B
 
 Tips:
 
-* NodeJS 17+ default use IPV6 for DNS service. If your device do not support IPV6, use NodeJS 16
+* NodeJS 17+ default use IPV6 for DNS service. If your device do not support IPV6, use NodeJS 16. or set env variable NODE_OPTIONS='--dns-result-order=ipv4first'
+* NodeJD 17+ default use OpenSSL3.0, which is fully compatiable with WebSock 4.x.  Node start will report error. set env variable NODE_OPTIONS='--openssl-legacy-provider' could workaround this issue.
+* Set npm mirror to ali mirror will speedup compile speed. but need remove the mirror if you want run "npm audit fix"
+```bash
+npm config set registry https://registry.npmmirror.com/
+npm config set registry https://registry.npmjs.org/
+```
+
+* 
 * If you meet Error: ENOENT: no such file or directory, open '...\.yarn-metadata.json', try to clean yarn cache:
 ```bash
 npm install yarn -g --force
